@@ -39,6 +39,9 @@
 		CD9316792AD6D081004F2868 /* FirebaseRemoteConfigSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316782AD6D081004F2868 /* FirebaseRemoteConfigSwift */; };
 		CD93167B2AD6D081004F2868 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = CD93167A2AD6D081004F2868 /* FirebaseStorage */; };
 		CD93167D2AD6D081004F2868 /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CD93167C2AD6D081004F2868 /* FirebaseStorageCombine-Community */; };
+		CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93167F2AD812AC004F2868 /* HomeScreen.swift */; };
+		CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316822AD812D2004F2868 /* ListScreen.swift */; };
+		CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316842AD812E7004F2868 /* SettingsScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,9 @@
 		CD93163C2AD6C987004F2868 /* OurArt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OurArt.entitlements; sourceTree = "<group>"; };
 		CD93163E2AD6C987004F2868 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CD9316452AD6CCC0004F2868 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CD93167F2AD812AC004F2868 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		CD9316822AD812D2004F2868 /* ListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScreen.swift; sourceTree = "<group>"; };
+		CD9316842AD812E7004F2868 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,8 +114,8 @@
 		CD9316352AD6C985004F2868 /* OurArt */ = {
 			isa = PBXGroup;
 			children = (
-				CD9316362AD6C985004F2868 /* OurArtApp.swift */,
-				CD9316382AD6C985004F2868 /* ContentView.swift */,
+				CD9316812AD812B4004F2868 /* App */,
+				CD93167E2AD8118F004F2868 /* Screens */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
 				CD9316452AD6CCC0004F2868 /* GoogleService-Info.plist */,
@@ -124,6 +130,25 @@
 				CD93163E2AD6C987004F2868 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CD93167E2AD8118F004F2868 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				CD93167F2AD812AC004F2868 /* HomeScreen.swift */,
+				CD9316822AD812D2004F2868 /* ListScreen.swift */,
+				CD9316842AD812E7004F2868 /* SettingsScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		CD9316812AD812B4004F2868 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				CD9316362AD6C985004F2868 /* OurArtApp.swift */,
+				CD9316382AD6C985004F2868 /* ContentView.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,6 +256,9 @@
 			files = (
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
+				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
+				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
+				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
