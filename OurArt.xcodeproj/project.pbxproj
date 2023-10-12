@@ -42,6 +42,9 @@
 		CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93167F2AD812AC004F2868 /* HomeScreen.swift */; };
 		CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316822AD812D2004F2868 /* ListScreen.swift */; };
 		CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316842AD812E7004F2868 /* SettingsScreen.swift */; };
+		CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316872AD8191E004F2868 /* AuthenticationView.swift */; };
+		CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316892AD81D27004F2868 /* SignInEmailView.swift */; };
+		CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +58,9 @@
 		CD93167F2AD812AC004F2868 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		CD9316822AD812D2004F2868 /* ListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScreen.swift; sourceTree = "<group>"; };
 		CD9316842AD812E7004F2868 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		CD9316872AD8191E004F2868 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
+		CD9316892AD81D27004F2868 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
+		CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,7 @@
 			children = (
 				CD9316812AD812B4004F2868 /* App */,
 				CD93167E2AD8118F004F2868 /* Screens */,
+				CD9316862AD818D4004F2868 /* Authentication */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
 				CD9316452AD6CCC0004F2868 /* GoogleService-Info.plist */,
@@ -149,6 +156,16 @@
 				CD9316382AD6C985004F2868 /* ContentView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		CD9316862AD818D4004F2868 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				CD9316872AD8191E004F2868 /* AuthenticationView.swift */,
+				CD9316892AD81D27004F2868 /* SignInEmailView.swift */,
+				CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,10 +272,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
+				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
+				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
+				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
