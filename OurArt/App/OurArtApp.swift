@@ -15,7 +15,9 @@ struct OurArtApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                AuthenticationView()
+            }
         }
     }
 }

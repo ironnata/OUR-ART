@@ -21,7 +21,7 @@ struct AuthenticationView: View {
                     .foregroundStyle(Color.white)
                     .frame(height: 60)
                     .frame(maxWidth: .infinity)
-                    .background(Color.primary)
+                    .background(Color.accentColor)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
             }
             .padding(.bottom, 50)

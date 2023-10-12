@@ -45,6 +45,7 @@
 		CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316872AD8191E004F2868 /* AuthenticationView.swift */; };
 		CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316892AD81D27004F2868 /* SignInEmailView.swift */; };
 		CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */; };
+		CD93168E2AD8300F004F2868 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93168D2AD8300F004F2868 /* RootView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -61,6 +62,7 @@
 		CD9316872AD8191E004F2868 /* AuthenticationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationView.swift; sourceTree = "<group>"; };
 		CD9316892AD81D27004F2868 /* SignInEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailView.swift; sourceTree = "<group>"; };
 		CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		CD93168D2AD8300F004F2868 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,8 +164,9 @@
 			isa = PBXGroup;
 			children = (
 				CD9316872AD8191E004F2868 /* AuthenticationView.swift */,
-				CD9316892AD81D27004F2868 /* SignInEmailView.swift */,
 				CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */,
+				CD9316892AD81D27004F2868 /* SignInEmailView.swift */,
+				CD93168D2AD8300F004F2868 /* RootView.swift */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
+				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
