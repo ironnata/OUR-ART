@@ -124,6 +124,7 @@
 			children = (
 				CD9316812AD812B4004F2868 /* App */,
 				CD93167E2AD8118F004F2868 /* Screens */,
+				CD93168F2AD845EA004F2868 /* Views */,
 				CD9316862AD818D4004F2868 /* Authentication */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
@@ -169,6 +170,13 @@
 				CD93168D2AD8300F004F2868 /* RootView.swift */,
 			);
 			path = Authentication;
+			sourceTree = "<group>";
+		};
+		CD93168F2AD845EA004F2868 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

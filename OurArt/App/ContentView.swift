@@ -8,30 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @Binding var showSignInView: Bool
+    
     var body: some View {
         TabView {
-            HomeScreen()
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
+            NavigationView {
+                HomeScreen()
+                    .navigationTitle("Home")
+            }
+            .tabItem {
+                Image(systemName: "house")
+                Text("Home")
+            }
             
-            ListScreen()
-                .tabItem {
-                    Image(systemName: "list.dash")
-                    Text("List")
-                }
+            NavigationView {
+                ListScreen()
+                    .navigationTitle("List")
+            }
+            .tabItem {
+                Image(systemName: "list.dash")
+                Text("List")
+            }
             
-            SettingsScreen()
-                .tabItem {
-                    Image(systemName: "gearshape.2")
-                    Text("Settings")
-                }
+            NavigationView {
+                SettingsScreen(showSignInView: $showSignInView)
+                    .navigationTitle("Settings")
+            }
+            .tabItem {
+                Image(systemName: "gearshape.2")
+                Text("Settings")
+            }
             
         }
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(showSignInView: .constant(false))
 }
