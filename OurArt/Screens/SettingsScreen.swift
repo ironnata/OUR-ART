@@ -10,7 +10,13 @@ import SwiftUI
 @MainActor
 final class SettingsViewModel: ObservableObject {
     
+    @Published var authProviders: [AuthProviderOption] = []
     
+    func loadAuthProviders() {
+        if let providers = try? AuthenticationManager.shared.getProviders() {
+            authProviders = providers
+        }
+    }
     
     func signOut() throws {
         try AuthenticationManager.shared.signOut()
@@ -35,18 +41,10 @@ struct SettingsScreen: View {
     var body: some View {
         List {
             
-            
-            
-            Button("Reset Password") {
-                Task {
-                    do {
-                        try await viewModel.resetPassword()
-                        print("PASSWORD RESET!")
-                    } catch {
-                        print(error)
-                    }
-                }
+            if viewModel.authProviders.contains(.email) {
+                emailSection
             }
+            
             
             Button( "Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
                 Task {
@@ -60,10 +58,32 @@ struct SettingsScreen: View {
             }
             .foregroundStyle(Color.red)
         }
+        .onAppear {
+            viewModel.loadAuthProviders()
+        }
         
     }
 }
 
 #Preview {
         SettingsScreen(showSignInView: .constant(false))
+}
+
+
+extension SettingsScreen {
+    private var emailSection: some View {
+        
+        Section {
+            Button("Reset Password") {
+                Task {
+                    do {
+                        try await viewModel.resetPassword()
+                        print("PASSWORD RESET!")
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
 }
