@@ -46,7 +46,7 @@ struct SettingsScreen: View {
             }
             
             
-            Button( "Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
+            Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
                 Task {
                     do {
                         try viewModel.signOut()
@@ -74,7 +74,7 @@ extension SettingsScreen {
     private var emailSection: some View {
         
         Section {
-            Button("Reset Password") {
+            Button("Reset Password", systemImage: "arrow.counterclockwise") {
                 Task {
                     do {
                         try await viewModel.resetPassword()
