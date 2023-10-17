@@ -13,7 +13,7 @@ struct ButtonModifier: ViewModifier {
             .font(.title2)
             .fontWeight(.semibold)
             .foregroundStyle(Color.white)
-            .frame(height: 60)
+            .frame(height: 55)
             .frame(maxWidth: .infinity)
             .background(Color.black)
             .clipShape(RoundedRectangle(cornerRadius: 5))

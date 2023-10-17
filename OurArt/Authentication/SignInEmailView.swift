@@ -34,6 +34,8 @@ final class SignInEmailViewModel: ObservableObject {
 
 struct SignInEmailView: View {
     
+    @Environment(\.presentationMode) var presentationMode
+    
     @StateObject private var viewModel = SignInEmailViewModel()
     @Binding var showSignInView: Bool
     
@@ -60,6 +62,7 @@ struct SignInEmailView: View {
                 Task {
                     do {
                         try await viewModel.signUp()
+                        self.presentationMode.wrappedValue.dismiss()
                         showSignInView = false
                         return
                     } catch {
@@ -68,6 +71,7 @@ struct SignInEmailView: View {
                     
                     do {
                         try await viewModel.signIn()
+                        self.presentationMode.wrappedValue.dismiss()
                         showSignInView = false
                         return
                     } catch {
@@ -76,12 +80,7 @@ struct SignInEmailView: View {
                 }
             } label: {
                 Text("Sign In")
-                    .font(.headline)
-                    .foregroundStyle(Color.white)
-                    .frame(height: 60)
-                    .frame(maxWidth: .infinity)
-                    .background(Color.accentColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                    .modifier(ButtonModifier())
             }
             .padding(.bottom, 50)
         }
