@@ -27,6 +27,10 @@ final class SettingsViewModel: ObservableObject {
         try AuthenticationManager.shared.signOut()
     }
     
+    func deleteAccount() async throws {
+        try await AuthenticationManager.shared.delete()
+    }
+    
     func resetPassword() async throws {
         let authUser = try AuthenticationManager.shared.getAuthenticatedUser()
         
@@ -58,7 +62,8 @@ final class SettingsViewModel: ObservableObject {
 
 struct SettingsScreen: View {
     
-    @State var emailSheet = false
+    @State var showEmailSheet = false
+    @State private var showDeleteAlert = false
     
     @StateObject private var viewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
@@ -85,7 +90,29 @@ struct SettingsScreen: View {
                     }
                 }
             }
-            .foregroundStyle(Color.red)
+            .foregroundStyle(Color.secondary)
+            
+            Section {
+                Button("Delete Account", role: .destructive) {
+                    showDeleteAlert = true
+                }
+                // *** 삭제 안내 멘트 추후 변경
+                .confirmationDialog(Text("After you delete your account, everything you uploaded is going to be deleted too. Are you sure?"), isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                    Button("Delete", role: .destructive) {
+                        Task {
+                            do {
+                                try await viewModel.deleteAccount()
+                                showSignInView = true
+                            } catch {
+                                print(error)
+                            }
+                        }
+                    }
+                }
+            } header: {
+                Text("Delete Account")
+            }
+            
         }
         .onAppear {
             viewModel.loadAuthProviders()
@@ -145,10 +172,13 @@ extension SettingsScreen {
             }
             
             Button("Link E-mail Account", systemImage: "envelope") {
-                emailSheet = true
+                showEmailSheet = true
             }
-            .sheet(isPresented: $emailSheet) {
-                SignInEmailView(showSignInView: $showSignInView)
+            // 시트 dismiss 후 익명 섹션 남아있는 부분 추후 업데이트 요망
+            .sheet(isPresented: $showEmailSheet) {
+                NavigationStack {
+                    SignInEmailView(showSignInView: $showSignInView)
+                }
             }
         } header: {
             Text("Create Account")

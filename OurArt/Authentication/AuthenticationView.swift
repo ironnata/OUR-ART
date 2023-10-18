@@ -44,7 +44,7 @@ struct AuthenticationView: View {
         VStack {
             Spacer()
             
-            // APPLE Dev Program 가입 후 활성화!!!!!
+            // *** APPLE Dev Program 가입 후 활성화!!!!!
             Button(action: {
                 Task {
                     do {

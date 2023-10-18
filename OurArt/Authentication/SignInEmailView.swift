@@ -34,7 +34,7 @@ final class SignInEmailViewModel: ObservableObject {
 
 struct SignInEmailView: View {
     
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
     
     @StateObject private var viewModel = SignInEmailViewModel()
     @Binding var showSignInView: Bool
@@ -62,8 +62,8 @@ struct SignInEmailView: View {
                 Task {
                     do {
                         try await viewModel.signUp()
-                        self.presentationMode.wrappedValue.dismiss()
                         showSignInView = false
+                        dismiss()
                         return
                     } catch {
                         print(error)
@@ -71,8 +71,8 @@ struct SignInEmailView: View {
                     
                     do {
                         try await viewModel.signIn()
-                        self.presentationMode.wrappedValue.dismiss()
                         showSignInView = false
+                        dismiss()
                         return
                     } catch {
                         print(error)
