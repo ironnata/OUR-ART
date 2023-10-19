@@ -56,6 +56,7 @@
 		CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */; };
 		CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */; };
 		CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A92AE1BA9200150F87 /* ProfileView.swift */; };
+		CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7AB2AE1BF7300150F87 /* UserManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A92AE1BA9200150F87 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		CDDED7AB2AE1BF7300150F87 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,9 +149,8 @@
 				CD9316812AD812B4004F2868 /* App */,
 				CD93167E2AD8118F004F2868 /* MainScreens */,
 				CDDED79E2AE1B86700150F87 /* Core */,
-				CD9316862AD818D4004F2868 /* Authentication */,
 				CD9316A02AD989C0004F2868 /* Utilities */,
-				CD9316A32AD99324004F2868 /* Helper */,
+				CD9316A32AD99324004F2868 /* Managers */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
 				CD93169B2AD97521004F2868 /* GoogleService-Info.plist */,
@@ -185,14 +186,6 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		CD9316862AD818D4004F2868 /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
 		CD9316982AD974D2004F2868 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,13 +203,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		CD9316A32AD99324004F2868 /* Helper */ = {
+		CD9316A32AD99324004F2868 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */,
-				CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */,
+				CDDED7AB2AE1BF7300150F87 /* UserManager.swift */,
+				CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */,
+				CDDED7AD2AE1BF7A00150F87 /* Helpers */,
 			);
-			path = Helper;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		CDDED79E2AE1B86700150F87 /* Core */ = {
@@ -263,6 +257,15 @@
 				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		CDDED7AD2AE1BF7A00150F87 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */,
+				CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
