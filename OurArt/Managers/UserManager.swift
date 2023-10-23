@@ -15,6 +15,7 @@ struct DBUser: Codable {
     let email: String?
     let photoUrl: String?
     let dateCreated: Date?
+    let preferences: [String]?
     
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
@@ -22,6 +23,53 @@ struct DBUser: Codable {
         self.email = auth.email
         self.photoUrl = auth.photoUrl
         self.dateCreated = Date()
+        self.preferences = nil
+    }
+    
+    init(
+        userId: String,
+        isAnonymous: Bool? = nil,
+        email: String? = nil,
+        photoUrl: String? = nil,
+        dateCreated: Date? = nil,
+        preferences: [String]? = nil
+    ) {
+        self.userId = userId
+        self.isAnonymous = isAnonymous
+        self.email = email
+        self.photoUrl = photoUrl
+        self.dateCreated = dateCreated
+        self.preferences = preferences
+    }
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case isAnonymous = "is_anonymous"
+        case email = "email"
+        case photoUrl = "photo_url"
+        case dateCreated = "date_created"
+        case preferences = "preferences"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.userId = try container.decode(String.self, forKey: .userId)
+        self.isAnonymous = try container.decodeIfPresent(Bool.self, forKey: .isAnonymous)
+        self.email = try container.decodeIfPresent(String.self, forKey: .email)
+        self.photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
+        self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
+        self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.userId, forKey: .userId)
+        try container.encodeIfPresent(self.isAnonymous, forKey: .isAnonymous)
+        try container.encodeIfPresent(self.email, forKey: .email)
+        try container.encodeIfPresent(self.photoUrl, forKey: .photoUrl)
+        try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
+        try container.encodeIfPresent(self.preferences, forKey: .preferences)
     }
 }
 
@@ -36,20 +84,20 @@ final class UserManager {
         userCollection.document(userId)
     }
     
-    private let encoder: Firestore.Encoder = {
-        let encoder = Firestore.Encoder()
-        encoder.keyEncodingStrategy = .convertToSnakeCase
-        return encoder
-    }()
-    
-    private let decoder: Firestore.Decoder = {
-        let decoder = Firestore.Decoder()
-        decoder.keyDecodingStrategy = .convertFromSnakeCase
-        return decoder
-    }()
+//    private let encoder: Firestore.Encoder = {
+//        let encoder = Firestore.Encoder()
+//        encoder.keyEncodingStrategy = .convertToSnakeCase
+//        return encoder
+//    }()
+//    
+//    private let decoder: Firestore.Decoder = {
+//        let decoder = Firestore.Decoder()
+//        decoder.keyDecodingStrategy = .convertFromSnakeCase
+//        return decoder
+//    }()
     
     func creatNewUser(user: DBUser) async throws {
-        try userDocument(userId: user.userId).setData(from: user, merge: false, encoder: encoder)
+        try userDocument(userId: user.userId).setData(from: user, merge: false)
     }
     
 //    func creatNewUser(auth: AuthDataResultModel) async throws {
@@ -88,5 +136,21 @@ final class UserManager {
 //        
 //        return DBUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
 //    }
+    
+    func addUserPreference(userId: String, preference: String) async throws {
+        let data: [String:Any] = [
+            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
+        ]
+        
+        try await userDocument(userId: userId).updateData(data)
+    }
+    
+    func removeUserPreference(userId: String, preference: String) async throws {
+        let data: [String:Any] = [
+            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
+        ]
+        
+        try await userDocument(userId: userId).updateData(data)
+    }
     
 }
