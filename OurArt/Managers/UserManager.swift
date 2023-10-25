@@ -16,6 +16,7 @@ struct DBUser: Codable {
     let photoUrl: String?
     let dateCreated: Date?
     let preferences: [String]?
+    let nickname: String?
     
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
@@ -24,6 +25,7 @@ struct DBUser: Codable {
         self.photoUrl = auth.photoUrl
         self.dateCreated = Date()
         self.preferences = nil
+        self.nickname = nil
     }
     
     init(
@@ -32,7 +34,8 @@ struct DBUser: Codable {
         email: String? = nil,
         photoUrl: String? = nil,
         dateCreated: Date? = nil,
-        preferences: [String]? = nil
+        preferences: [String]? = nil,
+        nickname: String? = nil
     ) {
         self.userId = userId
         self.isAnonymous = isAnonymous
@@ -40,6 +43,7 @@ struct DBUser: Codable {
         self.photoUrl = photoUrl
         self.dateCreated = dateCreated
         self.preferences = preferences
+        self.nickname = nickname
     }
     
     
@@ -50,6 +54,7 @@ struct DBUser: Codable {
         case photoUrl = "photo_url"
         case dateCreated = "date_created"
         case preferences = "preferences"
+        case nickname = "nickname"
     }
     
     init(from decoder: Decoder) throws {
@@ -60,6 +65,7 @@ struct DBUser: Codable {
         self.photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
         self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
         self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
+        self.nickname = try container.decodeIfPresent(String.self, forKey: .nickname)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -70,6 +76,7 @@ struct DBUser: Codable {
         try container.encodeIfPresent(self.photoUrl, forKey: .photoUrl)
         try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
         try container.encodeIfPresent(self.preferences, forKey: .preferences)
+        try container.encodeIfPresent(self.nickname, forKey: .nickname)
     }
 }
 
@@ -153,4 +160,26 @@ final class UserManager {
         try await userDocument(userId: userId).updateData(data)
     }
     
+
+    func addNickname(userId: String, nickname: String) async throws {
+        let data: [String:Any] = [
+            DBUser.CodingKeys.nickname.rawValue : nickname
+        ]
+        try await userDocument(userId: userId).updateData(data)
+    }
+    
+//    어렵다... 다시 찾아봐야할듯...
+//    func fetchNickname(userId: String) async throws -> String? {
+//        let document = userDocument(userId: userId)
+//        do {
+//            let documentSnapshot = try await document.getDocument()
+//            if let data = documentSnapshot.data(),
+//               let nickname = data[DBUser.CodingKeys.nickname.rawValue] as? String {
+//                return nickname
+//            }
+//        } catch {
+//            print("닉네임을 가져오는 동안 오류 발생: \(error.localizedDescription)")
+//        }
+//        return nil
+//    }
 }

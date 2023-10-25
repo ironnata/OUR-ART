@@ -35,6 +35,24 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    func addNickname(text: String) {
+        guard let user else { return }
+        
+        Task {
+            try await UserManager.shared.addNickname(userId: user.userId, nickname: text)
+            self.user = try await UserManager.shared.getUser(userId: user.userId)
+        }
+    }
+    
+//    func fetchNickname(text: String) {
+//        guard let user else { return }
+//        
+//        Task {
+//            try await UserManager.shared.fetchNickname(userId: user.userId)
+//            self.user = try await UserManager.shared.getUser(userId: user.userId)
+//        }
+//    }
+//    
 }
 
 struct ProfileView: View {
@@ -44,9 +62,14 @@ struct ProfileView: View {
     
     let preferenceOptions: [String] = ["Aritst", "Audience"]
     
+    @State private var nickname: String = ""
+    
     private func preferenceIsSelected(text: String) -> Bool {
         viewModel.user?.preferences?.contains(text) == true
     }
+    
+    
+    // MARK: - BODY
     
     var body: some View {
         List {
@@ -57,9 +80,26 @@ struct ProfileView: View {
                     Text("Is Anonymous: \(isAnonymous.description.capitalized)")
                 }
                 
+                VStack {
+                    HStack {
+                        TextField("Nickname...", text: $nickname)
+                            .modifier(TextFieldModifier())
+                        
+                        Button {
+                            viewModel.addNickname(text: nickname)
+                        } label: {
+                            Text("Save".uppercased())
+                        }
+                        .modifier(SmallButtonModifier())
+                    }
+                    
+                }
                 
                 // Firestore Arrays 튜토리얼, 예시
                 VStack {
+                    Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
                     HStack {
                         ForEach(preferenceOptions, id: \.self) { string in
                             Button(string) {
@@ -74,12 +114,16 @@ struct ProfileView: View {
                             .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
                         }
                     }
-                    
-                    Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
-                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             
+        }
+        .overlay {
+            NavigationLink {
+                SettingsScreen(showSignInView: $showSignInView)
+            } label: {
+                Image(systemName: "gearshape.2")
+            }
         }
         .task {
             try? await viewModel.loadCurrentUser()

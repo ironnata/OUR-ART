@@ -20,3 +20,15 @@ struct ButtonModifier: ViewModifier {
     }
 }
 
+struct SmallButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .fontWeight(.semibold)
+            .foregroundStyle(Color.white)
+            .frame(height: 55)
+            .frame(maxWidth: 70)
+            .background(Color.black)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+    }
+}
