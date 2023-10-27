@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
@@ -63,6 +64,8 @@ struct ProfileView: View {
     let preferenceOptions: [String] = ["Aritst", "Audience"]
     
     @State private var nickname: String = ""
+    @State private var showImagePicker = false
+    @State private var photoItem: PhotosPickerItem?
     
     private func preferenceIsSelected(text: String) -> Bool {
         viewModel.user?.preferences?.contains(text) == true
@@ -72,33 +75,45 @@ struct ProfileView: View {
     // MARK: - BODY
     
     var body: some View {
-        List {
+        VStack {
             if let user = viewModel.user {
-                Text("UserID: \(user.userId)")
                 
-                if let isAnonymous = user.isAnonymous {
-                    Text("Is Anonymous: \(isAnonymous.description.capitalized)")
-                }
+                Spacer()
                 
-                VStack {
-                    HStack {
-                        TextField("Nickname...", text: $nickname)
-                            .modifier(TextFieldModifier())
+                VStack(spacing: 10) {
+                    ZStack {
+                        Image("account_8205962")
+                            .resizable()
+                        .frame(width: 100, height: 100)
                         
                         Button {
-                            viewModel.addNickname(text: nickname)
+                            showImagePicker.toggle()
                         } label: {
-                            Text("Save".uppercased())
+                            Text("EDIT")
                         }
                         .modifier(SmallButtonModifier())
+                        .offset(y: 20)
+                        .photosPicker(isPresented: $showImagePicker, selection: $photoItem)
                     }
                     
+                    TextField("Nickname...", text: $nickname)
+                        .modifier(TextFieldModifier())
+                    
+                    Button {
+                        viewModel.addNickname(text: nickname)
+                    } label: {
+                        Text("Save".uppercased())
+                    }
+                    .modifier(CommonButtonModifier())
                 }
                 
-                // Firestore Arrays 튜토리얼, 예시
+                Divider()
+                    .padding(.vertical, 20)
+                
                 VStack {
                     Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
                         .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundStyle(.secondary)
                     
                     HStack {
                         ForEach(preferenceOptions, id: \.self) { string in
@@ -116,9 +131,8 @@ struct ProfileView: View {
                     }
                 }
             }
-            
         }
-        .overlay {
+        .overlay(alignment: .topTrailing) {
             NavigationLink {
                 SettingsScreen(showSignInView: $showSignInView)
                     .navigationBarBackButtonHidden(true)
@@ -126,6 +140,8 @@ struct ProfileView: View {
                 Image(systemName: "gearshape.2")
             }
         }
+        .padding(.horizontal, 10)
+        .padding(.bottom, 50)
         .task {
             try? await viewModel.loadCurrentUser()
         }

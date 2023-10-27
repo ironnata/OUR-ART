@@ -16,7 +16,7 @@ struct AuthenticationView: View {
     
     var body: some View {
         
-        VStack {
+        VStack(spacing: 10) {
             Spacer()
             
             // *** APPLE Dev Program 가입 후 활성화!!!!!
@@ -33,7 +33,7 @@ struct AuthenticationView: View {
                 SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
                     .allowsHitTesting(false)
             })
-                .modifier(ButtonModifier())
+                .modifier(AuthButtonModifier())
             
             
             GoogleSignInButton(viewModel: GoogleSignInButtonViewModel()) {
@@ -46,7 +46,7 @@ struct AuthenticationView: View {
                     }
                 }
             }
-            .modifier(ButtonModifier())
+            .modifier(AuthButtonModifier())
             
             
             NavigationLink {
@@ -57,7 +57,7 @@ struct AuthenticationView: View {
                     Image(systemName: "envelope")
                     Text("Sign in with E-mail")
                 }
-                .modifier(ButtonModifier())
+                .modifier(AuthButtonModifier())
             }
             
             
@@ -75,7 +75,7 @@ struct AuthenticationView: View {
                     Image(systemName: "eyeglasses")
                     Text("Sign in Anonymously")
                 }
-                .modifier(ButtonModifier())
+                .modifier(AuthButtonModifier())
             }
             .padding(.bottom, 50)
             

@@ -7,15 +7,28 @@
 
 import SwiftUI
 
-struct ButtonModifier: ViewModifier {
+struct AuthButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.title2)
-            .fontWeight(.semibold)
+            .font(.title3)
+            .fontWeight(.medium)
             .foregroundStyle(Color.white)
-            .frame(height: 55)
+            .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.black)
+            .clipShape(RoundedRectangle(cornerRadius: 5))
+    }
+}
+
+struct CommonButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.headline)
+            .fontWeight(.medium)
+            .foregroundStyle(Color.white)
+            .frame(height: 48)
+            .frame(maxWidth: .infinity)
+            .background(Color.accentColor)
             .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }
@@ -23,12 +36,14 @@ struct ButtonModifier: ViewModifier {
 struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.headline)
-            .fontWeight(.semibold)
-            .foregroundStyle(Color.white)
-            .frame(height: 55)
-            .frame(maxWidth: 70)
-            .background(Color.black)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .font(.caption2)
+            .fontWeight(.medium)
+            .foregroundStyle(Color.accentColor)
+            .frame(width: 40, height: 15)
+            .background {
+                RoundedRectangle(cornerRadius: 5)
+                    .stroke(.secondary, lineWidth: 1)
+                    .background(Color.white)
+            }
     }
 }

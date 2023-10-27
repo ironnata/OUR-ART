@@ -55,7 +55,7 @@ struct SignInEmailView: View {
                 }
             } label: {
                 Text("Sign In")
-                    .modifier(ButtonModifier())
+                    .modifier(AuthButtonModifier())
             }
             .padding(.bottom, 50)
         }

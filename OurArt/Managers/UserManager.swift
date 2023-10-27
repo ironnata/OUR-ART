@@ -9,6 +9,8 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+// MARK: - DB USER
+
 struct DBUser: Codable {
     let userId: String
     let isAnonymous: Bool?
@@ -79,6 +81,9 @@ struct DBUser: Codable {
         try container.encodeIfPresent(self.nickname, forKey: .nickname)
     }
 }
+
+
+// MARK: - USER MANAGER
 
 final class UserManager {
     

@@ -12,7 +12,7 @@ struct TextFieldModifier: ViewModifier {
         content
             .font(.headline)
             .padding()
-            .frame(height: 55)
+            .frame(height: 48)
             .background(Color.white)
             .overlay(
                 RoundedRectangle(cornerRadius: 5)
