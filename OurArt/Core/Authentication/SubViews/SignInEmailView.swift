@@ -61,6 +61,15 @@ struct SignInEmailView: View {
         }
         .padding()
         .navigationTitle("Sign In with E-mail")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Image(systemName: "chevron.left")
+                    .imageScale(.large)
+                    .onTapGesture {
+                        dismiss()
+                    }
+            }
+        }
     }
 }
 

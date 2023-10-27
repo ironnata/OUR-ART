@@ -51,6 +51,7 @@ struct AuthenticationView: View {
             
             NavigationLink {
                 SignInEmailView(showSignInView: $showSignInView)
+                    .navigationBarBackButtonHidden(true)
             } label: {
                 HStack {
                     Image(systemName: "envelope")

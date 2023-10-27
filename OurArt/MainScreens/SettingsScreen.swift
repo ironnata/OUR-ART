@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingsScreen: View {
     
+    @Environment(\.dismiss) var dismiss
+    
     @State var showEmailSheet = false
     @State private var showDeleteAlert = false
     
@@ -65,6 +67,15 @@ struct SettingsScreen: View {
         .onAppear {
             viewModel.loadAuthProviders()
             viewModel.loadAuthUser()
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Image(systemName: "chevron.left")
+                    .imageScale(.large)
+                    .onTapGesture {
+                        dismiss()
+                    }
+            }
         }
         
     }
