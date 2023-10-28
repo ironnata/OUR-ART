@@ -40,10 +40,11 @@ struct SmallButtonModifier: ViewModifier {
             .fontWeight(.medium)
             .foregroundStyle(Color.accentColor)
             .frame(width: 40, height: 15)
-            .background {
+            .background(Color.white)
+            .overlay {
                 RoundedRectangle(cornerRadius: 5)
                     .stroke(.secondary, lineWidth: 1)
-                    .background(Color.white)
             }
+            .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }

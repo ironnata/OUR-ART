@@ -13,6 +13,12 @@ final class ProfileViewModel: ObservableObject {
     
     @Published private(set) var user: DBUser? = nil
     
+    @Published var selectedImage: PhotosPickerItem? {
+        didSet { Task { await loadImage(fromItem: selectedImage) } }
+    }
+    @Published var profileImage: Image?
+    
+    
     func loadCurrentUser() async throws {
         let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
         self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
@@ -53,7 +59,16 @@ final class ProfileViewModel: ObservableObject {
 //            self.user = try await UserManager.shared.getUser(userId: user.userId)
 //        }
 //    }
-//    
+    
+    func loadImage(fromItem item: PhotosPickerItem?) async {
+        guard let item = item else { return }
+        
+        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+        guard let uiImage = UIImage(data: data) else { return }
+        self.profileImage = Image(uiImage: uiImage)
+    }
+    
+    
 }
 
 struct ProfileView: View {
@@ -82,9 +97,18 @@ struct ProfileView: View {
                 
                 VStack(spacing: 10) {
                     ZStack {
-                        Image("account_8205962")
-                            .resizable()
-                        .frame(width: 100, height: 100)
+                        if let image = viewModel.profileImage {
+                            image
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+                        } else {
+                            Image(systemName: "person.crop.circle.fill")
+                                .resizable()
+                                .frame(width: 100, height: 100)
+                                .foregroundStyle(Color.accentColor)
+                        }
                         
                         Button {
                             showImagePicker.toggle()
@@ -92,44 +116,46 @@ struct ProfileView: View {
                             Text("EDIT")
                         }
                         .modifier(SmallButtonModifier())
-                        .offset(y: 20)
-                        .photosPicker(isPresented: $showImagePicker, selection: $photoItem)
+                        .offset(y: 30)
+                        .photosPicker(isPresented: $showImagePicker, selection: $viewModel.selectedImage)
                     }
                     
                     TextField("Nickname...", text: $nickname)
                         .modifier(TextFieldModifier())
+                        .padding(.top, 20)
                     
-                    Button {
-                        viewModel.addNickname(text: nickname)
-                    } label: {
-                        Text("Save".uppercased())
-                    }
-                    .modifier(CommonButtonModifier())
-                }
-                
-                Divider()
-                    .padding(.vertical, 20)
-                
-                VStack {
-                    Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .foregroundStyle(.secondary)
-                    
-                    HStack {
-                        ForEach(preferenceOptions, id: \.self) { string in
-                            Button(string) {
-                                if preferenceIsSelected(text: string) {
-                                    viewModel.removeUserPreference(text: string)
-                                } else {
-                                    viewModel.addUserPreference(text: string)
+                    VStack {
+                        Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .foregroundStyle(.secondary)
+                        
+                        HStack {
+                            ForEach(preferenceOptions, id: \.self) { string in
+                                Button(string) {
+                                    if preferenceIsSelected(text: string) {
+                                        viewModel.removeUserPreference(text: string)
+                                    } else {
+                                        viewModel.addUserPreference(text: string)
+                                    }
                                 }
+                                .font(.headline)
+                                .buttonStyle(.borderedProminent)
+                                .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
                             }
-                            .font(.headline)
-                            .buttonStyle(.borderedProminent)
-                            .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
                         }
                     }
                 }
+                
+                Divider()
+                    .padding(.vertical, 10)
+                
+                Button {
+                    viewModel.addNickname(text: nickname)
+                } label: {
+                    Text("Create the profile".uppercased())
+                }
+                .modifier(CommonButtonModifier())
+                
             }
         }
         .overlay(alignment: .topTrailing) {

@@ -19,18 +19,10 @@ struct SignInEmailView: View {
             Spacer()
             
             TextField("e-mail...", text: $viewModel.email)
-                .padding()
-                .frame(height: 60)
-                .frame(maxWidth: .infinity)
-                .background(Color.gray.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .modifier(TextFieldModifier())
             
             SecureField("password...", text: $viewModel.password)
-                .padding()
-                .frame(height: 60)
-                .frame(maxWidth: .infinity)
-                .background(Color.gray.opacity(0.2))
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .modifier(TextFieldModifier())
                 .padding(.bottom, 30)
             
             Button {

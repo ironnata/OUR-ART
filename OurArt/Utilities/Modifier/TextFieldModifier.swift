@@ -10,13 +10,11 @@ import SwiftUI
 struct TextFieldModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.headline)
+            .font(.subheadline)
             .padding()
             .frame(height: 48)
-            .background(Color.white)
-            .overlay(
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(.secondary, lineWidth: 1)
-            )
+            .frame(maxWidth: .infinity)
+            .background(Color.gray.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 5))
     }
 }

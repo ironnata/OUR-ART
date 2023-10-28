@@ -16,7 +16,7 @@ struct ContentView: View {
             NavigationView {
                 HomeScreen()
                     .navigationTitle("Home")
-            }
+            }.tag(0)
             .tabItem {
                 Image(systemName: "house")
                 Text("Home")
@@ -25,7 +25,7 @@ struct ContentView: View {
             NavigationView {
                 ListScreen()
                     .navigationTitle("List")
-            }
+            }.tag(1)
             .tabItem {
                 Image(systemName: "list.dash")
                 Text("List")
@@ -34,7 +34,7 @@ struct ContentView: View {
             NavigationView {
                 SettingsScreen(showSignInView: $showSignInView)
                     .navigationTitle("Settings")
-            }
+            }.tag(2)
             .tabItem {
                 Image(systemName: "gearshape.2")
                 Text("Settings")
