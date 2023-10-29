@@ -45,9 +45,7 @@ struct SettingsScreen: View {
                 Button("Delete Account", role: .destructive) {
                     showDeleteAlert = true
                 }
-                // *** 삭제 안내 멘트 추후 변경
-                // * customConfirmDialog 로 디자인 통일감 있게 변경
-                .confirmationDialog(Text("After you delete your account, everything you uploaded is going to be deleted too. Are you sure?"), isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                .confirmationDialog("Are you sure?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
                     Button("Delete", role: .destructive) {
                         Task {
                             do {
@@ -58,6 +56,8 @@ struct SettingsScreen: View {
                             }
                         }
                     }
+                } message: {
+                    Text("After you delete your account, all you uploaded is going to be deleted too.")
                 }
             } header: {
                 Text("Delete Account")

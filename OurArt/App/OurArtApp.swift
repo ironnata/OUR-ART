@@ -11,6 +11,10 @@ import Firebase
 @main
 struct OurArtApp: App {
     
+    init() {
+        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .accent
+    }
+    
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
