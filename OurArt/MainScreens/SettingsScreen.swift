@@ -17,6 +17,9 @@ struct SettingsScreen: View {
     @StateObject private var viewModel = SettingsViewModel()
     @Binding var showSignInView: Bool
     
+    
+    // MARK: - BODY
+    
     var body: some View {
         List {
             
@@ -29,17 +32,21 @@ struct SettingsScreen: View {
             }
             
             
-            Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
-                Task {
-                    do {
-                        try viewModel.signOut()
-                        showSignInView = true
-                    } catch {
-                        print(error)
+            Section {
+                Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
+                    Task {
+                        do {
+                            try viewModel.signOut()
+                            showSignInView = true
+                        } catch {
+                            print(error)
+                        }
                     }
                 }
+                .foregroundStyle(Color.secondary)
+            } header: {
+                Text("Log Out")
             }
-            .foregroundStyle(Color.secondary)
             
             Section {
                 Button("Delete Account", role: .destructive) {
@@ -64,6 +71,7 @@ struct SettingsScreen: View {
             }
             
         }
+        .listStyle(.plain)
         .onAppear {
             viewModel.loadAuthProviders()
             viewModel.loadAuthUser()
