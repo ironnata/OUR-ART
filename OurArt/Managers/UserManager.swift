@@ -173,18 +173,4 @@ final class UserManager {
         try await userDocument(userId: userId).updateData(data)
     }
     
-//    어렵다... 다시 찾아봐야할듯...
-//    func fetchNickname(userId: String) async throws -> String? {
-//        let document = userDocument(userId: userId)
-//        do {
-//            let documentSnapshot = try await document.getDocument()
-//            if let data = documentSnapshot.data(),
-//               let nickname = data[DBUser.CodingKeys.nickname.rawValue] as? String {
-//                return nickname
-//            }
-//        } catch {
-//            print("닉네임을 가져오는 동안 오류 발생: \(error.localizedDescription)")
-//        }
-//        return nil
-//    }
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import Firebase
 
 @MainActor
 final class ProfileViewModel: ObservableObject {
@@ -17,6 +18,8 @@ final class ProfileViewModel: ObservableObject {
         didSet { Task { await loadImage(fromItem: selectedImage) } }
     }
     @Published var profileImage: Image?
+    
+    private var uiImage: UIImage?
     
     
     func loadCurrentUser() async throws {
@@ -51,23 +54,14 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
-//    func fetchNickname(text: String) {
-//        guard let user else { return }
-//        
-//        Task {
-//            try await UserManager.shared.fetchNickname(userId: user.userId)
-//            self.user = try await UserManager.shared.getUser(userId: user.userId)
-//        }
-//    }
-    
     func loadImage(fromItem item: PhotosPickerItem?) async {
         guard let item = item else { return }
         
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
         guard let uiImage = UIImage(data: data) else { return }
+        self.uiImage = uiImage
         self.profileImage = Image(uiImage: uiImage)
     }
-    
     
 }
 
@@ -119,6 +113,9 @@ struct ProfileView: View {
                         .offset(y: 30)
                         .photosPicker(isPresented: $showImagePicker, selection: $viewModel.selectedImage)
                     }
+                    
+                    // 닉네임 표시하는 방법! 가릿
+                    // Text("\(user.nickname ?? "" )")
                     
                     TextField("Nickname...", text: $nickname)
                         .modifier(TextFieldModifier())

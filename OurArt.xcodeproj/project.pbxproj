@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
+		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
 		CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316362AD6C985004F2868 /* OurArtApp.swift */; };
@@ -61,6 +63,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		CD9316332AD6C985004F2868 /* OurArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OurArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -209,8 +213,10 @@
 		CD9316A32AD99324004F2868 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
-				CDDED7AB2AE1BF7300150F87 /* UserManager.swift */,
 				CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */,
+				CDDED7AB2AE1BF7300150F87 /* UserManager.swift */,
+				CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */,
+				CD6954BC2AEFE88900312907 /* StorageManager.swift */,
 				CDDED7AD2AE1BF7A00150F87 /* Helpers */,
 			);
 			path = Managers;
@@ -380,10 +386,12 @@
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
+				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
 				CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
+				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
 				CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */,
