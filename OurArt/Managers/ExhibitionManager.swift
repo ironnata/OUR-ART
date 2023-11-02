@@ -41,4 +41,17 @@ final class ExhibitionManager {
     func uploadExhibition(exhibition: Exhibition) async throws {
         try exhibitionDocument(exhibitionId: String(exhibition.id)).setData(from: exhibition, merge: false)
     }
+    
+    func getAllExhibitions() async throws -> [Exhibition] {
+        let snapshot = try await exhibitionsCollection.getDocuments()
+        
+        var exhibitions: [Exhibition] = []
+        
+        for document in snapshot.documents {
+            let exhibition = try document.data(as: Exhibition.self)
+            exhibitions.append(exhibition)
+        }
+        
+        return exhibitions
+    }
 }
