@@ -41,6 +41,7 @@ struct ExhibitionDetailView: View {
             
         }
         .navigationTitle("Main Title")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Image(systemName: "chevron.left")

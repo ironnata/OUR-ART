@@ -22,8 +22,10 @@ struct ListScreen: View {
     var body: some View {
         
         List(0 ..< 7) { item in
-            ExhibitionCellView(title: "Awesome", poster: "IMG_3245 2")
-                .listRowSeparator(.hidden)
+            NavigationLink(destination: ExhibitionDetailView()) {
+                ExhibitionCellView(title: "Awesome", poster: "IMG_3245 2")
+                    .listRowSeparator(.hidden)
+            }
         }
         .listStyle(.plain)
     }

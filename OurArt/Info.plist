@@ -17,5 +17,16 @@
 	</array>
 	<key>GIDClientID</key>
 	<string>101052007027-fphsm5gv4hm60620bemi4gjukvacsdit.apps.googleusercontent.com</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Objectivity-Black.otf</string>
+		<string>Objectivity-Bold.otf</string>
+		<string>Objectivity-ExtraBold.otf</string>
+		<string>Objectivity-Light.otf</string>
+		<string>Objectivity-Medium.otf</string>
+		<string>Objectivity-Regular.otf</string>
+		<string>Objectivity-Super.otf</string>
+		<string>Objectivity-Thin.otf</string>
+	</array>
 </dict>
 </plist>

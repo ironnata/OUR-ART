@@ -9,10 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @State private var selection = 0
+    
+    var handler: Binding<Int> { Binding(
+            get: { self.selection },
+            set: {
+                if $0 == self.selection {
+                    print("Reset here!!")
+                }
+                self.selection = $0
+            }
+        )}
+    
     @Binding var showSignInView: Bool
     
     var body: some View {
-        TabView {
+        TabView(selection: $selection) {
             NavigationView {
                 HomeScreen()
                     .navigationTitle("Home")
@@ -39,7 +51,6 @@ struct ContentView: View {
                 Image(systemName: "gearshape.2")
                 Text("Settings")
             }
-            
         }
     }
 }

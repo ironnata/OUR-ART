@@ -90,7 +90,9 @@ struct SettingsScreen: View {
 }
 
 #Preview {
+    NavigationStack {
         SettingsScreen(showSignInView: .constant(false))
+    }
 }
 
 

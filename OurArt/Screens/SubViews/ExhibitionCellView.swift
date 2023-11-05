@@ -16,7 +16,7 @@ struct ExhibitionCellView: View {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
-                    .font(.title3)
+                    .font(.custom("Objectivity-", size: 25))
                     .foregroundStyle(.primary)
                     .padding(.bottom, 10)
                 
