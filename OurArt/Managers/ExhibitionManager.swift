@@ -18,9 +18,9 @@ struct Exhibition: Identifiable, Codable {
     let id: Int
     let title: String?
     let description: String?
-    let date: Date?
+    let date: String? // 일시적 String으로 설정
     let address: String?
-    let openingTime: Date?
+    let openingTime: String? // 일시적 String으로 설정
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?
@@ -42,16 +42,25 @@ final class ExhibitionManager {
         try exhibitionDocument(exhibitionId: String(exhibition.id)).setData(from: exhibition, merge: false)
     }
     
+    func getExhibition(exhibitionId: String) async throws -> Exhibition {
+        try await exhibitionDocument(exhibitionId: exhibitionId).getDocument(as: Exhibition.self)
+    }
+    
     func getAllExhibitions() async throws -> [Exhibition] {
-        let snapshot = try await exhibitionsCollection.getDocuments()
+        try await exhibitionsCollection.getDocuments(as: Exhibition.self)
+    }
+    
+}
+
+
+extension Query {
+    
+    // T = Type
+    func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
+        let snapshot = try await self.getDocuments()
         
-        var exhibitions: [Exhibition] = []
-        
-        for document in snapshot.documents {
-            let exhibition = try document.data(as: Exhibition.self)
-            exhibitions.append(exhibition)
-        }
-        
-        return exhibitions
+        return try snapshot.documents.map({ document in
+            try document.data(as: T.self)
+        })
     }
 }

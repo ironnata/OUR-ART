@@ -19,13 +19,21 @@ final class ExhibitionViewModel: ObservableObject {
 }
 
 struct ListScreen: View {
+    
+    @StateObject private var viewModel = ExhibitionViewModel()
+    
     var body: some View {
         
-        List(0 ..< 7) { item in
-            NavigationLink(destination: ExhibitionDetailView()) {
-                ExhibitionCellView(title: "Awesome", poster: "IMG_3245 2")
-                    .listRowSeparator(.hidden)
+        List {
+            ForEach(viewModel.exhibitions) { exhibition in
+                NavigationLink(destination: ExhibitionDetailView()) {
+                    ExhibitionCellView(exhibition: exhibition)
+                        .listRowSeparator(.hidden)
+                }
             }
+        }
+        .task {
+            try? await viewModel.getAllExhibitions()
         }
         .listStyle(.plain)
     }

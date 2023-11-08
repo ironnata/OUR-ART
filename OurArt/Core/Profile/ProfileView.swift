@@ -158,7 +158,6 @@ struct ProfileView: View {
         .overlay(alignment: .topTrailing) {
             NavigationLink {
                 SettingsScreen(showSignInView: $showSignInView)
-                    .navigationBarBackButtonHidden(true)
             } label: {
                 Image(systemName: "gearshape.2")
             }

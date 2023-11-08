@@ -8,26 +8,25 @@
 import SwiftUI
 
 struct ExhibitionCellView: View {
-    var title: String
-    var poster: String
     
+    let exhibition: Exhibition
     
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(title)
+                Text(exhibition.title ?? "")
                     .font(.custom("Objectivity-", size: 25))
                     .foregroundStyle(.primary)
                     .padding(.bottom, 10)
                 
-                CellDetailView(icon: "calendar", text: "01.11.2023 - 11.11.2023")
-                CellDetailView(icon: "mappin.and.ellipse", text: "Heinrich Heine Allee 21")
+                CellDetailView(icon: "calendar", text: exhibition.date ?? "")
+                CellDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "")
             }
             .font(.footnote)
             
             Spacer()
             
-            Image(poster)
+            Image(exhibition.thumbnail ?? "")
                 .resizable()
                 .scaledToFill()
                 .frame(width: 80, height: 100)
@@ -45,7 +44,7 @@ struct ExhibitionCellView: View {
 }
 
 #Preview {
-    ExhibitionCellView(title: "Main Title", poster: "IMG_3245 2")
+    ExhibitionCellView(exhibition: Exhibition(id: 0, title: "Afternoon", description: "Good afternoon", date: "03.11.2023 - 14.11.2023", address: "Heinrich Heine Allee 21", openingTime: "10:00 - 18:00", closingDays: [], thumbnail: "IMG_3245 2", images: []))
 }
 
 
