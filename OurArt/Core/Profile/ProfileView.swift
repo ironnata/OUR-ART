@@ -7,63 +7,6 @@
 
 import SwiftUI
 import PhotosUI
-import Firebase
-
-@MainActor
-final class ProfileViewModel: ObservableObject {
-    
-    @Published private(set) var user: DBUser? = nil
-    
-    @Published var selectedImage: PhotosPickerItem? {
-        didSet { Task { await loadImage(fromItem: selectedImage) } }
-    }
-    @Published var profileImage: Image?
-    
-    private var uiImage: UIImage?
-    
-    
-    func loadCurrentUser() async throws {
-        let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
-        self.user = try await UserManager.shared.getUser(userId: authDataResult.uid)
-    }
-    
-    func addUserPreference(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.addUserPreference(userId: user.userId, preference: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
-    
-    func removeUserPreference(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.removeUserPreference(userId: user.userId, preference: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
-    
-    func addNickname(text: String) {
-        guard let user else { return }
-        
-        Task {
-            try await UserManager.shared.addNickname(userId: user.userId, nickname: text)
-            self.user = try await UserManager.shared.getUser(userId: user.userId)
-        }
-    }
-    
-    func loadImage(fromItem item: PhotosPickerItem?) async {
-        guard let item = item else { return }
-        
-        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
-        guard let uiImage = UIImage(data: data) else { return }
-        self.uiImage = uiImage
-        self.profileImage = Image(uiImage: uiImage)
-    }
-    
-}
 
 struct ProfileView: View {
     
@@ -75,6 +18,8 @@ struct ProfileView: View {
     @State private var nickname: String = ""
     @State private var showImagePicker = false
     @State private var photoItem: PhotosPickerItem?
+    @State private var imageData: Data? = nil
+    @State private var showInputAlert = false
     
     private func preferenceIsSelected(text: String) -> Bool {
         viewModel.user?.preferences?.contains(text) == true
@@ -91,6 +36,14 @@ struct ProfileView: View {
                 
                 VStack(spacing: 10) {
                     ZStack {
+                        // ** 나중에 써먹을 ** 프로필사진 불러오기 기능
+                        //                        if let imageData, let image = UIImage(data: imageData) {
+                        //                            Image(uiImage: image)
+                        //                                .resizable()
+                        //                                .frame(width: 100, height: 100)
+                        //                                .clipShape(Circle())
+                        //                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+                        
                         if let image = viewModel.profileImage {
                             image
                                 .resizable()
@@ -112,6 +65,12 @@ struct ProfileView: View {
                         .modifier(SmallButtonModifier())
                         .offset(y: 30)
                         .photosPicker(isPresented: $showImagePicker, selection: $viewModel.selectedImage)
+                        // 프로필 사진 파이어스토어에 저장
+                        .onChange(of: viewModel.selectedImage, perform: { newValue in
+                            if let newValue {
+                                viewModel.saveProfileImage(item: newValue)
+                            }
+                        })
                     }
                     
                     // 닉네임 표시하는 방법! 가릿
@@ -147,11 +106,20 @@ struct ProfileView: View {
                     .padding(.vertical, 10)
                 
                 Button {
-                    viewModel.addNickname(text: nickname)
+                    if nickname.isEmpty {
+                        showInputAlert = true
+                    } else {
+                        viewModel.addNickname(text: nickname)
+                        // ContentView 로 이동 추가
+                    }
+                    
                 } label: {
                     Text("Create the profile".uppercased())
                 }
                 .modifier(CommonButtonModifier())
+                .alert(isPresented: $showInputAlert) {
+                    Alert (title: Text("Please input your name."))
+                }
                 
             }
         }
@@ -166,6 +134,11 @@ struct ProfileView: View {
         .padding(.bottom, 50)
         .task {
             try? await viewModel.loadCurrentUser()
+            
+            if let user = viewModel.user, let path = user.profileImagePath {
+                let data = try? await StorageManager.shared.getData(userId: user.userId, path: path)
+                self.imageData = data
+            }
         }
     }
 }

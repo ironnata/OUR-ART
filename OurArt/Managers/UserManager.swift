@@ -19,6 +19,7 @@ struct DBUser: Codable {
     let dateCreated: Date?
     let preferences: [String]?
     let nickname: String?
+    let profileImagePath: String?
     
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
@@ -28,6 +29,7 @@ struct DBUser: Codable {
         self.dateCreated = Date()
         self.preferences = nil
         self.nickname = nil
+        self.profileImagePath = nil
     }
     
     init(
@@ -37,7 +39,8 @@ struct DBUser: Codable {
         photoUrl: String? = nil,
         dateCreated: Date? = nil,
         preferences: [String]? = nil,
-        nickname: String? = nil
+        nickname: String? = nil,
+        profileImagePath: String? = nil
     ) {
         self.userId = userId
         self.isAnonymous = isAnonymous
@@ -46,6 +49,7 @@ struct DBUser: Codable {
         self.dateCreated = dateCreated
         self.preferences = preferences
         self.nickname = nickname
+        self.profileImagePath = profileImagePath
     }
     
     
@@ -57,6 +61,7 @@ struct DBUser: Codable {
         case dateCreated = "date_created"
         case preferences = "preferences"
         case nickname = "nickname"
+        case profileImagePath = "profile_image_path"
     }
     
     init(from decoder: Decoder) throws {
@@ -68,6 +73,7 @@ struct DBUser: Codable {
         self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
         self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
         self.nickname = try container.decodeIfPresent(String.self, forKey: .nickname)
+        self.profileImagePath = try container.decodeIfPresent(String.self, forKey: .profileImagePath)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -79,6 +85,7 @@ struct DBUser: Codable {
         try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
         try container.encodeIfPresent(self.preferences, forKey: .preferences)
         try container.encodeIfPresent(self.nickname, forKey: .nickname)
+        try container.encodeIfPresent(self.profileImagePath, forKey: .profileImagePath)
     }
 }
 
@@ -117,7 +124,7 @@ final class UserManager {
 //            "user_id" : auth.uid,
 //            "is_anonymous" : auth.isAnonymous,
 //            "date_created" : Timestamp(),
-//            
+//
 //        ]
 //        if let email = auth.email {
 //            userData["email"] = email
@@ -125,7 +132,7 @@ final class UserManager {
 //        if let photoUrl = auth.photoUrl {
 //            userData["photo_url"] = photoUrl
 //        }
-//        
+//
 //        try await userDocument(userId: auth.uid).setData(userData, merge: false)
 //    }
     
@@ -136,16 +143,16 @@ final class UserManager {
     
 //    func getUser(userId: String) async throws -> DBUser {
 //        let snapshot = try await userDocument(userId: userId).getDocument()
-//        
+//
 //        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
 //            throw URLError(.badServerResponse)
 //        }
-//        
+//
 //        let isAnonymous = data["is_anonymous"] as? Bool
 //        let email = data["email"] as? String
 //        let photoUrl = data["photo_url"] as? String
 //        let dateCreated = data["date_created"] as? Date
-//        
+//
 //        return DBUser(userId: userId, isAnonymous: isAnonymous, email: email, photoUrl: photoUrl, dateCreated: dateCreated)
 //    }
     
@@ -170,7 +177,15 @@ final class UserManager {
         let data: [String:Any] = [
             DBUser.CodingKeys.nickname.rawValue : nickname
         ]
+        
         try await userDocument(userId: userId).updateData(data)
     }
     
+    func updateUserProfileImagePath(userId: String, path: String) async throws {
+        let data: [String:Any] = [
+            DBUser.CodingKeys.profileImagePath.rawValue : path
+        ]
+        
+        try await userDocument(userId: userId).updateData(data)
+    }
 }

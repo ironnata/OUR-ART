@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -73,6 +74,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 			isa = PBXGroup;
 			children = (
 				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
+				CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -459,6 +462,7 @@
 				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
+				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
 				CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */,
