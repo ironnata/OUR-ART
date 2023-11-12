@@ -20,6 +20,7 @@ struct DBUser: Codable {
     let preferences: [String]?
     let nickname: String?
     let profileImagePath: String?
+    let profileImagePathUrl: String?
     
     init(auth: AuthDataResultModel) {
         self.userId = auth.uid
@@ -30,6 +31,7 @@ struct DBUser: Codable {
         self.preferences = nil
         self.nickname = nil
         self.profileImagePath = nil
+        self.profileImagePathUrl = nil
     }
     
     init(
@@ -40,7 +42,8 @@ struct DBUser: Codable {
         dateCreated: Date? = nil,
         preferences: [String]? = nil,
         nickname: String? = nil,
-        profileImagePath: String? = nil
+        profileImagePath: String? = nil,
+        profileImagePathUrl: String? = nil
     ) {
         self.userId = userId
         self.isAnonymous = isAnonymous
@@ -50,6 +53,7 @@ struct DBUser: Codable {
         self.preferences = preferences
         self.nickname = nickname
         self.profileImagePath = profileImagePath
+        self.profileImagePathUrl = profileImagePathUrl
     }
     
     
@@ -62,6 +66,7 @@ struct DBUser: Codable {
         case preferences = "preferences"
         case nickname = "nickname"
         case profileImagePath = "profile_image_path"
+        case profileImagePathUrl = "profile_image_path_url"
     }
     
     init(from decoder: Decoder) throws {
@@ -74,6 +79,8 @@ struct DBUser: Codable {
         self.preferences = try container.decodeIfPresent([String].self, forKey: .preferences)
         self.nickname = try container.decodeIfPresent(String.self, forKey: .nickname)
         self.profileImagePath = try container.decodeIfPresent(String.self, forKey: .profileImagePath)
+        self.profileImagePathUrl = try container.decodeIfPresent(String.self, forKey: .profileImagePathUrl)
+
     }
     
     func encode(to encoder: Encoder) throws {
@@ -86,6 +93,8 @@ struct DBUser: Codable {
         try container.encodeIfPresent(self.preferences, forKey: .preferences)
         try container.encodeIfPresent(self.nickname, forKey: .nickname)
         try container.encodeIfPresent(self.profileImagePath, forKey: .profileImagePath)
+        try container.encodeIfPresent(self.profileImagePathUrl, forKey: .profileImagePathUrl)
+
     }
 }
 
@@ -181,9 +190,10 @@ final class UserManager {
         try await userDocument(userId: userId).updateData(data)
     }
     
-    func updateUserProfileImagePath(userId: String, path: String) async throws {
+    func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [
             DBUser.CodingKeys.profileImagePath.rawValue : path,
+            DBUser.CodingKeys.profileImagePathUrl.rawValue : url,
         ]
         
         try await userDocument(userId: userId).updateData(data)

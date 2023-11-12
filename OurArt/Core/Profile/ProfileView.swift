@@ -36,8 +36,8 @@ struct ProfileView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
-                    // ** 나중에 써먹을 ** 프로필사진 불러오기 기능
-//                    if let urlString = viewModel.user?.profileImagePath, let url = URL(string: urlString) {
+                    // ** 나중에 써먹을 ** 프로필사진 불러오기
+//                    if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
 //                        AsyncImage(url: url) { image in
 //                            image
 //                                .resizable()
@@ -47,6 +47,13 @@ struct ProfileView: View {
 //                        } placeholder: {
 //                            ProgressView()
 //                                .frame(width: 100, height: 100)
+//                        }
+//                    }
+                    
+                    // ** 나중에 써먹을 ** 프로필사진 삭제
+//                    if viewModel.user?.profileImagePath != nil {
+//                        Button("Delete Image") {
+//                            viewModel.deleteProfileImage()
 //                        }
 //                    }
                     

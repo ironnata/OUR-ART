@@ -26,8 +26,12 @@ final class StorageManager {
         storage.child("users").child(userId)
     }
     
+    func getPathForImage(path: String) -> StorageReference {
+        Storage.storage().reference(withPath: path)
+    }
+    
     func getUrlForImage(path: String) async throws -> URL {
-        try await Storage.storage().reference(withPath: path).downloadURL()
+        try await getPathForImage(path: path).downloadURL()
     }
     
     func getData(userId: String, path: String) async throws -> Data {
@@ -67,6 +71,10 @@ final class StorageManager {
         }
         
         return try await saveImage(data: data, userId: userId)
+    }
+    
+    func deleteImage(path: String) async throws {
+        try await getPathForImage(path: path).delete()
     }
     
 }

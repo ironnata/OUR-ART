@@ -70,7 +70,16 @@ final class ProfileViewModel: ObservableObject {
             print(name)
             
             let url = try await StorageManager.shared.getUrlForImage(path: path)
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: url.absoluteString)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: path, url: url.absoluteString)
+        }
+    }
+    
+    func deleteProfileImage() {
+        guard let user, let path = user.profileImagePath else { return }
+        
+        Task {
+            try await StorageManager.shared.deleteImage(path: path)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
         }
     }
     
