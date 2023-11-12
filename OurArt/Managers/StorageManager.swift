@@ -26,8 +26,23 @@ final class StorageManager {
         storage.child("users").child(userId)
     }
     
+    func getUrlForImage(path: String) async throws -> URL {
+        try await Storage.storage().reference(withPath: path).downloadURL()
+    }
+    
     func getData(userId: String, path: String) async throws -> Data {
-        try await userReference(userId: userId).child(path).data(maxSize: 3 * 1024 * 1024)
+        // try await userReference(userId: userId).child(path).data(maxSize: 3 * 1024 * 1024)
+        try await storage.child(path).data(maxSize: 3 * 1024 * 1024)
+    }
+    
+    func getImage(userId: String, path: String) async throws -> UIImage {
+        let data = try await getData(userId: userId, path: path)
+        
+        guard let image = UIImage(data: data) else {
+            throw URLError(.badServerResponse)
+        }
+        
+        return image
     }
     
     

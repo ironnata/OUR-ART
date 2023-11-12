@@ -69,7 +69,8 @@ final class ProfileViewModel: ObservableObject {
             print(path)
             print(name)
             
-            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: name)
+            let url = try await StorageManager.shared.getUrlForImage(path: path)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: url.absoluteString)
         }
     }
     

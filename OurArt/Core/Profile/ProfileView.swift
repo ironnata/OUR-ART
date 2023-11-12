@@ -17,8 +17,9 @@ struct ProfileView: View {
     
     @State private var nickname: String = ""
     @State private var showImagePicker = false
-    @State private var photoItem: PhotosPickerItem?
-    @State private var imageData: Data? = nil
+    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var url: URL? = nil
+    @State private var selectedImageData: Data? = nil
     @State private var showInputAlert = false
     
     private func preferenceIsSelected(text: String) -> Bool {
@@ -35,17 +36,23 @@ struct ProfileView: View {
                 Spacer()
                 
                 VStack(spacing: 10) {
+                    // ** 나중에 써먹을 ** 프로필사진 불러오기 기능
+//                    if let urlString = viewModel.user?.profileImagePath, let url = URL(string: urlString) {
+//                        AsyncImage(url: url) { image in
+//                            image
+//                                .resizable()
+//                                .frame(width: 100, height: 100)
+//                                .clipShape(Circle())
+//                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+//                        } placeholder: {
+//                            ProgressView()
+//                                .frame(width: 100, height: 100)
+//                        }
+//                    }
+                    
                     ZStack {
-                        // ** 나중에 써먹을 ** 프로필사진 불러오기 기능
-                        //                        if let imageData, let image = UIImage(data: imageData) {
-                        //                            Image(uiImage: image)
-                        //                                .resizable()
-                        //                                .frame(width: 100, height: 100)
-                        //                                .clipShape(Circle())
-                        //                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
-                        
-                        if let image = viewModel.profileImage {
-                            image
+                        if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                            Image(uiImage: uiImage)
                                 .resizable()
                                 .frame(width: 100, height: 100)
                                 .clipShape(Circle())
@@ -64,13 +71,15 @@ struct ProfileView: View {
                         }
                         .modifier(SmallButtonModifier())
                         .offset(y: 30)
-                        .photosPicker(isPresented: $showImagePicker, selection: $viewModel.selectedImage)
-                        // 프로필 사진 파이어스토어에 저장
-                        .onChange(of: viewModel.selectedImage, perform: { newValue in
-                            if let newValue {
-                                viewModel.saveProfileImage(item: newValue)
+                        .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
+                        // 선택 즉시 변경한 이미지 표시
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
                             }
-                        })
+                        }
                     }
                     
                     // 닉네임 표시하는 방법! 가릿
@@ -120,7 +129,12 @@ struct ProfileView: View {
                 .alert(isPresented: $showInputAlert) {
                     Alert (title: Text("Please input your name."))
                 }
-                
+                // 프로필 사진 파이어스토어에 저장
+                .onChange(of: selectedItem, perform: { newValue in
+                    if let newValue {
+                        viewModel.saveProfileImage(item: newValue)
+                    }
+                })
             }
         }
         .overlay(alignment: .topTrailing) {
@@ -134,11 +148,6 @@ struct ProfileView: View {
         .padding(.bottom, 50)
         .task {
             try? await viewModel.loadCurrentUser()
-            
-            if let user = viewModel.user, let path = user.profileImagePath {
-                let data = try? await StorageManager.shared.getData(userId: user.userId, path: path)
-                self.imageData = data
-            }
         }
     }
 }
