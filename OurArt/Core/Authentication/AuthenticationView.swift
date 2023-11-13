@@ -36,7 +36,7 @@ struct AuthenticationView: View {
                 .modifier(AuthButtonModifier())
             
             
-            GoogleSignInButton(viewModel: GoogleSignInButtonViewModel()) {
+            Button{
                 Task {
                     do {
                         try await viewModel.signInGoogle()
@@ -44,6 +44,11 @@ struct AuthenticationView: View {
                     } catch {
                         print(error)
                     }
+                }
+            } label: {
+                HStack {
+                    Image("google-logo")
+                    Text("Sign in with Google")
                 }
             }
             .modifier(AuthButtonModifier())

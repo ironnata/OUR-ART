@@ -45,7 +45,7 @@ struct ProfileView: View {
 //                                .clipShape(Circle())
 //                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
 //                        } placeholder: {
-//                            ProgressView()
+//                            ProgressView()
 //                                .frame(width: 100, height: 100)
 //                        }
 //                    }
