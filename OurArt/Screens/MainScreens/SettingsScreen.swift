@@ -15,6 +15,7 @@ struct SettingsScreen: View {
     @State private var showDeleteAlert = false
     
     @StateObject private var viewModel = SettingsViewModel()
+    
     @Binding var showSignInView: Bool
     
     

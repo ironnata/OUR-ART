@@ -19,7 +19,8 @@ struct AuthenticationView: View {
         VStack(spacing: 10) {
             Spacer()
             
-            // *** APPLE Dev Program 가입 후 활성화!!!!!
+            // MARK: - APPLE
+            // *** APPLE Dev Program 가입 후 활성화!!!!! ***
             Button(action: {
                 Task {
                     do {
@@ -35,7 +36,7 @@ struct AuthenticationView: View {
             })
                 .modifier(AuthButtonModifier())
             
-            
+            // MARK: - GOOGLE
             Button{
                 Task {
                     do {
@@ -53,7 +54,7 @@ struct AuthenticationView: View {
             }
             .modifier(AuthButtonModifier())
             
-            
+            // MARK: - E-MAIL
             NavigationLink {
                 SignInEmailView(showSignInView: $showSignInView)
                     .navigationBarBackButtonHidden(true)
@@ -65,7 +66,7 @@ struct AuthenticationView: View {
                 .modifier(AuthButtonModifier())
             }
             
-            
+            // MARK: - ANONYMOUS
             Button {
                 Task {
                     do {
