@@ -20,6 +20,7 @@
 		CD6954FA2AF41FCC00312907 /* Objectivity-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = CD6954DA2AF41FCB00312907 /* Objectivity-Thin.otf */; };
 		CD6954FD2AF41FCC00312907 /* Objectivity-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = CD6954DD2AF41FCB00312907 /* Objectivity-ExtraBold.otf */; };
 		CD6955062AF41FCC00312907 /* Objectivity-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */; };
+		CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */; };
 		CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
 		CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316362AD6C985004F2868 /* OurArtApp.swift */; };
@@ -87,6 +88,7 @@
 		CD6954DA2AF41FCB00312907 /* Objectivity-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Objectivity-Thin.otf"; sourceTree = "<group>"; };
 		CD6954DD2AF41FCB00312907 /* Objectivity-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Objectivity-ExtraBold.otf"; sourceTree = "<group>"; };
 		CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Objectivity-Medium.otf"; sourceTree = "<group>"; };
+		CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		CD9316332AD6C985004F2868 /* OurArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OurArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -329,6 +331,7 @@
 			children = (
 				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
 				CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */,
+				CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -457,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
+				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
 				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,

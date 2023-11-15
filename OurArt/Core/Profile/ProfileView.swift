@@ -122,6 +122,7 @@ struct ProfileView: View {
                     Divider()
                         .padding(.vertical, 10)
                     
+                    // ContentView 로 이동
                     NavigationLink {
                         ContentView(showSignInView: $showSignInView)
                             .toolbar(.hidden)
@@ -131,8 +132,6 @@ struct ProfileView: View {
                                 showInputAlert = true
                             } else {
                                 viewModel.addNickname(text: nickname)
-                                // ContentView 로 이동 추가
-                                
                             }
                             
                         } label: {
@@ -174,3 +173,4 @@ struct ProfileView: View {
         RootView()
     }
 }
+

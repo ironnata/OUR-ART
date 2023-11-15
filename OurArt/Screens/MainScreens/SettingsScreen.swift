@@ -24,6 +24,12 @@ struct SettingsScreen: View {
     var body: some View {
         List {
             
+            Section {
+                ProfileCellView(showSignInView: $showSignInView)
+            } header: {
+                Text("Profile")
+            }
+            
             if viewModel.authProviders.contains(.email) {
                 emailSection
             }
