@@ -38,8 +38,8 @@ struct ProfileCellView: View {
                     .padding(.trailing, 20)
                 
                 NavigationLink {
-                    // ProfileEditView
-                    EmptyView()
+                    ProfileEditView(showSignInView: $showSignInView)
+                        .navigationBarBackButtonHidden(true)
                 } label: { }.frame(width: 0, height: 0)
             }
         }
