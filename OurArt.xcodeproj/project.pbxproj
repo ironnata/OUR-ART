@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
+		CD2E9C272B06AA32006F8486 /* FontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E9C262B06AA32006F8486 /* FontModifier.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -77,6 +78,7 @@
 
 /* Begin PBXFileReference section */
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		CD2E9C262B06AA32006F8486 /* FontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModifier.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 			children = (
 				CD9316992AD974F2004F2868 /* ButtonModifier.swift */,
 				CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */,
+				CD2E9C262B06AA32006F8486 /* FontModifier.swift */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
 				CD93169A2AD974F2004F2868 /* ButtonModifier.swift in Sources */,
+				CD2E9C272B06AA32006F8486 /* FontModifier.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
