@@ -31,6 +31,7 @@ struct ListScreen: View {
                         .listRowSeparator(.hidden)
                 }
             }
+            .listRowSeparator(.hidden)
         }
         .task {
             try? await viewModel.getAllExhibitions()

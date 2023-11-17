@@ -20,7 +20,7 @@ struct Exhibition: Identifiable, Codable {
     let description: String?
     let date: Date?
     let address: String?
-    let openingTime: Date? // 일시적 String으로 설정
+    let openingTime: Date?
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?

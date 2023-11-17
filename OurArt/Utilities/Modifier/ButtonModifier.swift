@@ -23,8 +23,7 @@ struct AuthButtonModifier: ViewModifier {
 struct CommonButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.headline)
-            .fontWeight(.medium)
+            .font(.objectivityBody)
             .foregroundStyle(Color.white)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
@@ -36,8 +35,7 @@ struct CommonButtonModifier: ViewModifier {
 struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.caption2)
-            .fontWeight(.medium)
+            .font(.objectivityCaption)
             .foregroundStyle(Color.accentColor)
             .frame(width: 40, height: 15)
             .background(Color.white)

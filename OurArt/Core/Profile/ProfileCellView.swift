@@ -20,7 +20,7 @@ struct ProfileCellView: View {
                         .resizable()
                         .frame(width: 50, height: 50)
                         .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+                        .overlay(Circle().stroke(Color.secondary, lineWidth: 1))
                 } placeholder: {
                     ProgressView()
                         .frame(width: 50, height: 50)
