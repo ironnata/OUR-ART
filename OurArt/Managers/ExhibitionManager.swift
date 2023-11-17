@@ -15,15 +15,77 @@ struct ExhibitionArray: Codable {
 }
 
 struct Exhibition: Identifiable, Codable {
-    let id: Int
+    let id: String
     let title: String?
     let description: String?
-    let date: String? // 일시적 String으로 설정
+    let date: Date?
     let address: String?
-    let openingTime: String? // 일시적 String으로 설정
+    let openingTime: Date? // 일시적 String으로 설정
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?
+    
+    init(
+        id: String,
+        title: String? = nil,
+        description: String? = nil,
+        date: Date? = nil,
+        address: String? = nil,
+        openingTime: Date? = nil,
+        closingDays: [String]? = nil,
+        thumbnail: String? = nil,
+        images: [String]? = nil
+    ) {
+        self.id = id
+        self.title = title
+        self.description = description
+        self.date = date
+        self.address = address
+        self.openingTime = openingTime
+        self.closingDays = closingDays
+        self.thumbnail = thumbnail
+        self.images = images
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case title = "title"
+        case description = "description"
+        case date = "date"
+        case address = "address"
+        case openingTime = "opening_time"
+        case closingDays = "closing_days"
+        case thumbnail = "thumbnail"
+        case images = "images"
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description)
+        self.date = try container.decodeIfPresent(Date.self, forKey: .date)
+        self.address = try container.decodeIfPresent(String.self, forKey: .address)
+        self.openingTime = try container.decodeIfPresent(Date.self, forKey: .openingTime)
+        self.closingDays = try container.decodeIfPresent([String].self, forKey: .closingDays)
+        self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
+        self.images = try container.decodeIfPresent([String].self, forKey: .images)
+
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.id, forKey: .id)
+        try container.encodeIfPresent(self.title, forKey: .title)
+        try container.encodeIfPresent(self.description, forKey: .description)
+        try container.encodeIfPresent(self.date, forKey: .date)
+        try container.encodeIfPresent(self.address, forKey: .address)
+        try container.encodeIfPresent(self.openingTime, forKey: .openingTime)
+        try container.encodeIfPresent(self.closingDays, forKey: .closingDays)
+        try container.encodeIfPresent(self.thumbnail, forKey: .thumbnail)
+        try container.encodeIfPresent(self.images, forKey: .images)
+
+    }
 }
 
 
