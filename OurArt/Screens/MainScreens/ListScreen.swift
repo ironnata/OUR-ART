@@ -28,7 +28,6 @@ struct ListScreen: View {
             ForEach(viewModel.exhibitions) { exhibition in
                 NavigationLink(destination: ExhibitionDetailView()) {
                     ExhibitionCellView(exhibition: exhibition)
-                        .listRowSeparator(.hidden)
                 }
             }
             .listRowSeparator(.hidden)

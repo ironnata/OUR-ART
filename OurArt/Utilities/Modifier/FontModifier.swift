@@ -36,7 +36,7 @@ extension Font {
     
     static let objectivityBody = Font.custom("Objectivity-Medium", size: 17)
     
-    static let objectivityFootnote = Font.custom("Objectivity-Light", size: 15)
+    static let objectivityFootnote = Font.custom("Objectivity-Regular", size: 13)
     
     static let objectivityCaption = Font.custom("Objectivity-Regular", size: 10)
     

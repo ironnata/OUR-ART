@@ -9,10 +9,6 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct ExhibitionArray: Codable {
-    let exhibitions: [Exhibition]
-    
-}
 
 struct Exhibition: Identifiable, Codable {
     let id: String
@@ -20,7 +16,7 @@ struct Exhibition: Identifiable, Codable {
     let description: String?
     let date: Date?
     let address: String?
-    let openingTime: Date?
+    let openingHours: Date?
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?
@@ -31,7 +27,7 @@ struct Exhibition: Identifiable, Codable {
         description: String? = nil,
         date: Date? = nil,
         address: String? = nil,
-        openingTime: Date? = nil,
+        openingHours: Date? = nil,
         closingDays: [String]? = nil,
         thumbnail: String? = nil,
         images: [String]? = nil
@@ -41,7 +37,7 @@ struct Exhibition: Identifiable, Codable {
         self.description = description
         self.date = date
         self.address = address
-        self.openingTime = openingTime
+        self.openingHours = openingHours
         self.closingDays = closingDays
         self.thumbnail = thumbnail
         self.images = images
@@ -53,7 +49,7 @@ struct Exhibition: Identifiable, Codable {
         case description = "description"
         case date = "date"
         case address = "address"
-        case openingTime = "opening_time"
+        case openingHours = "opening_hours"
         case closingDays = "closing_days"
         case thumbnail = "thumbnail"
         case images = "images"
@@ -66,7 +62,7 @@ struct Exhibition: Identifiable, Codable {
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.date = try container.decodeIfPresent(Date.self, forKey: .date)
         self.address = try container.decodeIfPresent(String.self, forKey: .address)
-        self.openingTime = try container.decodeIfPresent(Date.self, forKey: .openingTime)
+        self.openingHours = try container.decodeIfPresent(Date.self, forKey: .openingHours)
         self.closingDays = try container.decodeIfPresent([String].self, forKey: .closingDays)
         self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
         self.images = try container.decodeIfPresent([String].self, forKey: .images)
@@ -80,7 +76,7 @@ struct Exhibition: Identifiable, Codable {
         try container.encodeIfPresent(self.description, forKey: .description)
         try container.encodeIfPresent(self.date, forKey: .date)
         try container.encodeIfPresent(self.address, forKey: .address)
-        try container.encodeIfPresent(self.openingTime, forKey: .openingTime)
+        try container.encodeIfPresent(self.openingHours, forKey: .openingHours)
         try container.encodeIfPresent(self.closingDays, forKey: .closingDays)
         try container.encodeIfPresent(self.thumbnail, forKey: .thumbnail)
         try container.encodeIfPresent(self.images, forKey: .images)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ProfileCellView: View {
-    @StateObject var viewModel = ProfileViewModel()
+    @StateObject private var viewModel = ProfileViewModel()
     
     @Binding var showSignInView: Bool
     

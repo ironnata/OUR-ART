@@ -17,12 +17,12 @@ struct ExhibitionDetailView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 300, alignment: .center)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
                 .padding(.vertical, 30)
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("Main Title")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
+                Text("Awesome")
+                    .font(.objectivityLargeTitle)
                     .padding(.bottom, 10)
                 
                 InfoDetailView(icon: "calendar", text: "02.10.2023 - 11.10.2023")
@@ -35,12 +35,12 @@ struct ExhibitionDetailView: View {
                 
                 Text("I would like to show you all what is the most valuable things in my life. blah blah blah blah")
                     .multilineTextAlignment(.leading)
-                    .font(.subheadline)
+                    .font(.objectivityFootnote)
             }
             .padding(.horizontal)
             
         }
-        .navigationTitle("Main Title")
+        .navigationTitle("Awesome") // title과 같게
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

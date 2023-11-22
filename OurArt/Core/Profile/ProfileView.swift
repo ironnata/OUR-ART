@@ -170,7 +170,7 @@ struct ProfileView: View {
 
 #Preview {
     NavigationStack {
-        RootView()
+        ProfileView(showSignInView: .constant(true))
     }
 }
 
