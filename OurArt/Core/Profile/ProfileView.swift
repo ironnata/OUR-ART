@@ -18,7 +18,6 @@ struct ProfileView: View {
     @State private var nickname: String = ""
     @State private var showImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var url: URL? = nil
     @State private var selectedImageData: Data? = nil
     @State private var showInputAlert = false
     
