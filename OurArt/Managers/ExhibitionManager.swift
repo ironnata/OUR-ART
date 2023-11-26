@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift
 struct Exhibition: Identifiable, Codable {
     let id: String
     let title: String?
+    let artist: String?
     let description: String?
     let date: Date?
     let address: String?
@@ -24,6 +25,7 @@ struct Exhibition: Identifiable, Codable {
     init(
         id: String,
         title: String? = nil,
+        artist: String? = nil,
         description: String? = nil,
         date: Date? = nil,
         address: String? = nil,
@@ -34,6 +36,7 @@ struct Exhibition: Identifiable, Codable {
     ) {
         self.id = id
         self.title = title
+        self.artist = artist
         self.description = description
         self.date = date
         self.address = address
@@ -46,6 +49,7 @@ struct Exhibition: Identifiable, Codable {
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case title = "title"
+        case artist = "artist"
         case description = "description"
         case date = "date"
         case address = "address"
@@ -59,6 +63,7 @@ struct Exhibition: Identifiable, Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.artist = try container.decodeIfPresent(String.self, forKey: .artist)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.date = try container.decodeIfPresent(Date.self, forKey: .date)
         self.address = try container.decodeIfPresent(String.self, forKey: .address)
@@ -73,6 +78,7 @@ struct Exhibition: Identifiable, Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.id, forKey: .id)
         try container.encodeIfPresent(self.title, forKey: .title)
+        try container.encodeIfPresent(self.artist, forKey: .artist)
         try container.encodeIfPresent(self.description, forKey: .description)
         try container.encodeIfPresent(self.date, forKey: .date)
         try container.encodeIfPresent(self.address, forKey: .address)

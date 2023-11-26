@@ -15,6 +15,7 @@ struct AddExhibitionView: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     @State private var title: String = ""
+    @State private var artist: String = ""
     @State private var description: String = ""
     
     @State private var selectedFromDate: Date = Date()
@@ -41,6 +42,13 @@ struct AddExhibitionView: View {
                     TextField("Title...", text: $title)
                         .modifier(TextFieldModifier())
                 } // Title
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                VStack(alignment: .leading) {
+                    Text("Artist")
+                    TextField("Artist...", text: $artist)
+                        .modifier(TextFieldModifier())
+                } // Artist
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 VStack(alignment: .leading) {

@@ -26,7 +26,7 @@ struct ListScreen: View {
         
         List {
             ForEach(viewModel.exhibitions) { exhibition in
-                NavigationLink(destination: ExhibitionDetailView()) {
+                NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                     ExhibitionCellView(exhibition: exhibition)
                 }
             }

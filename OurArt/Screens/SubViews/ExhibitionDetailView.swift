@@ -11,6 +11,8 @@ struct ExhibitionDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    let exhibition: Exhibition
+    
     var body: some View {
         ScrollView {
             Image("IMG_3245 2")
@@ -21,15 +23,17 @@ struct ExhibitionDetailView: View {
                 .padding(.vertical, 30)
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("Awesome")
+                Text(exhibition.title ?? "")
                     .font(.objectivityLargeTitle)
                     .padding(.bottom, 10)
                 
-                InfoDetailView(icon: "calendar", text: "02.10.2023 - 11.10.2023")
-                InfoDetailView(icon: "mappin.and.ellipse", text: "Heinrich Heine Allee 21")
+                if let date = exhibition.date {
+                    InfoDetailView(icon: "calendar", text: date.formatted(.iso8601.year().month().day()))
+                }
+                InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
                 InfoDetailView(icon: "clock", text: "10:00 - 18:00")
                 InfoDetailView(icon: "eye.slash.circle", text: "Mo., Fr.")
-                InfoDetailView(icon: "person.crop.square", text: "Kero Park")
+                InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "unknown")
                 
                 Image(systemName: "doc.richtext")
                 
@@ -59,7 +63,7 @@ struct ExhibitionDetailView: View {
 
 #Preview {
     NavigationStack {
-        ExhibitionDetailView()
+        ExhibitionDetailView(exhibition: Exhibition(id: "1"))
     }
 }
 

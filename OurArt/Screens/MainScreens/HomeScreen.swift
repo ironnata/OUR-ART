@@ -8,8 +8,23 @@
 import SwiftUI
 
 struct HomeScreen: View {
+    
+    @State var showAddingView = false
+    
     var body: some View {
-        Text("Home")
+        VStack {
+            Text("Home")
+            Button {
+                showAddingView.toggle()
+            } label: {
+                Image(systemName: "plus.circle")
+            }
+        }
+        .sheet(isPresented: $showAddingView) {
+            NavigationStack {
+                AddExhibitionView()
+            }
+        }
     }
 }
 
