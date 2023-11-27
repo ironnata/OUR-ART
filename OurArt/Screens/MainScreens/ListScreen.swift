@@ -16,6 +16,10 @@ final class ExhibitionViewModel: ObservableObject {
         self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
     }
     
+    func createExhibition(exhibition: Exhibition) async throws {
+        try await ExhibitionManager.shared.createExhibition(exhibition: exhibition)
+    }
+    
 }
 
 struct ListScreen: View {

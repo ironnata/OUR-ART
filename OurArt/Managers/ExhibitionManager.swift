@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 
 
 struct Exhibition: Identifiable, Codable {
-    let id: String
+    var id: String?
     let title: String?
     let artist: String?
     let description: String?
@@ -102,8 +102,18 @@ final class ExhibitionManager {
         exhibitionsCollection.document(exhibitionId)
     }
     
-    func uploadExhibition(exhibition: Exhibition) async throws {
-        try exhibitionDocument(exhibitionId: String(exhibition.id)).setData(from: exhibition, merge: false)
+    func createExhibition(exhibition: Exhibition) async throws {
+        var exhibitionWithId = exhibition
+        
+        // Use Firestore's auto-generated ID if the exhibition ID is nil
+        if exhibition.id == nil {
+            let documentReference = try await exhibitionsCollection.addDocument(data: [:])
+            exhibitionWithId.id = documentReference.documentID
+        }
+        
+        // Set data in the Firestore document
+        let documentReference = exhibitionDocument(exhibitionId: exhibitionWithId.id!)
+        try await documentReference.setData(from: exhibitionWithId, merge: false)
     }
     
     func getExhibition(exhibitionId: String) async throws -> Exhibition {
@@ -113,6 +123,28 @@ final class ExhibitionManager {
     func getAllExhibitions() async throws -> [Exhibition] {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
     }
+    
+    // uploadExhibion과 완전히 같음
+//    func creatNewExhibition(exhibition: Exhibition) async throws {
+//        let exhibitionId = exhibition.id ?? exhibitionsCollection.document().documentID
+//        try exhibitionDocument(exhibitionId: exhibitionId).setData(from: exhibition, merge: false)
+//    }
+    
+//    func addUserPreference(userId: String, preference: String) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
+//        ]
+//        
+//        try await userDocument(userId: userId).updateData(data)
+//    }
+//    
+//    func removeUserPreference(userId: String, preference: String) async throws {
+//        let data: [String:Any] = [
+//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
+//        ]
+//        
+//        try await userDocument(userId: userId).updateData(data)
+//    }
     
 }
 

@@ -116,12 +116,45 @@ struct AddExhibitionView: View {
                 
                 Button("Done") {
                     // register
+                    let newExhibition = Exhibition(
+                        id: UUID().uuidString,
+                        title: title,
+                        artist: artist,
+                        description: description,
+                        date: selectedFromDate,
+                        address: address,
+                        openingHours: selectedFromTime,
+                        closingDays: closingDaysOptions.filter { closingDayIsSelected(text: $0) },
+                        thumbnail: nil,
+                        images: nil
+                    )
+                    
+                    Task {
+                        do {
+                            try await viewModel.createExhibition(exhibition: newExhibition)
+                            // Dismiss the view after the exhibition is successfully uploaded
+                            dismiss()
+                        } catch {
+                            // Handle any errors that occur during the upload
+                            print("Error uploading exhibition: \(error)")
+                        }
+                    }
                     
                     dismiss()
                 }
                 .modifier(CommonButtonModifier())
             }
+            .ignoresSafeArea()
             .padding()
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Image(systemName: "xmark")
+                        .imageScale(.large)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                }
+            }
             .onAppear {
                 UIDatePicker.appearance().minuteInterval = 5
             }

@@ -37,7 +37,7 @@ struct ExhibitionDetailView: View {
                 
                 Image(systemName: "doc.richtext")
                 
-                Text("I would like to show you all what is the most valuable things in my life. blah blah blah blah")
+                Text(exhibition.description ?? "none of description")
                     .multilineTextAlignment(.leading)
                     .font(.objectivityFootnote)
             }
