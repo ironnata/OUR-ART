@@ -15,9 +15,11 @@ struct Exhibition: Identifiable, Codable {
     let title: String?
     let artist: String?
     let description: String?
-    let date: Date?
+    let dateFrom: Date?
+    let dateTo: Date?
     let address: String?
-    let openingHours: Date?
+    let openingTimeFrom: Date?
+    let openingTimeTo: Date?
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?
@@ -27,9 +29,11 @@ struct Exhibition: Identifiable, Codable {
         title: String? = nil,
         artist: String? = nil,
         description: String? = nil,
-        date: Date? = nil,
+        dateFrom: Date? = nil,
+        dateTo: Date? = nil,
         address: String? = nil,
-        openingHours: Date? = nil,
+        openingTimeFrom: Date? = nil,
+        openingTimeTo: Date? = nil,
         closingDays: [String]? = nil,
         thumbnail: String? = nil,
         images: [String]? = nil
@@ -38,9 +42,11 @@ struct Exhibition: Identifiable, Codable {
         self.title = title
         self.artist = artist
         self.description = description
-        self.date = date
+        self.dateFrom = dateFrom
+        self.dateTo = dateTo
         self.address = address
-        self.openingHours = openingHours
+        self.openingTimeFrom = openingTimeFrom
+        self.openingTimeTo = openingTimeTo
         self.closingDays = closingDays
         self.thumbnail = thumbnail
         self.images = images
@@ -51,9 +57,11 @@ struct Exhibition: Identifiable, Codable {
         case title = "title"
         case artist = "artist"
         case description = "description"
-        case date = "date"
+        case dateFrom = "date_from"
+        case dateTo = "date_to"
         case address = "address"
-        case openingHours = "opening_hours"
+        case openingTimeFrom = "opening_time_from"
+        case openingTimeTo = "opening_time_to"
         case closingDays = "closing_days"
         case thumbnail = "thumbnail"
         case images = "images"
@@ -65,9 +73,11 @@ struct Exhibition: Identifiable, Codable {
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.artist = try container.decodeIfPresent(String.self, forKey: .artist)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
-        self.date = try container.decodeIfPresent(Date.self, forKey: .date)
+        self.dateFrom = try container.decodeIfPresent(Date.self, forKey: .dateFrom)
+        self.dateTo = try container.decodeIfPresent(Date.self, forKey: .dateTo)
         self.address = try container.decodeIfPresent(String.self, forKey: .address)
-        self.openingHours = try container.decodeIfPresent(Date.self, forKey: .openingHours)
+        self.openingTimeFrom = try container.decodeIfPresent(Date.self, forKey: .openingTimeFrom)
+        self.openingTimeTo = try container.decodeIfPresent(Date.self, forKey: .openingTimeTo)
         self.closingDays = try container.decodeIfPresent([String].self, forKey: .closingDays)
         self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
         self.images = try container.decodeIfPresent([String].self, forKey: .images)
@@ -80,9 +90,11 @@ struct Exhibition: Identifiable, Codable {
         try container.encodeIfPresent(self.title, forKey: .title)
         try container.encodeIfPresent(self.artist, forKey: .artist)
         try container.encodeIfPresent(self.description, forKey: .description)
-        try container.encodeIfPresent(self.date, forKey: .date)
+        try container.encodeIfPresent(self.dateFrom, forKey: .dateFrom)
+        try container.encodeIfPresent(self.dateTo, forKey: .dateTo)
         try container.encodeIfPresent(self.address, forKey: .address)
-        try container.encodeIfPresent(self.openingHours, forKey: .openingHours)
+        try container.encodeIfPresent(self.openingTimeFrom, forKey: .openingTimeFrom)
+        try container.encodeIfPresent(self.openingTimeTo, forKey: .openingTimeTo)
         try container.encodeIfPresent(self.closingDays, forKey: .closingDays)
         try container.encodeIfPresent(self.thumbnail, forKey: .thumbnail)
         try container.encodeIfPresent(self.images, forKey: .images)

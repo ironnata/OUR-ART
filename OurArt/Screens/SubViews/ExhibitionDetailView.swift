@@ -15,7 +15,7 @@ struct ExhibitionDetailView: View {
     
     var body: some View {
         ScrollView {
-            Image("IMG_3245 2")
+            Image("IMG_3245 2") // 수정 요
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 300, alignment: .center)
@@ -23,28 +23,37 @@ struct ExhibitionDetailView: View {
                 .padding(.vertical, 30)
             
             VStack(alignment: .leading, spacing: 10) {
-                Text(exhibition.title ?? "")
+                Text(exhibition.title ?? "n/a")
                     .font(.objectivityLargeTitle)
                     .padding(.bottom, 10)
                 
-                if let date = exhibition.date {
-                    InfoDetailView(icon: "calendar", text: date.formatted(.iso8601.year().month().day()))
+                
+                if let dateFrom = exhibition.dateFrom?.formatted(.iso8601.year().month().day()),
+                    let dateTo = exhibition.dateTo?.formatted(.iso8601.year().month().day()) {
+                    InfoDetailView(icon: "calendar", text: "\(dateFrom) - \(dateTo)")
                 }
+                
                 InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
-                InfoDetailView(icon: "clock", text: "10:00 - 18:00")
-                InfoDetailView(icon: "eye.slash.circle", text: "Mo., Fr.")
-                InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "unknown")
+                
+                if let openingTimeFrom = exhibition.openingTimeFrom?.formatted(date: .omitted, time: .shortened),
+                    let openingTimeTo = exhibition.openingTimeTo?.formatted(date: .omitted, time: .shortened) {
+                    InfoDetailView(icon: "clock", text: "\(openingTimeFrom) - \(openingTimeTo)")
+                }
+                
+                InfoDetailView(icon: "eye.slash.circle", text: "Mo., Fr.") // 수정 요
+                
+                InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
                 
                 Image(systemName: "doc.richtext")
                 
-                Text(exhibition.description ?? "none of description")
+                Text(exhibition.description ?? "n/a")
                     .multilineTextAlignment(.leading)
                     .font(.objectivityFootnote)
             }
             .padding(.horizontal)
             
         }
-        .navigationTitle("Awesome") // title과 같게
+        .navigationTitle("\(exhibition.title ?? "")")
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

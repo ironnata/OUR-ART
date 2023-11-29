@@ -18,15 +18,17 @@ struct ExhibitionCellView: View {
                     .foregroundStyle(.primary)
                     .padding(.bottom, 10)
                 
-                if let date = exhibition.date {
-                    CellDetailView(icon: "calendar", text: date.formatted(.iso8601.year().month().day()))
+                if let dateFrom = exhibition.dateFrom?.formatted(.iso8601.year().month().day()),
+                    let dateTo = exhibition.dateTo?.formatted(.iso8601.year().month().day()) {
+                    CellDetailView(icon: "calendar", text: "\(dateFrom) - \(dateTo)")
                 }
+                
                 CellDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "none")
             }
             
             Spacer()
             
-            Text(exhibition.thumbnail ?? "")
+            Text(exhibition.thumbnail ?? "") // IMAGE로 바꿔야 함
             //                    .resizable()
             //                    .scaledToFill()
             //                    .frame(width: 80, height: 100)

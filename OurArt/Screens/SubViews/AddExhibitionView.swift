@@ -121,9 +121,11 @@ struct AddExhibitionView: View {
                         title: title,
                         artist: artist,
                         description: description,
-                        date: selectedFromDate,
+                        dateFrom: selectedFromDate,
+                        dateTo: selectedToDate,
                         address: address,
-                        openingHours: selectedFromTime,
+                        openingTimeFrom: selectedFromTime,
+                        openingTimeTo: selectedToTime,
                         closingDays: closingDaysOptions.filter { closingDayIsSelected(text: $0) },
                         thumbnail: nil,
                         images: nil
@@ -132,7 +134,6 @@ struct AddExhibitionView: View {
                     Task {
                         do {
                             try await viewModel.createExhibition(exhibition: newExhibition)
-                            // Dismiss the view after the exhibition is successfully uploaded
                             dismiss()
                         } catch {
                             // Handle any errors that occur during the upload
