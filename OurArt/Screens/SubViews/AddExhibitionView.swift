@@ -29,9 +29,11 @@ struct AddExhibitionView: View {
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     
     private func closingDayIsSelected(text: String) -> Bool {
-        return viewModel.exhibitions.contains { exhibition in
+        let isSelected = viewModel.exhibitions.contains { exhibition in
             exhibition.closingDays?.contains(text) == true
         }
+        print("Is \(text) selected? \(isSelected)")
+        return isSelected
     }
     
     var body: some View {
@@ -92,9 +94,11 @@ struct AddExhibitionView: View {
                         ForEach(closingDaysOptions, id: \.self) { day in
                             Button(day) {
                                 if closingDayIsSelected(text: day) {
-                                    // ProfileView 109번째 줄
+                                    print("\(day) button tapped - Removing")
+                                    viewModel.removeClosingDaysPreference(text: day)
                                 } else {
-                                    // ProfileView 111번째 줄
+                                    print("\(day) button tapped - Adding")
+                                    viewModel.addClosingDaysPreference(text: day)
                                 }
                             }
                             .font(.objectivityCaption)

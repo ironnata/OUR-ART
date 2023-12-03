@@ -136,6 +136,22 @@ final class ExhibitionManager {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
     }
     
+    func addClosingDaysPreference(exhibitionId: String, closingDays: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.closingDays.rawValue : FieldValue.arrayUnion([closingDays])
+        ]
+        
+        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+    }
+    
+    func removeClosingDaysPreference(exhibitionId: String, closingDays: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.closingDays.rawValue : FieldValue.arrayRemove([closingDays])
+        ]
+        
+        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+    }
+    
     // uploadExhibion과 완전히 같음
 //    func creatNewExhibition(exhibition: Exhibition) async throws {
 //        let exhibitionId = exhibition.id ?? exhibitionsCollection.document().documentID

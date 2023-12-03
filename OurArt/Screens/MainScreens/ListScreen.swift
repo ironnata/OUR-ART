@@ -20,6 +20,24 @@ final class ExhibitionViewModel: ObservableObject {
         try await ExhibitionManager.shared.createExhibition(exhibition: exhibition)
     }
     
+    func addClosingDaysPreference(text: String) {
+        guard let exhibition = self.exhibitions.first, let exhibitionId = exhibition.id else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addClosingDaysPreference(exhibitionId: exhibitionId, closingDays: text)
+            try await ExhibitionManager.shared.getExhibition(exhibitionId: exhibitionId)
+        }
+    }
+    
+    func removeClosingDaysPreference(text: String) {
+        guard let exhibition = self.exhibitions.first, let exhibitionId = exhibition.id else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addClosingDaysPreference(exhibitionId: exhibitionId, closingDays: text)
+            try await ExhibitionManager.shared.getExhibition(exhibitionId: exhibitionId)
+        }
+    }
+    
 }
 
 struct ListScreen: View {
