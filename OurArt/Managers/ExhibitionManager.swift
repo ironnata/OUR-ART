@@ -11,7 +11,8 @@ import FirebaseFirestoreSwift
 
 
 struct Exhibition: Identifiable, Codable {
-    var id: String?
+    var id: String
+    let dateCreated: Date?
     let title: String?
     let artist: String?
     let description: String?
@@ -26,6 +27,7 @@ struct Exhibition: Identifiable, Codable {
     
     init(
         id: String,
+        dateCreated: Date? = nil,
         title: String? = nil,
         artist: String? = nil,
         description: String? = nil,
@@ -39,6 +41,7 @@ struct Exhibition: Identifiable, Codable {
         images: [String]? = nil
     ) {
         self.id = id
+        self.dateCreated = dateCreated
         self.title = title
         self.artist = artist
         self.description = description
@@ -54,6 +57,7 @@ struct Exhibition: Identifiable, Codable {
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
+        case dateCreated = "date_created"
         case title = "title"
         case artist = "artist"
         case description = "description"
@@ -70,6 +74,7 @@ struct Exhibition: Identifiable, Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
+        self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
         self.artist = try container.decodeIfPresent(String.self, forKey: .artist)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
@@ -87,6 +92,7 @@ struct Exhibition: Identifiable, Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.id, forKey: .id)
+        try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
         try container.encodeIfPresent(self.title, forKey: .title)
         try container.encodeIfPresent(self.artist, forKey: .artist)
         try container.encodeIfPresent(self.description, forKey: .description)
@@ -118,13 +124,12 @@ final class ExhibitionManager {
         var exhibitionWithId = exhibition
         
         // Use Firestore's auto-generated ID if the exhibition ID is nil
-        if exhibition.id == nil {
-            let documentReference = try await exhibitionsCollection.addDocument(data: [:])
-            exhibitionWithId.id = documentReference.documentID
-        }
+        if exhibitionWithId.id.isEmpty {
+                exhibitionWithId.id = UUID().uuidString
+            }
         
         // Set data in the Firestore document
-        let documentReference = exhibitionDocument(exhibitionId: exhibitionWithId.id!)
+        let documentReference = exhibitionDocument(exhibitionId: exhibitionWithId.id)
         try await documentReference.setData(from: exhibitionWithId, merge: false)
     }
     
