@@ -40,7 +40,7 @@ struct ExhibitionDetailView: View {
                     InfoDetailView(icon: "clock", text: "\(openingTimeFrom) - \(openingTimeTo)")
                 }
                 
-                InfoDetailView(icon: "eye.slash.circle", text: "Mo., Fr.") // 수정 요
+                InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
                 
                 InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
                 
@@ -78,15 +78,21 @@ struct ExhibitionDetailView: View {
 
 
 
-struct InfoDetailView: View {
+struct InfoDetailView<T: CustomStringConvertible>: View {
     var icon: String
-    var text: String
+    var text: T
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Image(systemName: icon)
-                Text(text)
+                if let arrayText = text as? [String] {
+                    // 배열일 경우 문자열로 조인
+                    Text(arrayText.joined(separator: ", "))
+                } else {
+                    // 아닐 경우 문자열 그대로 출력
+                    Text(String(describing: text))
+                }
             }
             Divider()
         }

@@ -27,14 +27,8 @@ struct AddExhibitionView: View {
     @State private var selectedToTime: Date = Date()
     
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
+    @State private var selectedClosingDays: Set<String> = []
     
-    private func closingDayIsSelected(text: String) -> Bool {
-        let isSelected = viewModel.exhibitions.contains { exhibition in
-            exhibition.closingDays?.contains(text) == true
-        }
-        print("Is \(text) selected? \(isSelected)")
-        return isSelected
-    }
     
     var body: some View {
         ScrollView {
@@ -93,17 +87,15 @@ struct AddExhibitionView: View {
                     HStack {
                         ForEach(closingDaysOptions, id: \.self) { day in
                             Button(day) {
-                                if closingDayIsSelected(text: day) {
-                                    print("\(day) button tapped - Removing")
-                                    viewModel.removeClosingDaysPreference(text: day)
+                                if self.selectedClosingDays.contains(day) {
+                                    self.selectedClosingDays.remove(day)
                                 } else {
-                                    print("\(day) button tapped - Adding")
-                                    viewModel.addClosingDaysPreference(text: day)
+                                    self.selectedClosingDays.insert(day)
                                 }
                             }
                             .font(.objectivityCaption)
                             .buttonStyle(.borderedProminent)
-                            .tint(closingDayIsSelected(text: day) ? .accentColor : .secondary)
+                            .tint(selectedClosingDays.contains(day) ? .accentColor : .secondary)
                         }
                     }
                 } // Closed on
@@ -122,6 +114,7 @@ struct AddExhibitionView: View {
                     // register
                     let newExhibition = Exhibition(
                         id: UUID().uuidString,
+                        dateCreated: Date(),
                         title: title,
                         artist: artist,
                         description: description,
@@ -130,9 +123,9 @@ struct AddExhibitionView: View {
                         address: address,
                         openingTimeFrom: selectedFromTime,
                         openingTimeTo: selectedToTime,
-                        closingDays: closingDaysOptions.filter { closingDayIsSelected(text: $0) },
-                        thumbnail: nil,
-                        images: nil
+                        closingDays: Array(selectedClosingDays),
+                        thumbnail: nil, // 수정 요
+                        images: nil // 수정 요
                     )
                     
                     Task {
@@ -145,7 +138,7 @@ struct AddExhibitionView: View {
                         }
                     }
                     
-                    dismiss()
+//                    dismiss()
                 }
                 .modifier(CommonButtonModifier())
             }
