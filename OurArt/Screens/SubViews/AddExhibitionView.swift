@@ -18,6 +18,9 @@ struct AddExhibitionView: View {
     @State private var artist: String = ""
     @State private var description: String = ""
     
+    @State private var showImagePicker = false
+    @State private var selectedImage: PhotosPickerItem? = nil
+    
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
     
@@ -33,6 +36,28 @@ struct AddExhibitionView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
+                VStack(alignment: .leading) {
+                    Text("Poster")
+                    VStack {
+                        // 여기 if 추가해서 평소에는 안 보이다가 사진 선택 시 작게 썸네일 표시
+                        Image(systemName: "questionmark.square.dashed")
+                            .resizable()
+                            .frame(width: 120, height: 150)
+                        
+                        Button {
+                            showImagePicker.toggle()
+                        } label: {
+                            Image(systemName: "plus.rectangle")
+                                .resizable()
+                                .frame(width: 30, height: 20)
+                        }
+                        .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
+                        .offset(y: -5)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } // POSTER
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
                 VStack(alignment: .leading) {
                     Text("Title")
                     TextField("Title...", text: $title)
