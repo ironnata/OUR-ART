@@ -24,6 +24,8 @@ struct Exhibition: Identifiable, Codable {
     let closingDays: [String]?
     let thumbnail: String?
     let images: [String]?
+    let posterImagePath: String?
+    let posterImagePathUrl: String?
     
     init(
         id: String,
@@ -38,7 +40,9 @@ struct Exhibition: Identifiable, Codable {
         openingTimeTo: Date? = nil,
         closingDays: [String]? = nil,
         thumbnail: String? = nil,
-        images: [String]? = nil
+        images: [String]? = nil,
+        posterImagePath: String? = nil,
+        posterImagePathUrl: String? = nil
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -53,6 +57,8 @@ struct Exhibition: Identifiable, Codable {
         self.closingDays = closingDays
         self.thumbnail = thumbnail
         self.images = images
+        self.posterImagePath = posterImagePath
+        self.posterImagePathUrl = posterImagePathUrl
     }
     
     enum CodingKeys: String, CodingKey {
@@ -69,6 +75,8 @@ struct Exhibition: Identifiable, Codable {
         case closingDays = "closing_days"
         case thumbnail = "thumbnail"
         case images = "images"
+        case posterImagePath = "poster_image_path"
+        case posterImagePathUrl = "poster_image_path_url"
     }
     
     init(from decoder: Decoder) throws {
@@ -86,7 +94,8 @@ struct Exhibition: Identifiable, Codable {
         self.closingDays = try container.decodeIfPresent([String].self, forKey: .closingDays)
         self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
         self.images = try container.decodeIfPresent([String].self, forKey: .images)
-
+        self.posterImagePath = try container.decodeIfPresent(String.self, forKey: .posterImagePath)
+        self.posterImagePathUrl = try container.decodeIfPresent(String.self, forKey: .posterImagePathUrl)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -104,7 +113,8 @@ struct Exhibition: Identifiable, Codable {
         try container.encodeIfPresent(self.closingDays, forKey: .closingDays)
         try container.encodeIfPresent(self.thumbnail, forKey: .thumbnail)
         try container.encodeIfPresent(self.images, forKey: .images)
-
+        try container.encodeIfPresent(self.posterImagePath, forKey: .posterImagePath)
+        try container.encodeIfPresent(self.posterImagePathUrl, forKey: .posterImagePathUrl)
     }
 }
 
@@ -130,7 +140,11 @@ final class ExhibitionManager {
         
         // Set data in the Firestore document
         let documentReference = exhibitionDocument(exhibitionId: exhibitionWithId.id)
-        try await documentReference.setData(from: exhibitionWithId, merge: false)
+        try documentReference.setData(from: exhibitionWithId, merge: false)
+    }
+    
+    func updateExhibition(exhibitionId: String) async throws {
+        try exhibitionDocument(exhibitionId: exhibitionId).setData(from: exhibitionId, merge: false)
     }
     
     func getExhibition(exhibitionId: String) async throws -> Exhibition {
@@ -163,21 +177,14 @@ final class ExhibitionManager {
 //        try exhibitionDocument(exhibitionId: exhibitionId).setData(from: exhibition, merge: false)
 //    }
     
-//    func addUserPreference(userId: String, preference: String) async throws {
-//        let data: [String:Any] = [
-//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayUnion([preference])
-//        ]
-//        
-//        try await userDocument(userId: userId).updateData(data)
-//    }
-//    
-//    func removeUserPreference(userId: String, preference: String) async throws {
-//        let data: [String:Any] = [
-//            DBUser.CodingKeys.preferences.rawValue : FieldValue.arrayRemove([preference])
-//        ]
-//        
-//        try await userDocument(userId: userId).updateData(data)
-//    }
+    func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.posterImagePath.rawValue : path,
+            Exhibition.CodingKeys.posterImagePathUrl.rawValue : url,
+        ]
+        
+        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+    }
     
 }
 

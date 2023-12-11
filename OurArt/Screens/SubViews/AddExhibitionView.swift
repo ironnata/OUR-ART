@@ -20,6 +20,7 @@ struct AddExhibitionView: View {
     
     @State private var showImagePicker = false
     @State private var selectedImage: PhotosPickerItem? = nil
+    @State private var selectedImageData: Data? = nil
     
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
@@ -33,26 +34,44 @@ struct AddExhibitionView: View {
     @State private var selectedClosingDays: Set<String> = []
     
     
+    // MARK: - BODY
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 VStack(alignment: .leading) {
                     Text("Poster")
                     VStack {
-                        // 여기 if 추가해서 평소에는 안 보이다가 사진 선택 시 작게 썸네일 표시
-                        Image(systemName: "questionmark.square.dashed")
-                            .resizable()
-                            .frame(width: 120, height: 150)
+                        if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .frame(width: 120, height: 150)
+                        } else {
+                            Image(systemName: "questionmark.square.dashed")
+                                .resizable()
+                                .frame(width: 120, height: 150)
+                        }
                         
                         Button {
                             showImagePicker.toggle()
                         } label: {
+                            // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
                             Image(systemName: "plus.rectangle")
                                 .resizable()
                                 .frame(width: 30, height: 20)
                         }
                         .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
                         .offset(y: -5)
+                        .onChange(of: selectedImage, perform: { newValue in
+                            if let newValue {
+                                viewModel.savePosterImage(item: newValue)
+                            }
+                            Task {
+                                if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                    selectedImageData = data
+                                }
+                            }
+                        })
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 } // POSTER
@@ -136,34 +155,38 @@ struct AddExhibitionView: View {
                 .padding(.bottom, 30)
                 
                 Button("Done") {
-                    // register
-                    let newExhibition = Exhibition(
-                        id: UUID().uuidString,
-                        dateCreated: Date(),
-                        title: title,
-                        artist: artist,
-                        description: description,
-                        dateFrom: selectedFromDate,
-                        dateTo: selectedToDate,
-                        address: address,
-                        openingTimeFrom: selectedFromTime,
-                        openingTimeTo: selectedToTime,
-                        closingDays: Array(selectedClosingDays),
-                        thumbnail: nil, // 수정 요
-                        images: nil // 수정 요
-                    )
                     
-                    Task {
-                        do {
-                            try await viewModel.createExhibition(exhibition: newExhibition)
-                            dismiss()
-                        } catch {
-                            // Handle any errors that occur during the upload
-                            print("Error uploading exhibition: \(error)")
-                        }
-                    }
+                    // onAppear로 만들어진 ID의 전시 업데이트
+                    // 타이틀이 빈 경우 전시 삭제
                     
-//                    dismiss()
+                    
+//                    let newExhibition = Exhibition(
+//                        id: UUID().uuidString,
+//                        dateCreated: Date(),
+//                        title: title,
+//                        artist: artist,
+//                        description: description,
+//                        dateFrom: selectedFromDate,
+//                        dateTo: selectedToDate,
+//                        address: address,
+//                        openingTimeFrom: selectedFromTime,
+//                        openingTimeTo: selectedToTime,
+//                        closingDays: Array(selectedClosingDays),
+//                        thumbnail: nil, // 수정 요
+//                        images: nil // 수정 요
+//                    )
+                    
+//                    Task {
+//                        do {
+//                            try await viewModel.createExhibition(exhibition: newExhibition)
+//                            dismiss()
+//                        } catch {
+//                            // Handle any errors that occur during the upload
+//                            print("Error uploading exhibition: \(error)")
+//                        }
+//                    }
+                    
+                    dismiss()
                 }
                 .modifier(CommonButtonModifier())
             }
@@ -179,6 +202,15 @@ struct AddExhibitionView: View {
                 }
             }
             .onAppear {
+                let newExhibition = Exhibition(
+                    id: UUID().uuidString,
+                    dateCreated: Date()
+                )
+                
+                Task {
+                        try await viewModel.createExhibition(exhibition: newExhibition)
+                }
+                
                 UIDatePicker.appearance().minuteInterval = 5
             }
             .navigationTitle("New Exhibiton")

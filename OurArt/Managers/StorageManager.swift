@@ -26,6 +26,11 @@ final class StorageManager {
         storage.child("users").child(userId)
     }
     
+    // 전시 (포스터) / 저장
+    private func exhibitionReference(exhibitionId: String) -> StorageReference {
+        storage.child("exhibitions").child(exhibitionId)
+    }
+    
     func getPathForImage(path: String) -> StorageReference {
         Storage.storage().reference(withPath: path)
     }
@@ -77,4 +82,27 @@ final class StorageManager {
         try await getPathForImage(path: path).delete()
     }
     
+    
+    func savePoster(data: Data, exhibitionId: String) async throws -> (path: String, name: String) {
+        let meta = StorageMetadata()
+        meta.contentType = "image/jpeg"
+        
+        let path = "\(UUID().uuidString).jpeg"
+        let returnedMetaData = try await exhibitionReference(exhibitionId: exhibitionId).child(path).putDataAsync(data, metadata: meta)
+        
+        guard let returnedPath = returnedMetaData.path, let returnedName = returnedMetaData.name else {
+            throw URLError(.badServerResponse)
+        }
+        
+        return (returnedPath, returnedName)
+    }
+    
+    func savePoster(image: UIImage, exhibitionId: String) async throws -> (path: String, name: String) {
+        // image.pngData()
+        guard let data = image.jpegData(compressionQuality: 1) else {
+            throw URLError(.backgroundSessionWasDisconnected)
+        }
+        
+        return try await savePoster(data: data, exhibitionId: exhibitionId)
+    }
 }
