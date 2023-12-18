@@ -21,8 +21,8 @@ struct HomeScreen: View {
             }
         }
         .sheet(isPresented: $showAddingView) {
-            NavigationStack {
-                AddExhibitionView()
+            NavigationView {
+                AddExhibitionFirstView(showAddingView: $showAddingView)
             }
         }
     }

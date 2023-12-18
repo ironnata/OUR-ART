@@ -134,7 +134,7 @@ struct ProfileView: View {
                             }
                             
                         } label: {
-                            Text("Create the profile".uppercased())
+                            Text("Create a profile".uppercased())
                         }
                         .modifier(CommonButtonModifier())
                         .alert(isPresented: $showInputAlert) {

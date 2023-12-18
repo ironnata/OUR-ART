@@ -130,22 +130,31 @@ final class ExhibitionManager {
         exhibitionsCollection.document(exhibitionId)
     }
     
-    func createExhibition(exhibition: Exhibition) async throws {
+    func createExhibition(exhibition: Exhibition) async throws -> Exhibition {
         var exhibitionWithId = exhibition
         
         // Use Firestore's auto-generated ID if the exhibition ID is nil
         if exhibitionWithId.id.isEmpty {
-                exhibitionWithId.id = UUID().uuidString
-            }
+            exhibitionWithId.id = UUID().uuidString
+        }
         
-        // Set data in the Firestore document
-        let documentReference = exhibitionDocument(exhibitionId: exhibitionWithId.id)
-        try documentReference.setData(from: exhibitionWithId, merge: false)
+        try exhibitionDocument(exhibitionId: exhibitionWithId.id).setData(from: exhibitionWithId, merge: false)
+        
+        return exhibitionWithId
     }
     
-    func updateExhibition(exhibitionId: String) async throws {
-        try exhibitionDocument(exhibitionId: exhibitionId).setData(from: exhibitionId, merge: false)
-    }
+    // 나중에 쓸 favorite or myExhibitons 기능!
+//    func updateExhibition(exhibitionId: String, exhibition: Exhibition) async throws {
+//        guard let data = try? encoder.encode(exhibition) else {
+//            throw URLError(.badURL)
+//        }
+//        
+//        let dict: [String:Any?] = [
+//            Exhibition.CodingKeys.title.rawValue : title
+//        ]
+//        
+//        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data as [AnyHashable : Any])
+//    }
     
     func getExhibition(exhibitionId: String) async throws -> Exhibition {
         try await exhibitionDocument(exhibitionId: exhibitionId).getDocument(as: Exhibition.self)
@@ -171,11 +180,8 @@ final class ExhibitionManager {
         try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
     }
     
-    // uploadExhibion과 완전히 같음
-//    func creatNewExhibition(exhibition: Exhibition) async throws {
-//        let exhibitionId = exhibition.id ?? exhibitionsCollection.document().documentID
-//        try exhibitionDocument(exhibitionId: exhibitionId).setData(from: exhibition, merge: false)
-//    }
+    // title 추가 func
+    // 나머지 정보 추가 func
     
     func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [

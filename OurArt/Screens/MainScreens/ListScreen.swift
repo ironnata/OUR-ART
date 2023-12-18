@@ -18,13 +18,10 @@ final class ExhibitionViewModel: ObservableObject {
         self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
     }
     
-    func createExhibition(exhibition: Exhibition) async throws {
+    func createExhibition(exhibition: Exhibition) async throws -> Exhibition {
         try await ExhibitionManager.shared.createExhibition(exhibition: exhibition)
     }
     
-    func updateExhibition(exhibitionId: String) async throws {
-        try await ExhibitionManager.shared.updateExhibition(exhibitionId: exhibitionId)
-    }
     
     // MARK: - POSTER IMAGE
     

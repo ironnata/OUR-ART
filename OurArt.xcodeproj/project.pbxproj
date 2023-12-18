@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
-		CD1602902B0E389B00E20783 /* AddExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionView.swift */; };
+		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
 		CD2E9C272B06AA32006F8486 /* FontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E9C262B06AA32006F8486 /* FontModifier.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
@@ -24,6 +24,7 @@
 		CD6955062AF41FCC00312907 /* Objectivity-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */; };
 		CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */; };
 		CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */; };
+		CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */; };
 		CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
 		CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316362AD6C985004F2868 /* OurArtApp.swift */; };
@@ -79,7 +80,7 @@
 
 /* Begin PBXFileReference section */
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		CD16028F2B0E389B00E20783 /* AddExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionView.swift; sourceTree = "<group>"; };
+		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
 		CD2E9C262B06AA32006F8486 /* FontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModifier.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
@@ -95,6 +96,7 @@
 		CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Objectivity-Medium.otf"; sourceTree = "<group>"; };
 		CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionFirstView.swift; sourceTree = "<group>"; };
 		CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		CD9316332AD6C985004F2868 /* OurArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OurArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,7 +179,8 @@
 			children = (
 				CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */,
 				CD6954C62AF3E26600312907 /* ExhibitionCellView.swift */,
-				CD16028F2B0E389B00E20783 /* AddExhibitionView.swift */,
+				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
+				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -469,10 +472,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
-				CD1602902B0E389B00E20783 /* AddExhibitionView.swift in Sources */,
+				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
+				CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */,
 				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
