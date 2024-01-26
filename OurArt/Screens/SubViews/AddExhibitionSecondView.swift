@@ -16,6 +16,9 @@ struct AddExhibitionSecondView: View {
     
     @Binding var showAddingView: Bool
     
+    @Binding var title: String
+    @Binding var currentId: String
+    
     @State private var artist: String = ""
     @State private var description: String = ""
     
@@ -41,128 +44,134 @@ struct AddExhibitionSecondView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    VStack(alignment: .leading) {
-                        Text("Poster")
-                        VStack {
-                            if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .frame(width: 120, height: 150)
-                            } else {
-                                Image(systemName: "questionmark.square.dashed")
-                                    .resizable()
-                                    .frame(width: 120, height: 150)
-                            }
-                            
-                            Button {
-                                showImagePicker.toggle()
-                            } label: {
-                                // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
-                                Image(systemName: "plus.rectangle")
-                                    .resizable()
-                                    .frame(width: 30, height: 20)
-                            }
-                            .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
-                            .offset(y: -5)
-                            .onChange(of: selectedImage, perform: { newValue in
-                                if let newValue {
-                                    viewModel.savePosterImage(item: newValue)
-                                }
-                                Task {
-                                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                        selectedImageData = data
-                                    }
-                                }
-                            })
-                        }
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    } // POSTER
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    
-                    VStack(alignment: .leading) {
-                        Text("Artist")
-                        TextField("Artist...", text: $artist)
-                            .modifier(TextFieldModifier())
-                    } // Artist
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Date")
-                        HStack(alignment: .center) {
-                            Spacer()
-                            DatePicker("", selection: $selectedFromDate, displayedComponents: [.date])
-                            Text("to")
-                            DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: [.date])
-                            Spacer()
-                        }
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                    } // Date
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Address")
-                        TextField("Address...", text: $address)
-                            .modifier(TextFieldModifier())
-                    } // Address
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Opening Hours")
-                        HStack(alignment: .center, spacing: 20) {
-                            Spacer()
-                            DatePicker("", selection: $selectedFromTime, displayedComponents: [.hourAndMinute])
-                            Text("-")
-                            DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: [.hourAndMinute])
-                            Spacer()
-                        }
-                        .datePickerStyle(.compact)
-                        .labelsHidden()
-                    } // Opening Hours
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Closed on")
-                        HStack {
-                            ForEach(closingDaysOptions, id: \.self) { day in
-                                Button(day) {
-                                    if self.selectedClosingDays.contains(day) {
-                                        self.selectedClosingDays.remove(day)
-                                    } else {
-                                        self.selectedClosingDays.insert(day)
-                                    }
-                                }
-                                .font(.objectivityCaption)
-                                .buttonStyle(.borderedProminent)
-                                .tint(selectedClosingDays.contains(day) ? .accentColor : .secondary)
-                            }
-                        }
-                    } // Closed on
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    VStack(alignment: .leading) {
-                        Text("Description")
-                        TextField("Describe...", text: $description, axis: .vertical)
-                            .modifier(TextFieldDescriptionModifier())
-                            .lineLimit(3...7)
-                    } // Description
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 30)
-                    
-                    Button("Done") {
+                    if let exhibition = viewModel.exhibition {
+                        Text("Exhibition ID: \(exhibition.id)")
                         
-                        Task {
-                            do {
+                        Text("Title: \(exhibition.title ?? "")")
+                        
+                        VStack(alignment: .leading) {
+                            Text("Poster")
+                            VStack {
+                                if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .frame(width: 120, height: 150)
+                                } else {
+                                    Image(systemName: "questionmark.square.dashed")
+                                        .resizable()
+                                        .frame(width: 120, height: 150)
+                                }
                                 
-                                dismiss()
-                            } catch {
-                                // Handle any errors that occur during the upload
-                                print("Error uploading exhibition: \(error)")
+                                Button {
+                                    showImagePicker.toggle()
+                                } label: {
+                                    // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
+                                    Image(systemName: "plus.rectangle")
+                                        .resizable()
+                                        .frame(width: 30, height: 20)
+                                }
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
+                                .offset(y: -5)
+                                .onChange(of: selectedImage, perform: { newValue in
+                                    if let newValue {
+                                        viewModel.savePosterImage(item: newValue)
+                                    }
+                                    Task {
+                                        if let data = try? await newValue?.loadTransferable(type: Data.self) {
+                                            selectedImageData = data
+                                        }
+                                    }
+                                })
+                            }
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        } // POSTER
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        
+                        VStack(alignment: .leading) {
+                            Text("Artist")
+                            TextField("Artist...", text: $artist)
+                                .modifier(TextFieldModifier())
+                        } // Artist
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Date")
+                            HStack(alignment: .center) {
+                                Spacer()
+                                DatePicker("", selection: $selectedFromDate, displayedComponents: [.date])
+                                Text("to")
+                                DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: [.date])
+                                Spacer()
+                            }
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                        } // Date
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Address")
+                            TextField("Address...", text: $address)
+                                .modifier(TextFieldModifier())
+                        } // Address
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Opening Hours")
+                            HStack(alignment: .center, spacing: 20) {
+                                Spacer()
+                                DatePicker("", selection: $selectedFromTime, displayedComponents: [.hourAndMinute])
+                                Text("-")
+                                DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: [.hourAndMinute])
+                                Spacer()
+                            }
+                            .datePickerStyle(.compact)
+                            .labelsHidden()
+                        } // Opening Hours
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Closed on")
+                            HStack {
+                                ForEach(closingDaysOptions, id: \.self) { day in
+                                    Button(day) {
+                                        if self.selectedClosingDays.contains(day) {
+                                            self.selectedClosingDays.remove(day)
+                                        } else {
+                                            self.selectedClosingDays.insert(day)
+                                        }
+                                    }
+                                    .font(.objectivityCaption)
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(selectedClosingDays.contains(day) ? .accentColor : .secondary)
+                                }
+                            }
+                        } // Closed on
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        VStack(alignment: .leading) {
+                            Text("Description")
+                            TextField("Describe...", text: $description, axis: .vertical)
+                                .modifier(TextFieldDescriptionModifier())
+                                .lineLimit(3...7)
+                        } // Description
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 30)
+                        
+                        Button("Done") {
+                            
+                            Task {
+                                do {
+                                    
+                                    dismiss()
+                                } catch {
+                                    // Handle any errors that occur during the upload
+                                    print("Error uploading exhibition: \(error)")
+                                }
                             }
                         }
+                        .modifier(CommonButtonModifier())
                     }
-                    .modifier(CommonButtonModifier())
                 }
                 .ignoresSafeArea()
                 .padding()
@@ -172,6 +181,7 @@ struct AddExhibitionSecondView: View {
                             .imageScale(.large)
                             .onTapGesture {
                                 showAddingView = false
+                                // 전시 삭제 기능 여기에!!!
                             }
                     }
                     
@@ -188,10 +198,13 @@ struct AddExhibitionSecondView: View {
                 }
                 .navigationTitle("New Exhibiton")
             }
+            .task {
+                try? await viewModel.loadCurrentExhibition(id: currentId)
+            }
         }
     }
 }
 
 #Preview {
-    AddExhibitionSecondView(showAddingView: .constant(false))
+    AddExhibitionSecondView(showAddingView: .constant(false), title: .constant(""), currentId: .constant(""))
 }

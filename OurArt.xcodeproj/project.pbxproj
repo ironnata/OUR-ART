@@ -179,8 +179,8 @@
 			children = (
 				CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */,
 				CD6954C62AF3E26600312907 /* ExhibitionCellView.swift */,
-				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
+				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";

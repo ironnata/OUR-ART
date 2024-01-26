@@ -126,21 +126,12 @@ final class ExhibitionManager {
     
     private let exhibitionsCollection = Firestore.firestore().collection("exhibitions")
     
-    private func exhibitionDocument(exhibitionId: String) -> DocumentReference {
-        exhibitionsCollection.document(exhibitionId)
+    private func exhibitionDocument(id: String) -> DocumentReference {
+        exhibitionsCollection.document(id)
     }
     
-    func createExhibition(exhibition: Exhibition) async throws -> Exhibition {
-        var exhibitionWithId = exhibition
-        
-        // Use Firestore's auto-generated ID if the exhibition ID is nil
-        if exhibitionWithId.id.isEmpty {
-            exhibitionWithId.id = UUID().uuidString
-        }
-        
-        try exhibitionDocument(exhibitionId: exhibitionWithId.id).setData(from: exhibitionWithId, merge: false)
-        
-        return exhibitionWithId
+    func createExhibition(exhibition: Exhibition) async throws {
+        try exhibitionDocument(id: exhibition.id).setData(from: exhibition, merge: false)
     }
     
     // 나중에 쓸 favorite or myExhibitons 기능!
@@ -156,9 +147,9 @@ final class ExhibitionManager {
 //        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data as [AnyHashable : Any])
 //    }
     
-    func getExhibition(exhibitionId: String) async throws -> Exhibition {
-        try await exhibitionDocument(exhibitionId: exhibitionId).getDocument(as: Exhibition.self)
-    }
+    func getExhibition(id: String) async throws -> Exhibition {
+        try await exhibitionDocument(id: id).getDocument(as: Exhibition.self)
+    } // 여기는 오류 없음
     
     func getAllExhibitions() async throws -> [Exhibition] {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
@@ -169,7 +160,7 @@ final class ExhibitionManager {
             Exhibition.CodingKeys.closingDays.rawValue : FieldValue.arrayUnion([closingDays])
         ]
         
-        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
     }
     
     func removeClosingDaysPreference(exhibitionId: String, closingDays: String) async throws {
@@ -177,10 +168,9 @@ final class ExhibitionManager {
             Exhibition.CodingKeys.closingDays.rawValue : FieldValue.arrayRemove([closingDays])
         ]
         
-        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
     }
     
-    // title 추가 func
     // 나머지 정보 추가 func
     
     func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
@@ -189,7 +179,7 @@ final class ExhibitionManager {
             Exhibition.CodingKeys.posterImagePathUrl.rawValue : url,
         ]
         
-        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data)
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
     }
     
 }

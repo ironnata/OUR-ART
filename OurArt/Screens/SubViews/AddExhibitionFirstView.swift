@@ -16,6 +16,7 @@ struct AddExhibitionFirstView: View {
 
     @State private var showSecondView = false
     @State private var title: String = ""
+    @State private var currentId: String = UUID().uuidString
 
     
     var body: some View {
@@ -33,7 +34,7 @@ struct AddExhibitionFirstView: View {
                 
                 Button {
                     let newExhibition = Exhibition(
-                        id: UUID().uuidString,
+                        id: currentId,
                         dateCreated: Date(),
                         title: title
                     )
@@ -49,7 +50,7 @@ struct AddExhibitionFirstView: View {
                 }
                 .modifier(CommonButtonModifier())
                 .navigationDestination(isPresented: $showSecondView) {
-                    AddExhibitionSecondView(showAddingView: $showAddingView)
+                    AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId)
                         .navigationBarBackButtonHidden(true)
                 }
             }
