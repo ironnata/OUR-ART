@@ -27,12 +27,17 @@ struct ExhibitionCellView: View {
             }
             
             Spacer()
-            
-            Text(exhibition.thumbnail ?? "") // IMAGE로 바꿔야 함
-            //                    .resizable()
-            //                    .scaledToFill()
-            //                    .frame(width: 80, height: 100)
-            //                    .padding(.leading, 20)
+            // 다음 미션!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//            if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
+//                AsyncImage(url: url) { image in
+//                    image
+//                        .resizable()
+//                        .frame(width: 80, height: 100)
+//                } placeholder: {
+//                    ProgressView()
+//                        .frame(width: 80, height: 100)
+//                }
+//            }
         }
         .frame(maxWidth: .infinity)
         .padding()

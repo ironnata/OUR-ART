@@ -45,9 +45,9 @@ struct AddExhibitionSecondView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     if let exhibition = viewModel.exhibition {
-                        Text("Exhibition ID: \(exhibition.id)")
+                        Text("Exhibition ID: \(exhibition.id)") // TEST용
                         
-                        Text("Title: \(exhibition.title ?? "")")
+                        Text("Title: \(exhibition.title ?? "")") // TEST용
                         
                         VStack(alignment: .leading) {
                             Text("Poster")

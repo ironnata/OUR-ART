@@ -19,9 +19,6 @@ final class ExhibitionViewModel: ObservableObject {
     }
     
     func loadCurrentExhibition(id: String) async throws {
-//        guard let exhibitionId = exhibition?.id else { print("Current exhibition ID is nil.")
-//            return
-//        }
         self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
     }
     
@@ -35,34 +32,21 @@ final class ExhibitionViewModel: ObservableObject {
     
     func savePosterImage(item: PhotosPickerItem) {
         Task {
-                do {
-                    // exhibition이 nil이 아닌지 확인
-                    guard let exhibition = exhibition else {
-                        print("전시가 nil입니다.")
-                        return
-                    }
-
-                    // PhotosPickerItem에서 이미지 데이터 로드
-                    guard let data = try await item.loadTransferable(type: Data.self) else {
-                        print("이미지 데이터 로드 실패.")
-                        return
-                    }
-
-                    // Storage에 포스터 이미지 저장
-                    let (path, name) = try await StorageManager.shared.savePoster(data: data, exhibitionId: exhibition.id)
-                    print("성공! 이미지가 Storage에 저장되었습니다. 경로: \(path), 이름: \(name)")
-
-                    // Storage에 저장된 이미지의 URL 가져오기
-                    let url = try await StorageManager.shared.getUrlForImage(path: path)
-
-                    // Firestore 문서를 이미지 URL로 업데이트
-                    try await ExhibitionManager.shared.updateUserPosterImagePath(exhibitionId: exhibition.id, path: path, url: url.absoluteString)
-                    print("Firestore 문서가 이미지 URL로 업데이트되었습니다.")
-                } catch {
-                    // 오류 처리
-                    print("포스터 이미지 저장 중 오류 발생: \(error)")
-                }
+            do {
+                guard let exhibition = exhibition else { return }
+                
+                guard let data = try await item.loadTransferable(type: Data.self) else { return }
+                let (path, name) = try await StorageManager.shared.savePoster(data: data, exhibitionId: exhibition.id)
+                print("SUCCESS!")
+                print(path)
+                print(name)
+                
+                let url = try await StorageManager.shared.getUrlForImage(path: path)
+                try await ExhibitionManager.shared.updateUserPosterImagePath(exhibitionId: exhibition.id, path: path, url: url.absoluteString)
+            } catch {
+                print("포스터 이미지 저장 중 오류 발생: \(error)")
             }
+        }
     }
     
 //    func deleteProfileImage() {
@@ -90,7 +74,6 @@ struct ListScreen: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     var body: some View {
-       // print(viewModel.exhibitions.map { $0.id })
 
         List {
             ForEach(viewModel.exhibitions) { exhibition in

@@ -149,7 +149,7 @@ final class ExhibitionManager {
     
     func getExhibition(id: String) async throws -> Exhibition {
         try await exhibitionDocument(id: id).getDocument(as: Exhibition.self)
-    } // 여기는 오류 없음
+    }
     
     func getAllExhibitions() async throws -> [Exhibition] {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
