@@ -27,17 +27,16 @@ struct ExhibitionCellView: View {
             }
             
             Spacer()
-            // 다음 미션!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//            if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
-//                AsyncImage(url: url) { image in
-//                    image
-//                        .resizable()
-//                        .frame(width: 80, height: 100)
-//                } placeholder: {
-//                    ProgressView()
-//                        .frame(width: 80, height: 100)
-//                }
-//            }
+            
+            AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .frame(width: 80, height: 100)
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 80, height: 100)
+            }
+            
         }
         .frame(maxWidth: .infinity)
         .padding()

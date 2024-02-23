@@ -162,6 +162,12 @@ struct AddExhibitionSecondView: View {
                             
                             Task {
                                 do {
+                                    // add ARTIST func
+                                    // add DATE func
+                                    // add ADDRESS func
+                                    // add OPENING HOURS func
+                                    // add CLOSING DAYS func
+                                    // add DISCRIPTION func
                                     
                                     dismiss()
                                 } catch {
@@ -182,6 +188,7 @@ struct AddExhibitionSecondView: View {
                             .onTapGesture {
                                 showAddingView = false
                                 // 전시 삭제 기능 여기에!!!
+                                // 지금까지 입력한 전시정보가 삭제됩니다 ㅇㅋ? 알럿 넣기
                             }
                     }
                     

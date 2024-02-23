@@ -15,13 +15,19 @@ struct ExhibitionDetailView: View {
     
     var body: some View {
         ScrollView {
-            Image("IMG_3245 2") // 수정 요
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: 300, alignment: .center)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
-                .padding(.vertical, 30)
-            
+            AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                image
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 300, alignment: .center)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            } placeholder: {
+                ProgressView()
+                    .frame(width: 300, height: 500, alignment: .center)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+            .padding(.vertical, 30)
+                
             VStack(alignment: .leading, spacing: 10) {
                 Text(exhibition.title ?? "n/a")
                     .font(.objectivityLargeTitle)
