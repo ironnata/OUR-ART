@@ -155,6 +155,29 @@ final class ExhibitionManager {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
     }
     
+    // addArtist func
+    func addArtist(exhibitionId: String, artist: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.artist.rawValue : artist
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
+    // addDate func
+    
+    // addAddress func
+    func addAddress(exhibitionId: String, address: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.address.rawValue : address
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
+    // addOpeningHours func
+    
+    // addClosingDays func
     func addClosingDaysPreference(exhibitionId: String, closingDays: String) async throws {
         let data: [String:Any] = [
             Exhibition.CodingKeys.closingDays.rawValue : FieldValue.arrayUnion([closingDays])
@@ -171,7 +194,15 @@ final class ExhibitionManager {
         try await exhibitionDocument(id: exhibitionId).updateData(data)
     }
     
-    // 나머지 정보 추가 func
+    // addDiscription func
+    func addDescription(exhibitionId: String, description: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.description.rawValue : description
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
     
     func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [

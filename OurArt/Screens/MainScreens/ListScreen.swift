@@ -18,14 +18,51 @@ final class ExhibitionViewModel: ObservableObject {
         self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
     }
     
-    func loadCurrentExhibition(id: String) async throws {
-        self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
-    }
-    
     func createExhibition(exhibition: Exhibition) async throws {
         print(exhibition)
         try await ExhibitionManager.shared.createExhibition(exhibition: exhibition)
     }
+    
+    func loadCurrentExhibition(id: String) async throws {
+        self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
+    }
+    
+    // addArtist func
+    func addArtist(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addArtist(exhibitionId: exhibition.id, artist: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
+    // addDate func
+    
+    // addAddress func
+    func addAddress(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addAddress(exhibitionId: exhibition.id, address: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
+    // addOpeningHours func
+    
+    // addClosingDays func
+    
+    // addDiscription func
+    func addDescription(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addDescription(exhibitionId: exhibition.id, description: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
     
     
     // MARK: - POSTER IMAGE

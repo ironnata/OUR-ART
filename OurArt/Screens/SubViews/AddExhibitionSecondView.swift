@@ -163,11 +163,19 @@ struct AddExhibitionSecondView: View {
                             Task {
                                 do {
                                     // add ARTIST func
+                                    try? await viewModel.addArtist(text: artist)
+                                    
                                     // add DATE func
+                                    
                                     // add ADDRESS func
+                                    try? await viewModel.addAddress(text: address)
+                                    
                                     // add OPENING HOURS func
+                                    
                                     // add CLOSING DAYS func
+                                    
                                     // add DISCRIPTION func
+                                    try? await viewModel.addDescription(text: description)
                                     
                                     dismiss()
                                 } catch {
