@@ -52,6 +52,24 @@ final class ExhibitionViewModel: ObservableObject {
     // addOpeningHours func
     
     // addClosingDays func
+    func addClosingDays(text: String) {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addClosingDaysPreference(exhibitionId: exhibition.id, closingDays: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
+    // removeClosingDays func
+    func removeClosingDays(text: String) {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.removeClosingDaysPreference(exhibitionId: exhibition.id, closingDays: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
     
     // addDiscription func
     func addDescription(text: String) async throws {

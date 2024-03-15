@@ -37,6 +37,10 @@ struct AddExhibitionSecondView: View {
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
+    private func selectedClosingDays(text: String) -> Bool {
+        viewModel.exhibition?.closingDays?.contains(text) == true
+    }
+    
     
     // MARK: - BODY
     
@@ -135,15 +139,15 @@ struct AddExhibitionSecondView: View {
                             HStack {
                                 ForEach(closingDaysOptions, id: \.self) { day in
                                     Button(day) {
-                                        if self.selectedClosingDays.contains(day) {
-                                            self.selectedClosingDays.remove(day)
+                                        if selectedClosingDays(text: day) {
+                                            viewModel.removeClosingDays(text: day)
                                         } else {
-                                            self.selectedClosingDays.insert(day)
+                                            viewModel.addClosingDays(text: day)
                                         }
                                     }
                                     .font(.objectivityCaption)
                                     .buttonStyle(.borderedProminent)
-                                    .tint(selectedClosingDays.contains(day) ? .accentColor : .secondary)
+                                    .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                 }
                             }
                         } // Closed on
