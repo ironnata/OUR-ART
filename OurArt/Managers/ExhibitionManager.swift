@@ -229,6 +229,10 @@ final class ExhibitionManager {
         try await exhibitionDocument(id: exhibitionId).updateData(data)
     }
     
+    func deleteExhibition(exhibitionId: String) async throws {
+        try await exhibitionDocument(id: exhibitionId).delete()
+    }
+    
 }
 
 

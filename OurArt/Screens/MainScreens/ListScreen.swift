@@ -97,6 +97,14 @@ final class ExhibitionViewModel: ObservableObject {
         }
     }
     
+    func deleteExhibition() async throws {
+        guard let exhibition, let path = exhibition.posterImagePath else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.deleteExhibition(exhibitionId: exhibition.id)
+            try await StorageManager.shared.deleteImage(path: path)
+        }
+    }
     
     
     // MARK: - POSTER IMAGE

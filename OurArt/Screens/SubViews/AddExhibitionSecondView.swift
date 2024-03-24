@@ -34,6 +34,8 @@ struct AddExhibitionSecondView: View {
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
     
+    @State private var showDeleteAlert: Bool = false
+    
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
@@ -96,7 +98,7 @@ struct AddExhibitionSecondView: View {
                             Text("Artist")
                             TextField("Artist...", text: $artist)
                                 .modifier(TextFieldModifier())
-                        } // Artist
+                        } // ARTIST
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading) {
@@ -110,14 +112,14 @@ struct AddExhibitionSecondView: View {
                             }
                             .datePickerStyle(.compact)
                             .labelsHidden()
-                        } // Date
+                        } // DATE
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading) {
                             Text("Address")
                             TextField("Address...", text: $address)
                                 .modifier(TextFieldModifier())
-                        } // Address
+                        } // ADDRESS
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading) {
@@ -131,7 +133,7 @@ struct AddExhibitionSecondView: View {
                             }
                             .datePickerStyle(.compact)
                             .labelsHidden()
-                        } // Opening Hours
+                        } // OPENING HOURS
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading) {
@@ -150,7 +152,7 @@ struct AddExhibitionSecondView: View {
                                     .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                 }
                             }
-                        } // Closed on
+                        } // CLOSED ON
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
                         VStack(alignment: .leading) {
@@ -158,34 +160,20 @@ struct AddExhibitionSecondView: View {
                             TextField("Describe...", text: $description, axis: .vertical)
                                 .modifier(TextFieldDescriptionModifier())
                                 .lineLimit(3...7)
-                        } // Description
+                        } // DESCRIPTION
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.bottom, 30)
                         
                         Button("Done") {
                             
                             Task {
-                                do {
-                                    // add ARTIST func
-                                    try? await viewModel.addArtist(text: artist)
-                                    
-                                    // add DATE func
-                                    try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
-                                    
-                                    // add ADDRESS func
-                                    try? await viewModel.addAddress(text: address)
-                                    
-                                    // add OPENING HOURS func
-                                    try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
-                                    
-                                    // add DISCRIPTION func
-                                    try? await viewModel.addDescription(text: description)
-                                    
-                                    dismiss()
-                                } catch {
-                                    // Handle any errors that occur during the upload
-                                    print("Error uploading exhibition: \(error)")
-                                }
+                                try? await viewModel.addArtist(text: artist)
+                                try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
+                                try? await viewModel.addAddress(text: address)
+                                try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
+                                try? await viewModel.addDescription(text: description)
+                                
+                                showAddingView = false
                             }
                         }
                         .modifier(CommonButtonModifier())
@@ -198,9 +186,19 @@ struct AddExhibitionSecondView: View {
                         Image(systemName: "xmark")
                             .imageScale(.large)
                             .onTapGesture {
-                                showAddingView = false
-                                // 전시 삭제 기능 여기에!!!
-                                // 지금까지 입력한 전시정보가 삭제됩니다 ㅇㅋ? 알럿 넣기
+                                showDeleteAlert = true
+                            }
+                            .alert(isPresented: $showDeleteAlert) {
+                                Alert(
+                                    title: Text("The whole data you wrote is going to be deleted, is it okay?"),
+                                    primaryButton: .default(Text("OK")) {
+                                        Task {
+                                            try? await viewModel.deleteExhibition()
+                                            showAddingView = false
+                                        }
+                                    },
+                                    secondaryButton: .cancel()
+                                )
                             }
                     }
                     
