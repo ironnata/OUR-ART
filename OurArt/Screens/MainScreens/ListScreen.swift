@@ -38,6 +38,14 @@ final class ExhibitionViewModel: ObservableObject {
     }
     
     // addDate func
+    func addDate(dateFrom: Date, dateTo: Date) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addDate(exhibitionId: exhibition.id, dateFrom: dateFrom, dateTo: dateTo)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
     
     // addAddress func
     func addAddress(text: String) async throws {
@@ -50,6 +58,14 @@ final class ExhibitionViewModel: ObservableObject {
     }
     
     // addOpeningHours func
+    func addOpeningHours(openingHoursFrom: Date, openingHoursTo: Date) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addOpeningHours(exhibitionId: exhibition.id, openingHoursFrom: openingHoursFrom, openingHoursTo: openingHoursTo)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
     
     // addClosingDays func
     func addClosingDays(text: String) {

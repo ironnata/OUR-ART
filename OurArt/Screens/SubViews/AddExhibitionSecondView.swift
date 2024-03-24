@@ -170,13 +170,13 @@ struct AddExhibitionSecondView: View {
                                     try? await viewModel.addArtist(text: artist)
                                     
                                     // add DATE func
+                                    try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
                                     
                                     // add ADDRESS func
                                     try? await viewModel.addAddress(text: address)
                                     
                                     // add OPENING HOURS func
-                                    
-                                    // add CLOSING DAYS func
+                                    try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     
                                     // add DISCRIPTION func
                                     try? await viewModel.addDescription(text: description)

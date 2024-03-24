@@ -165,6 +165,14 @@ final class ExhibitionManager {
     }
     
     // addDate func
+    func addDate(exhibitionId: String, dateFrom: Date, dateTo: Date) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.dateFrom.rawValue : dateFrom,
+            Exhibition.CodingKeys.dateTo.rawValue : dateTo
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
     
     // addAddress func
     func addAddress(exhibitionId: String, address: String) async throws {
@@ -176,6 +184,14 @@ final class ExhibitionManager {
     }
     
     // addOpeningHours func
+    func addOpeningHours(exhibitionId: String, openingHoursFrom: Date, openingHoursTo: Date) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.openingTimeFrom.rawValue : openingHoursFrom,
+            Exhibition.CodingKeys.openingTimeTo.rawValue : openingHoursTo
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
     
     // addClosingDays func
     func addClosingDaysPreference(exhibitionId: String, closingDays: String) async throws {
