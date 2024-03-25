@@ -17,17 +17,17 @@ struct ExhibitionPosterView: View {
                 image
                     .resizable()
                     .scaledToFill() // scaledToFit 으로 변경
-                    .frame(width: 270, height: 400)
+                    .frame(width: 270, height: 400) // Poster 사이즈 규격에 맞게 변경
             } placeholder: {
                 Text(exhibition.title ?? "")
                     .frame(width: 270, height: 400)
             }
         }
         .overlay {
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(.secondary, lineWidth: 5)
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color(UIColor.systemGray4), lineWidth: 4)
         }
-        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 

@@ -17,10 +17,10 @@ struct HomeScreen: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Hello, \(profileVM.user?.nickname ?? "")!")
-                Text("Nice to see you today :)")
-                
-                Spacer()
+                Text("""
+                     Hello, \(profileVM.user?.nickname ?? "")! \nNice to see you today :)
+                     """)
+                .padding(.top, 20)
                 
                 NavigationView {
                     ScrollView(.horizontal) {
