@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
 		CD2E9C272B06AA32006F8486 /* FontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E9C262B06AA32006F8486 /* FontModifier.swift */; };
@@ -79,6 +80,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPosterView.swift; sourceTree = "<group>"; };
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
 		CD2E9C262B06AA32006F8486 /* FontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModifier.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				CD6954C62AF3E26600312907 /* ExhibitionCellView.swift */,
 				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
 				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
+				CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
+				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
