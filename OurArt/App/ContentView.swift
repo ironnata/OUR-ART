@@ -35,6 +35,7 @@ struct ContentView: View {
             
             NavigationView {
                 ListScreen()
+                    .navigationBarTitle("Exhibitions")
             }.tag(1)
             .tabItem {
                 Image(systemName: "list.dash")
@@ -43,6 +44,7 @@ struct ContentView: View {
             
             NavigationView {
                 SettingsScreen(showSignInView: $showSignInView)
+                    .navigationBarTitle("Settings")
             }.tag(2)
             .tabItem {
                 Image(systemName: "gearshape.2")

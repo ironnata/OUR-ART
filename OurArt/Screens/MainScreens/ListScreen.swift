@@ -13,7 +13,69 @@ final class ExhibitionViewModel: ObservableObject {
     
     @Published private(set) var exhibitions: [Exhibition] = []
     @Published private(set) var exhibition: Exhibition? = nil
+    @Published var selectedFilter: FilterOption? = nil
+//    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
     
+    enum FilterOption: String, CaseIterable {
+        case noFilter
+        case newest
+        case oldest
+        
+        var dateDescending: Bool? {
+            switch self {
+            case .noFilter: return nil
+            case .newest: return true
+            case .oldest: return false
+            }
+        }
+    }
+    
+    func filterSelected(option: FilterOption) async throws {
+        // CATEGORY 추가 시 사용
+//        self.selectedFilter = option
+//        self.getProducts()
+        
+        // CATEGORY 추가 시 코멘트아웃
+        switch option {
+        case .noFilter:
+            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
+        case .newest:
+            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: true)
+        case .oldest:
+            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: false)
+        }
+    }
+    
+    // CATEGORY 추가 시 사용
+//    enum CategoryOption: String, CaseIterable {
+//        case noCategory
+//        case ex1
+//        case ex2
+//        case ex3
+//    }
+    
+    // CATEGORY 추가 시 사용
+//    func categorySelected(option: CategoryOption) async throws {
+//        self.selectedCategory = option // CATEGORY 추가 시 사용
+//        self.getProducts() // CATEGORY 추가 시 사용
+//
+//        switch option {
+//        case .noCategory:
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
+//        case .ex1, .ex2, .ex3:
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsForCategory(category: option.rawValue)
+//        }
+//    }
+    
+    // CATEGORY 추가 시 사용
+//    func getProducts() {
+//        Task {
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions(dateDescending: selectedFilter?.dateDescending, forCategory: selectedCategory?.rawValue)
+//        }
+//    }
+    
+    
+    // CATEGORY 추가 시 !!!!! getAllExhibitions() 코멘트아웃 !!!!!
     func getAllExhibitions() async throws {
         self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
     }
@@ -153,7 +215,7 @@ struct ListScreen: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     var body: some View {
-
+        
         List {
             ForEach(viewModel.exhibitions) { exhibition in
                 NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
@@ -162,9 +224,41 @@ struct ListScreen: View {
             }
             .listRowSeparator(.hidden)
         }
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu("\(viewModel.selectedFilter?.rawValue ?? "") \(Image(systemName: "line.3.horizontal.decrease.circle"))") {
+                    ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in
+                        Button(option.rawValue) {
+                            Task {
+                                try? await viewModel.filterSelected(option: option)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // CATEGORY 추가 시 사용
+//            ToolbarItem(placement: .topBarTrailing) {
+//                Menu("\(viewModel.categorySelected?.rawValue ?? "") \(Image(systemName: "square.grid.2x2"))") {
+//                    ForEach(ExhibitionViewModel.CategoryOption.allCases, id: \.self) { option in
+//                        Button(option.rawValue) {
+//                            Task {
+//                                try? await viewModel.categorySelected(option: option)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+        })
         .task {
             try? await viewModel.getAllExhibitions()
         }
+        
+        // CATEGORY 추가 시 사용
+//        .onAppear(
+//            try? await viewModel.getExhibitions()
+//        )
+        
         .listStyle(.plain)
     }
 }

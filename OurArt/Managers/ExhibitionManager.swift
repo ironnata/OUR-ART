@@ -22,8 +22,8 @@ struct Exhibition: Identifiable, Codable {
     let openingTimeFrom: Date?
     let openingTimeTo: Date?
     let closingDays: [String]?
-    let thumbnail: String?
-    let images: [String]?
+    let thumbnail: String? // 필요유무 추후 확인
+    let images: [String]? // 필요유무 추후 확인
     let posterImagePath: String?
     let posterImagePathUrl: String?
     
@@ -154,6 +154,35 @@ final class ExhibitionManager {
     func getAllExhibitions() async throws -> [Exhibition] {
         try await exhibitionsCollection.getDocuments(as: Exhibition.self)
     }
+    
+    func getAllExhibitionsSortedByDate(descending: Bool) async throws -> [Exhibition] {
+        try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
+    }
+    
+    // !!!!!!! 아래 3개의 FUNCS는 CATEGORY를 넣게되면 사용할 녀석 !!!!!!!
+    
+//    func getAllExhibitionsForCategory(category: String) async throws -> [Exhibition] {
+//        try await exhibitionsCollection.whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category).getDocuments(as: Exhibition.self)
+//    }
+    
+//    func getAllExhibitionsByDateAndForCategory(descending: Bool, category: String) async throws -> [Exhibition] {
+//        try await exhibitionsCollection
+//            .whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category)
+//            .order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending)
+//            .getDocuments(as: Exhibition.self)
+//    }
+    
+//    func getAllExhibitions(dateDescending descending: Bool?, forCategory category: String?) async throws -> [Exhibition] {
+//        if let descending, let category {
+//            return try await getAllExhibitionsByDateAndForCategory(descending: descending, category: category)
+//        } else if let descending {
+//            return try await getAllExhibitionsSortedByDate(descending: descending)
+//        } else if let category {
+//            return try await getAllExhibitionsForCategory(category: category)
+//        }
+//        
+//        return try await getAllExhibitions()
+//    }
     
     // addArtist func
     func addArtist(exhibitionId: String, artist: String) async throws {
