@@ -31,19 +31,17 @@ final class ExhibitionViewModel: ObservableObject {
     }
     
     func filterSelected(option: FilterOption) async throws {
-        // CATEGORY 추가 시 사용
-//        self.selectedFilter = option
-//        self.getProducts()
+        self.selectedFilter = option
+        self.getExhibitions()
         
-        // CATEGORY 추가 시 코멘트아웃
-        switch option {
-        case .noFilter:
-            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
-        case .newest:
-            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: true)
-        case .oldest:
-            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: false)
-        }
+//        switch option {
+//        case .noFilter:
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
+//        case .newest:
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: true)
+//        case .oldest:
+//            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: false)
+//        }
     }
     
     // CATEGORY 추가 시 사용
@@ -78,6 +76,12 @@ final class ExhibitionViewModel: ObservableObject {
     // CATEGORY 추가 시 !!!!! getAllExhibitions() 코멘트아웃 !!!!!
     func getAllExhibitions() async throws {
         self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
+    }
+    
+    func getExhibitions() {
+        Task {
+            self.exhibitions = try await ExhibitionManager.shared.getExhibitions(dateDescending: selectedFilter?.dateDescending)
+        }
     }
     
     func createExhibition(exhibition: Exhibition) async throws {
@@ -214,10 +218,25 @@ struct ListScreen: View {
     
     @StateObject private var viewModel = ExhibitionViewModel()
     
+    @State var searchText = ""
+    
+    func filterExhibitions() -> [Exhibition] {
+        guard !searchText.isEmpty else {
+            return viewModel.exhibitions
+        }
+        
+        return viewModel.exhibitions.filter { exhibition in
+            if let title = exhibition.title {
+                return title.localizedCaseInsensitiveContains(searchText)
+            }
+            return false
+        }
+    }
+    
     var body: some View {
         
         List {
-            ForEach(viewModel.exhibitions) { exhibition in
+            ForEach(filterExhibitions()) { exhibition in
                 NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                     ExhibitionCellView(exhibition: exhibition)
                 }
@@ -250,8 +269,8 @@ struct ListScreen: View {
 //                }
 //            }
         })
-        .task {
-            try? await viewModel.getAllExhibitions()
+        .onAppear {
+            viewModel.getExhibitions()
         }
         
         // CATEGORY 추가 시 사용
@@ -260,6 +279,13 @@ struct ListScreen: View {
 //        )
         
         .listStyle(.plain)
+        
+        // NavigationBar 안 검색창 UI
+        .searchable(
+          text: $searchText,
+          placement: .automatic,
+          prompt: "Search..."
+        )
     }
 }
 

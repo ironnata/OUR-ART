@@ -159,6 +159,14 @@ final class ExhibitionManager {
         try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
     }
     
+    func getExhibitions(dateDescending descending: Bool?) async throws -> [Exhibition] {
+        if let descending {
+            return try await getAllExhibitionsSortedByDate(descending: descending)
+        }
+        
+        return try await getAllExhibitions()
+    }
+    
     // !!!!!!! 아래 3개의 FUNCS는 CATEGORY를 넣게되면 사용할 녀석 !!!!!!!
     
 //    func getAllExhibitionsForCategory(category: String) async throws -> [Exhibition] {
