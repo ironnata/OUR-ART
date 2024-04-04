@@ -18,9 +18,13 @@ struct ExhibitionCellView: View {
                     .foregroundStyle(.primary)
                     .padding(.bottom, 10)
                 
-                if let dateFrom = exhibition.dateFrom?.formatted(.iso8601.year().month().day()),
-                    let dateTo = exhibition.dateTo?.formatted(.iso8601.year().month().day()) {
-                    CellDetailView(icon: "calendar", text: "\(dateFrom) - \(dateTo)")
+                if let dateFrom = exhibition.dateFrom,
+                    let dateTo = exhibition.dateTo {
+                    let dateFormatter = DateFormatter.localizedDateFormatter()
+                    let formattedDateFrom = dateFormatter.string(from: dateFrom)
+                    let formattedDateTo = dateFormatter.string(from: dateTo)
+                    
+                    CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                 }
                 
                 CellDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "none")

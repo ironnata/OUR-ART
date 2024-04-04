@@ -22,9 +22,10 @@ struct ExhibitionDetailView: View {
                     .frame(maxWidth: 300, alignment: .center)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } placeholder: {
-                ProgressView()
+                Text("No Poster")
                     .frame(width: 300, height: 500, alignment: .center)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .font(.objectivityTitle2)
             }
             .padding(.vertical, 30)
                 
@@ -34,16 +35,25 @@ struct ExhibitionDetailView: View {
                     .padding(.bottom, 10)
                 
                 
-                if let dateFrom = exhibition.dateFrom?.formatted(.iso8601.year().month().day()),
-                    let dateTo = exhibition.dateTo?.formatted(.iso8601.year().month().day()) {
-                    InfoDetailView(icon: "calendar", text: "\(dateFrom) - \(dateTo)")
+                if let dateFrom = exhibition.dateFrom,
+                   let dateTo = exhibition.dateTo {
+                    let dateFormatter = DateFormatter.localizedDateFormatter()
+                    let formattedDateFrom = dateFormatter.string(from: dateFrom)
+                    let formattedDateTo = dateFormatter.string(from: dateTo)
+                    
+                    InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                 }
                 
                 InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
                 
-                if let openingTimeFrom = exhibition.openingTimeFrom?.formatted(date: .omitted, time: .shortened),
-                    let openingTimeTo = exhibition.openingTimeTo?.formatted(date: .omitted, time: .shortened) {
-                    InfoDetailView(icon: "clock", text: "\(openingTimeFrom) - \(openingTimeTo)")
+                if let openingTimeFrom = exhibition.openingTimeFrom,
+                   let openingTimeTo = exhibition.openingTimeTo {
+                    let dateFormatter = DateFormatter.timeOnlyFormatter()
+                    
+                    let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
+                    let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                    
+                    InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
                 }
                 
                 InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])

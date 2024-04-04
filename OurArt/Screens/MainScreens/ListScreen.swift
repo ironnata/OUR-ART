@@ -257,34 +257,34 @@ struct ListScreen: View {
             }
             
             // CATEGORY 추가 시 사용
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Menu("\(viewModel.categorySelected?.rawValue ?? "") \(Image(systemName: "square.grid.2x2"))") {
-//                    ForEach(ExhibitionViewModel.CategoryOption.allCases, id: \.self) { option in
-//                        Button(option.rawValue) {
-//                            Task {
-//                                try? await viewModel.categorySelected(option: option)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            //            ToolbarItem(placement: .topBarTrailing) {
+            //                Menu("\(viewModel.categorySelected?.rawValue ?? "") \(Image(systemName: "square.grid.2x2"))") {
+            //                    ForEach(ExhibitionViewModel.CategoryOption.allCases, id: \.self) { option in
+            //                        Button(option.rawValue) {
+            //                            Task {
+            //                                try? await viewModel.categorySelected(option: option)
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
         })
         .onAppear {
             viewModel.getExhibitions()
         }
         
         // CATEGORY 추가 시 사용
-//        .onAppear(
-//            try? await viewModel.getExhibitions()
-//        )
+        //        .onAppear(
+        //            try? await viewModel.getExhibitions()
+        //        )
         
         .listStyle(.plain)
         
         // NavigationBar 안 검색창 UI
         .searchable(
-          text: $searchText,
-          placement: .automatic,
-          prompt: "Search..."
+            text: $searchText,
+            placement: .automatic,
+            prompt: "Search..."
         )
     }
 }

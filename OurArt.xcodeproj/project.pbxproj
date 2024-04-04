@@ -11,6 +11,7 @@
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
 		CD2E9C272B06AA32006F8486 /* FontModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2E9C262B06AA32006F8486 /* FontModifier.swift */; };
+		CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD36549E2BBEC11B001A01FC /* Extensions.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -84,6 +85,7 @@
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
 		CD2E9C262B06AA32006F8486 /* FontModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontModifier.swift; sourceTree = "<group>"; };
+		CD36549E2BBEC11B001A01FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -166,6 +168,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD36549D2BBEC0FD001A01FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CD36549E2BBEC11B001A01FC /* Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		CD6954C02AF3CD6D00312907 /* MainScreens */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				CD9316A12AD989E1004F2868 /* Utilities.swift */,
+				CD36549D2BBEC0FD001A01FC /* Extensions */,
 				CD9316982AD974D2004F2868 /* Modifier */,
 			);
 			path = Utilities;
@@ -493,6 +504,7 @@
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
+				CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */,
 				CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */,
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
