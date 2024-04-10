@@ -92,7 +92,7 @@ struct ProfileEditView: View {
                                             viewModel.addUserPreference(text: string)
                                         }
                                     }
-                                    .font(.headline)
+                                    .font(.objectivityBody)
                                     .buttonStyle(.borderedProminent)
                                     .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
                                 }

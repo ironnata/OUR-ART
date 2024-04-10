@@ -17,15 +17,23 @@ final class ExhibitionViewModel: ObservableObject {
 //    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
     
     enum FilterOption: String, CaseIterable {
-        case noFilter
-        case newest
-        case oldest
+        case noFilter = "No Filter"
+        case newest = "Most recent at the top"
+        case oldest = "Oldest at the top"
         
         var dateDescending: Bool? {
             switch self {
             case .noFilter: return nil
             case .newest: return true
             case .oldest: return false
+            }
+        }
+        
+        var icon: String? {
+            switch self {
+            case .noFilter: return "line.3.horizontal.decrease.circle"
+            case .newest: return "arrow.down.to.line"
+            case .oldest: return "arrow.up.to.line"
             }
         }
     }
@@ -245,14 +253,19 @@ struct ListScreen: View {
         }
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
-                Menu("\(viewModel.selectedFilter?.rawValue ?? "") \(Image(systemName: "line.3.horizontal.decrease.circle"))") {
+                Menu {
                     ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in
-                        Button(option.rawValue) {
+                        Button {
                             Task {
                                 try? await viewModel.filterSelected(option: option)
                             }
+                        } label: {
+                            Text(option.rawValue)
+                            Image(systemName: option.icon ?? "")
                         }
                     }
+                } label: {
+                    Image(systemName: viewModel.selectedFilter?.icon ?? "line.3.horizontal.decrease.circle")
                 }
             }
             

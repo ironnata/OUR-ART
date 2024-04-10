@@ -23,8 +23,7 @@ struct ExhibitionDetailView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             } placeholder: {
                 Text("No Poster")
-                    .frame(width: 300, height: 500, alignment: .center)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .frame(width: 300, height: 100, alignment: .center)
                     .font(.objectivityTitle2)
             }
             .padding(.vertical, 30)
