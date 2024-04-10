@@ -15,55 +15,56 @@ struct HomeScreen: View {
     @State var showAddingView = false
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("""
-                     Hello, \(profileVM.user?.nickname ?? "")! \nNice to see you today :)
-                     """)
-                .padding(.top, 20)
-                
-                NavigationView {
-                    ScrollView(.horizontal) {
-                        LazyHStack(spacing: 10) {
-                            ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
-                                NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
-                                    ExhibitionPosterView(exhibition: exhibition)
+        ZStack {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text("""
+                         Hello, \(profileVM.user?.nickname ?? "")! \nNice to see you today :)
+                         """)
+                    .padding(.top, 20)
+                    
+                    NavigationView {
+                        ScrollView(.horizontal) {
+                            LazyHStack(spacing: 10) {
+                                ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
+                                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                                        ExhibitionPosterView(exhibition: exhibition)
+                                    }
                                 }
+                                .padding(.horizontal, 12)
                             }
-                            .padding()
+//                            .scrollTargetLayout() ~iOS17~
                         }
+                        .frame(height: 400)
+//                        .scrollTargetBehavior(.paging) iOS17~
                     }
-                    .frame(height: 400)
+                    
                 }
-                
-                Spacer()
-            }
-            .font(.objectivityTitle2)
-            
-            Spacer()
-        }
-        .padding()
-        .padding(.top, 20)
-        
-        .sheet(isPresented: $showAddingView) {
-            NavigationView {
-                AddExhibitionFirstView(showAddingView: $showAddingView)
-            }
-        }
-        .overlay(alignment: .bottomTrailing) {
-            Button {
-                showAddingView.toggle()
-            } label: {
-                Image(systemName: "plus.circle")
-                    .font(.largeTitle)
+                .font(.objectivityTitle2)
             }
             .padding()
-            .padding(.trailing, 20)
+            .padding(.top, 20)
+            .fullScreenCover(isPresented: $showAddingView) {
+                NavigationView {
+                    AddExhibitionFirstView(showAddingView: $showAddingView)
+                }
+            }
+            .overlay(alignment: .bottomTrailing) {
+                Button {
+                    showAddingView.toggle()
+                } label: {
+                    Image(systemName: "plus.circle")
+                        .font(.largeTitle)
+                }
+                .padding()
+                .padding(.trailing, 20)
+            }
+            .task {
+                try? await profileVM.loadCurrentUser()
+                try? await exhibitionVM.getAllExhibitions()
+            }
         }
-        .task {
-            try? await profileVM.loadCurrentUser()
-            try? await exhibitionVM.getAllExhibitions()
-        }
+        .viewBackground()
     }
 }
 

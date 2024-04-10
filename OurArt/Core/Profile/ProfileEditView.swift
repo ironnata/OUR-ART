@@ -33,105 +33,108 @@ struct ProfileEditView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                if let user = viewModel.user {
-                    
-                    Spacer()
-                    
-                    VStack(spacing: 10) {
+            ZStack {
+                VStack {
+                    if let user = viewModel.user {
                         
-                        ZStack {
-                            if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
-                                AsyncImage(url: url) { image in
-                                    image
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
-                                } placeholder: {
-                                    Image(systemName: "person.crop.circle.fill")
-                                        .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .foregroundStyle(Color.accentColor)
-                                }
-                            }
+                        Spacer()
+                        
+                        VStack(spacing: 10) {
                             
-                            Button {
-                                showImagePicker.toggle()
-                            } label: {
-                                Text("EDIT")
-                            }
-                            .modifier(SmallButtonModifier())
-                            .offset(y: 30)
-                            .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
-                            // 선택 즉시 변경한 이미지 표시
-                            .onChange(of: selectedItem) { newItem in
-                                Task {
-                                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                        selectedImageData = data
+                            ZStack {
+                                if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                                    AsyncImage(url: url) { image in
+                                        image
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
+                                            .clipShape(Circle())
+                                            .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+                                    } placeholder: {
+                                        Image(systemName: "person.crop.circle.fill")
+                                            .resizable()
+                                            .frame(width: 100, height: 100)
+                                            .foregroundStyle(Color.accentColor)
                                     }
                                 }
-                            }
-                        }
-                        
-                        TextField("Nickname...", text: $nickname)
-                            .modifier(TextFieldModifier())
-                            .padding(.top, 20)
-                        
-                        VStack {
-                            Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(.secondary)
-                            
-                            HStack {
-                                ForEach(preferenceOptions, id: \.self) { string in
-                                    Button(string) {
-                                        if preferenceIsSelected(text: string) {
-                                            viewModel.removeUserPreference(text: string)
-                                        } else {
-                                            viewModel.addUserPreference(text: string)
+                                
+                                Button {
+                                    showImagePicker.toggle()
+                                } label: {
+                                    Text("EDIT")
+                                }
+                                .modifier(SmallButtonModifier())
+                                .offset(y: 30)
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
+                                // 선택 즉시 변경한 이미지 표시
+                                .onChange(of: selectedItem) { newItem in
+                                    Task {
+                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                            selectedImageData = data
                                         }
                                     }
-                                    .font(.objectivityBody)
-                                    .buttonStyle(.borderedProminent)
-                                    .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                }
+                            }
+                            
+                            TextField("Nickname...", text: $nickname)
+                                .modifier(TextFieldModifier())
+                                .padding(.top, 20)
+                            
+                            VStack {
+                                Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .foregroundStyle(.secondary)
+                                
+                                HStack {
+                                    ForEach(preferenceOptions, id: \.self) { string in
+                                        Button(string) {
+                                            if preferenceIsSelected(text: string) {
+                                                viewModel.removeUserPreference(text: string)
+                                            } else {
+                                                viewModel.addUserPreference(text: string)
+                                            }
+                                        }
+                                        .font(.objectivityBody)
+                                        .buttonStyle(.borderedProminent)
+                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    Divider()
-                        .padding(.vertical, 10)
-                    
-                    Button {
-                        if nickname.isEmpty {
-                            showInputAlert = true
-                        } else {
-                            viewModel.addNickname(text: nickname)
-                            dismiss()
-                        }
                         
-                    } label: {
-                        Text("Done".uppercased())
-                    }
-                    .modifier(CommonButtonModifier())
-                    .alert(isPresented: $showInputAlert) {
-                        Alert(title: Text("Please input your name."))
-                    }
-                    // 프로필 사진 파이어스토어에 저장
-                    .onChange(of: selectedItem, perform: { newValue in
-                        if let newValue {
-                            viewModel.saveProfileImage(item: newValue)
+                        Divider()
+                            .padding(.vertical, 10)
+                        
+                        Button {
+                            if nickname.isEmpty {
+                                showInputAlert = true
+                            } else {
+                                viewModel.addNickname(text: nickname)
+                                dismiss()
+                            }
+                            
+                        } label: {
+                            Text("Done".uppercased())
                         }
-                    })
-                    
+                        .modifier(CommonButtonModifier())
+                        .alert(isPresented: $showInputAlert) {
+                            Alert(title: Text("Please input your name."))
+                        }
+                        // 프로필 사진 파이어스토어에 저장
+                        .onChange(of: selectedItem, perform: { newValue in
+                            if let newValue {
+                                viewModel.saveProfileImage(item: newValue)
+                            }
+                        })
+                        
+                    }
+                }
+                .padding(.horizontal, 10)
+                .padding(.bottom, 50)
+                .task {
+                    try? await viewModel.loadCurrentUser()
                 }
             }
-            .padding(.horizontal, 10)
-            .padding(.bottom, 50)
-            .task {
-                try? await viewModel.loadCurrentUser()
-            }
+            .viewBackground()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

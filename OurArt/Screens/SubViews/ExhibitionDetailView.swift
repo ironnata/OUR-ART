@@ -14,71 +14,74 @@ struct ExhibitionDetailView: View {
     let exhibition: Exhibition
     
     var body: some View {
-        ScrollView {
-            AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
-                image
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 300, alignment: .center)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-            } placeholder: {
-                Text("No Poster")
-                    .frame(width: 300, height: 100, alignment: .center)
-                    .font(.objectivityTitle2)
-            }
-            .padding(.vertical, 30)
-                
-            VStack(alignment: .leading, spacing: 10) {
-                Text(exhibition.title ?? "n/a")
-                    .font(.objectivityLargeTitle)
-                    .padding(.bottom, 10)
-                
-                
-                if let dateFrom = exhibition.dateFrom,
-                   let dateTo = exhibition.dateTo {
-                    let dateFormatter = DateFormatter.localizedDateFormatter()
-                    let formattedDateFrom = dateFormatter.string(from: dateFrom)
-                    let formattedDateTo = dateFormatter.string(from: dateTo)
-                    
-                    InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
+        ZStack {
+            ScrollView {
+                AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 300, alignment: .center)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                } placeholder: {
+                    Text("No Poster")
+                        .frame(width: 300, height: 100, alignment: .center)
+                        .font(.objectivityTitle2)
                 }
-                
-                InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
-                
-                if let openingTimeFrom = exhibition.openingTimeFrom,
-                   let openingTimeTo = exhibition.openingTimeTo {
-                    let dateFormatter = DateFormatter.timeOnlyFormatter()
+                .padding(.vertical, 30)
                     
-                    let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
-                    let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text(exhibition.title ?? "n/a")
+                        .font(.objectivityLargeTitle)
+                        .padding(.bottom, 10)
                     
-                    InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
-                }
-                
-                InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
-                
-                InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
-                
-                Image(systemName: "doc.richtext")
-                
-                Text(exhibition.description ?? "n/a")
-                    .multilineTextAlignment(.leading)
-                    .font(.objectivityFootnote)
-            }
-            .padding(.horizontal)
-            
-        }
-        .navigationTitle("\(exhibition.title ?? "")")
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Image(systemName: "chevron.left")
-                    .imageScale(.large)
-                    .onTapGesture {
-                        dismiss()
+                    
+                    if let dateFrom = exhibition.dateFrom,
+                       let dateTo = exhibition.dateTo {
+                        let dateFormatter = DateFormatter.localizedDateFormatter()
+                        let formattedDateFrom = dateFormatter.string(from: dateFrom)
+                        let formattedDateTo = dateFormatter.string(from: dateTo)
+                        
+                        InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                     }
+                    
+                    InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
+                    
+                    if let openingTimeFrom = exhibition.openingTimeFrom,
+                       let openingTimeTo = exhibition.openingTimeTo {
+                        let dateFormatter = DateFormatter.timeOnlyFormatter()
+                        
+                        let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
+                        let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                        
+                        InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
+                    }
+                    
+                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
+                    
+                    InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
+                    
+                    Image(systemName: "doc.richtext")
+                    
+                    Text(exhibition.description ?? "n/a")
+                        .multilineTextAlignment(.leading)
+                        .font(.objectivityFootnote)
+                }
+                .padding(.horizontal)
+                
+            }
+            .navigationTitle("\(exhibition.title ?? "")")
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.large)
+                        .onTapGesture {
+                            dismiss()
+                        }
+                }
             }
         }
+        .viewBackground()
     }
 }
 

@@ -30,139 +30,142 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                if let user = viewModel.user {
-                    
-                    Spacer()
-                    
-                    VStack(spacing: 10) {
-                        // ** 나중에 써먹을 ** 프로필사진 불러오기
-    //                    if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
-    //                        AsyncImage(url: url) { image in
-    //                            image
-    //                                .resizable()
-    //                                .frame(width: 100, height: 100)
-    //                                .clipShape(Circle())
-    //                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
-    //                        } placeholder: {
-    //                            ProgressView()
-    //                                .frame(width: 100, height: 100)
-    //                        }
-    //                    }
+            ZStack {
+                VStack {
+                    if let user = viewModel.user {
                         
-                        // ** 나중에 써먹을 ** 프로필사진 삭제
-    //                    if viewModel.user?.profileImagePath != nil {
-    //                        Button("Delete Image") {
-    //                            viewModel.deleteProfileImage()
-    //                        }
-    //                    }
+                        Spacer()
                         
-                        ZStack {
-                            if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .frame(width: 100, height: 100)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
-                            } else {
-                                Image(systemName: "person.crop.circle.fill")
-                                    .resizable()
-                                    .frame(width: 100, height: 100)
-                                    .foregroundStyle(Color.accentColor)
-                            }
+                        VStack(spacing: 10) {
+                            // ** 나중에 써먹을 ** 프로필사진 불러오기
+        //                    if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
+        //                        AsyncImage(url: url) { image in
+        //                            image
+        //                                .resizable()
+        //                                .frame(width: 100, height: 100)
+        //                                .clipShape(Circle())
+        //                                .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+        //                        } placeholder: {
+        //                            ProgressView()
+        //                                .frame(width: 100, height: 100)
+        //                        }
+        //                    }
                             
-                            Button {
-                                showImagePicker.toggle()
-                            } label: {
-                                Text("EDIT")
-                            }
-                            .modifier(SmallButtonModifier())
-                            .offset(y: 30)
-                            .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
-                            // 선택 즉시 변경한 이미지 표시
-                            .onChange(of: selectedItem) { newItem in
-                                Task {
-                                    if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                        selectedImageData = data
-                                    }
+                            // ** 나중에 써먹을 ** 프로필사진 삭제
+        //                    if viewModel.user?.profileImagePath != nil {
+        //                        Button("Delete Image") {
+        //                            viewModel.deleteProfileImage()
+        //                        }
+        //                    }
+                            
+                            ZStack {
+                                if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .frame(width: 100, height: 100)
+                                        .clipShape(Circle())
+                                        .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
+                                } else {
+                                    Image(systemName: "person.crop.circle.fill")
+                                        .resizable()
+                                        .frame(width: 100, height: 100)
+                                        .foregroundStyle(Color.accentColor)
                                 }
-                            }
-                        }
-                        
-                        // 닉네임 표시하는 방법! 가릿
-                        // Text("\(user.nickname ?? "" )")
-                        
-                        TextField("Nickname...", text: $nickname)
-                            .modifier(TextFieldModifier())
-                            .padding(.top, 20)
-                        
-                        VStack {
-                            Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .foregroundStyle(.secondary)
-                            
-                            HStack {
-                                ForEach(preferenceOptions, id: \.self) { string in
-                                    Button(string) {
-                                        if preferenceIsSelected(text: string) {
-                                            viewModel.removeUserPreference(text: string)
-                                        } else {
-                                            viewModel.addUserPreference(text: string)
+                                
+                                Button {
+                                    showImagePicker.toggle()
+                                } label: {
+                                    Text("EDIT")
+                                }
+                                .modifier(SmallButtonModifier())
+                                .offset(y: 30)
+                                .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
+                                // 선택 즉시 변경한 이미지 표시
+                                .onChange(of: selectedItem) { newItem in
+                                    Task {
+                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+                                            selectedImageData = data
                                         }
                                     }
-                                    .font(.headline)
-                                    .buttonStyle(.borderedProminent)
-                                    .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                }
+                            }
+                            
+                            // 닉네임 표시하는 방법! 가릿
+                            // Text("\(user.nickname ?? "" )")
+                            
+                            TextField("Nickname...", text: $nickname)
+                                .modifier(TextFieldModifier())
+                                .padding(.top, 20)
+                            
+                            VStack {
+                                Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .foregroundStyle(.secondary)
+                                
+                                HStack {
+                                    ForEach(preferenceOptions, id: \.self) { string in
+                                        Button(string) {
+                                            if preferenceIsSelected(text: string) {
+                                                viewModel.removeUserPreference(text: string)
+                                            } else {
+                                                viewModel.addUserPreference(text: string)
+                                            }
+                                        }
+                                        .font(.headline)
+                                        .buttonStyle(.borderedProminent)
+                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                    }
                                 }
                             }
                         }
-                    }
-                    
-                    Divider()
-                        .padding(.vertical, 10)
-                    
-                    // ContentView 로 이동
-                    NavigationLink {
-                        ContentView(showSignInView: $showSignInView)
-                            .toolbar(.hidden)
-                    } label: {
-                        Button {
-                            if nickname.isEmpty {
-                                showInputAlert = true
-                            } else {
-                                viewModel.addNickname(text: nickname)
-                            }
-                            
+                        
+                        Divider()
+                            .padding(.vertical, 10)
+                        
+                        // ContentView 로 이동
+                        NavigationLink {
+                            ContentView(showSignInView: $showSignInView)
+                                .toolbar(.hidden)
                         } label: {
-                            Text("Create a profile".uppercased())
-                        }
-                        .modifier(CommonButtonModifier())
-                        .alert(isPresented: $showInputAlert) {
-                            Alert(title: Text("Please input your name."))
-                        }
-                        // 프로필 사진 파이어스토어에 저장
-                        .onChange(of: selectedItem, perform: { newValue in
-                            if let newValue {
-                                viewModel.saveProfileImage(item: newValue)
+                            Button {
+                                if nickname.isEmpty {
+                                    showInputAlert = true
+                                } else {
+                                    viewModel.addNickname(text: nickname)
+                                }
+                                
+                            } label: {
+                                Text("Create a profile".uppercased())
                             }
-                        })
+                            .modifier(CommonButtonModifier())
+                            .alert(isPresented: $showInputAlert) {
+                                Alert(title: Text("Please input your name."))
+                            }
+                            // 프로필 사진 파이어스토어에 저장
+                            .onChange(of: selectedItem, perform: { newValue in
+                                if let newValue {
+                                    viewModel.saveProfileImage(item: newValue)
+                                }
+                            })
+                        }
+                        .navigationTitle("")
+                        .navigationBarHidden(true)
                     }
-                    .navigationTitle("")
-                    .navigationBarHidden(true)
+                }
+                .overlay(alignment: .topTrailing) {
+                    NavigationLink {
+                        SettingsScreen(showSignInView: $showSignInView)
+                    } label: {
+                        Image(systemName: "gearshape.2")
+                    }
+                }
+                .padding(.horizontal, 10)
+                .padding(.bottom, 50)
+                .task {
+                    try? await viewModel.loadCurrentUser()
                 }
             }
-            .overlay(alignment: .topTrailing) {
-                NavigationLink {
-                    SettingsScreen(showSignInView: $showSignInView)
-                } label: {
-                    Image(systemName: "gearshape.2")
-                }
-            }
-            .padding(.horizontal, 10)
-            .padding(.bottom, 50)
-            .task {
-                try? await viewModel.loadCurrentUser()
-            }
+            .viewBackground()
         }
     }
 }

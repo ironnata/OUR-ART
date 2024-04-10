@@ -22,66 +22,76 @@ struct SettingsScreen: View {
     // MARK: - BODY
     
     var body: some View {
-        List {
+        ZStack {
+            Color.background0.ignoresSafeArea()
             
-            Section {
-                ProfileCellView(showSignInView: $showSignInView)
-            } header: {
-                Text("Profile")
-            }
-            
-            if viewModel.authProviders.contains(.email) {
-                emailSection
-            }
-            
-            if viewModel.authUser?.isAnonymous == true {
-                anonymousSection
-            }
-            
-            
-            Section {
-                Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
-                    Task {
-                        do {
-                            try viewModel.signOut()
-                            showSignInView = true
-                        } catch {
-                            print(error)
-                        }
-                    }
+            List {
+                Section {
+                    ProfileCellView(showSignInView: $showSignInView)
+                        .sectionBackground()
+                } header: {
+                    Text("Profile")
                 }
-                .foregroundStyle(Color.secondary)
-            } header: {
-                Text("Log Out")
-            }
-            
-            Section {
-                Button("Delete Account", role: .destructive) {
-                    showDeleteAlert = true
+                
+                if viewModel.authProviders.contains(.email) {
+                    emailSection
+                        .sectionBackground()
                 }
-                .confirmationDialog("Are you sure?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
-                    Button("Delete", role: .destructive) {
+                
+                if viewModel.authUser?.isAnonymous == true {
+                    anonymousSection
+                        .sectionBackground()
+                }
+                
+                
+                Section {
+                    Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
                         Task {
                             do {
-                                try await viewModel.deleteAccount()
+                                try viewModel.signOut()
                                 showSignInView = true
                             } catch {
                                 print(error)
                             }
                         }
                     }
-                } message: {
-                    Text("After you delete your account, all you uploaded is going to be deleted too.")
+                    .sectionBackground()
+                    .foregroundStyle(Color.secondary)
+                } header: {
+                    Text("Log Out")
                 }
-            } header: {
-                Text("Delete Account")
+                
+                Section {
+                    Button("Delete Account", role: .destructive) {
+                        showDeleteAlert = true
+                    }
+                    .confirmationDialog("Are you sure?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                        Button("Delete", role: .destructive) {
+                            Task {
+                                do {
+                                    try await viewModel.deleteAccount()
+                                    showSignInView = true
+                                } catch {
+                                    print(error)
+                                }
+                            }
+                        }
+                    } message: {
+                        Text("After you delete your account, all you uploaded is going to be deleted too.")
+                    }
+                    .sectionBackground()
+                } header: {
+                    Text("Delete Account")
+                }
+                
             }
-            
+            .toolbarBackground(.background0, for: .tabBar, .automatic)
+            .listStyle(.plain)
+            .scrollContentBackground(.hidden)
+            .onAppear {
+                viewModel.loadAuthProviders()
+                viewModel.loadAuthUser()
         }
-        .listStyle(.plain)
-        .onAppear {
-            viewModel.loadAuthProviders()
-            viewModel.loadAuthUser()
         }
 //        .toolbar {
 //            ToolbarItem(placement: .topBarLeading) {

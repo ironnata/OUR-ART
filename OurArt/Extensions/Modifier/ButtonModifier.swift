@@ -12,7 +12,7 @@ struct AuthButtonModifier: ViewModifier {
         content
             .font(.title3)
             .fontWeight(.medium)
-            .foregroundStyle(Color.white)
+            .foregroundStyle(Color.accentButton)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.black)
@@ -24,7 +24,7 @@ struct CommonButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.objectivityBody)
-            .foregroundStyle(Color.white)
+            .foregroundStyle(Color.accentButton)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.accentColor)
@@ -38,7 +38,7 @@ struct SmallButtonModifier: ViewModifier {
             .font(.objectivityCaption)
             .foregroundStyle(Color.accentColor)
             .frame(width: 40, height: 15)
-            .background(Color.white)
+            .background(Color.accentButton)
             .overlay {
                 RoundedRectangle(cornerRadius: 5)
                     .stroke(.secondary, lineWidth: 1)

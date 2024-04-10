@@ -21,50 +21,53 @@ struct AddExhibitionFirstView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                
-                VStack(alignment: .leading) {
-                    Text("Title")
-                    TextField("Title...", text: $title)
-                        .modifier(TextFieldModifier())
-                } // Title
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 30)
-                
-                Button {
-                    let newExhibition = Exhibition(
-                        id: currentId,
-                        dateCreated: Date(),
-                        title: title
-                    )
+            ZStack {
+                VStack {
+                    Spacer()
                     
-                    Task {
-                        try await viewModel.createExhibition(exhibition: newExhibition)
-                    }
+                    VStack(alignment: .leading) {
+                        Text("Title")
+                        TextField("Title...", text: $title)
+                            .modifier(TextFieldModifier())
+                    } // Title
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.bottom, 30)
                     
-                    showSecondView = true
-                    
-                } label: {
-                    Text("Next".uppercased())
-                }
-                .modifier(CommonButtonModifier())
-                .navigationDestination(isPresented: $showSecondView) {
-                    AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId)
-                        .navigationBarBackButtonHidden(true)
-                }
-            }
-            .navigationTitle("New Exhibiton")
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Image(systemName: "xmark")
-                        .imageScale(.large)
-                        .onTapGesture {
-                            dismiss()
+                    Button {
+                        let newExhibition = Exhibition(
+                            id: currentId,
+                            dateCreated: Date(),
+                            title: title
+                        )
+                        
+                        Task {
+                            try await viewModel.createExhibition(exhibition: newExhibition)
                         }
+                        
+                        showSecondView = true
+                        
+                    } label: {
+                        Text("Next".uppercased())
+                    }
+                    .modifier(CommonButtonModifier())
+                    .navigationDestination(isPresented: $showSecondView) {
+                        AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId)
+                            .navigationBarBackButtonHidden(true)
+                    }
+                }
+                .navigationTitle("New Exhibiton")
+                .padding()
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Image(systemName: "xmark")
+                            .imageScale(.large)
+                            .onTapGesture {
+                                dismiss()
+                            }
+                    }
                 }
             }
+            .viewBackground()
         }
     }
 }

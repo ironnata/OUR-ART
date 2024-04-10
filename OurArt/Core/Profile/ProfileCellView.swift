@@ -13,39 +13,44 @@ struct ProfileCellView: View {
     @Binding var showSignInView: Bool
     
     var body: some View {
-        HStack {
-            if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .frame(width: 50, height: 50)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.secondary, lineWidth: 1))
-                } placeholder: {
-                    ProgressView()
-                        .frame(width: 50, height: 50)
+        ZStack {
+            Color.background0.ignoresSafeArea()
+            
+            HStack {
+                if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .frame(width: 50, height: 50)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.secondary, lineWidth: 1))
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: 50, height: 50)
+                    }
+                    .padding(.trailing, 30)
                 }
-                .padding(.trailing, 30)
-            }
-            
-            Text("\(viewModel.user?.nickname ?? "" )")
-            
-            Spacer()
-            
-            HStack(alignment: .lastTextBaseline) {
-                Text("\((viewModel.user?.preferences ?? []).joined(separator: ", "))")
-                    .font(.footnote)
-                    .padding(.trailing, 20)
                 
-                NavigationLink {
-                    ProfileEditView(showSignInView: $showSignInView)
-                        .navigationBarBackButtonHidden(true)
-                } label: { }.frame(width: 0, height: 0)
+                Text("\(viewModel.user?.nickname ?? "" )")
+                
+                Spacer()
+                
+                HStack(alignment: .lastTextBaseline) {
+                    Text("\((viewModel.user?.preferences ?? []).joined(separator: ", "))")
+                        .font(.footnote)
+                        .padding(.trailing, 20)
+                    
+                    NavigationLink {
+                        ProfileEditView(showSignInView: $showSignInView)
+                            .navigationBarBackButtonHidden(true)
+                    } label: { }.frame(width: 0, height: 0)
+                }
+            }
+            .task {
+                try? await viewModel.loadCurrentUser()
             }
         }
-        .task {
-            try? await viewModel.loadCurrentUser()
-        }
+        .viewBackground()
     }
 }
 

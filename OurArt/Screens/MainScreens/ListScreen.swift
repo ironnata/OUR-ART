@@ -243,62 +243,67 @@ struct ListScreen: View {
     
     var body: some View {
         
-        List {
-            ForEach(filterExhibitions()) { exhibition in
-                NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
-                    ExhibitionCellView(exhibition: exhibition)
-                }
-            }
-            .listRowSeparator(.hidden)
-        }
-        .toolbar(content: {
-            ToolbarItem(placement: .topBarTrailing) {
-                Menu {
-                    ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in
-                        Button {
-                            Task {
-                                try? await viewModel.filterSelected(option: option)
-                            }
-                        } label: {
-                            Text(option.rawValue)
-                            Image(systemName: option.icon ?? "")
-                        }
+        ZStack {
+            List {
+                ForEach(filterExhibitions()) { exhibition in
+                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                        ExhibitionCellView(exhibition: exhibition)
                     }
-                } label: {
-                    Image(systemName: viewModel.selectedFilter?.icon ?? "line.3.horizontal.decrease.circle")
                 }
+                .sectionBackground()
+                .listRowSeparator(.hidden)
+            }
+            .toolbarBackground(.background0, for: .tabBar, .automatic)
+            .toolbar(content: {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in
+                            Button {
+                                Task {
+                                    try? await viewModel.filterSelected(option: option)
+                                }
+                            } label: {
+                                Text(option.rawValue)
+                                Image(systemName: option.icon ?? "")
+                            }
+                        }
+                    } label: {
+                        Image(systemName: viewModel.selectedFilter?.icon ?? "line.3.horizontal.decrease.circle")
+                    }
+                }
+                
+                // CATEGORY 추가 시 사용
+                //            ToolbarItem(placement: .topBarTrailing) {
+                //                Menu("\(viewModel.categorySelected?.rawValue ?? "") \(Image(systemName: "square.grid.2x2"))") {
+                //                    ForEach(ExhibitionViewModel.CategoryOption.allCases, id: \.self) { option in
+                //                        Button(option.rawValue) {
+                //                            Task {
+                //                                try? await viewModel.categorySelected(option: option)
+                //                            }
+                //                        }
+                //                    }
+                //                }
+                //            }
+            })
+            .onAppear {
+                viewModel.getExhibitions()
             }
             
             // CATEGORY 추가 시 사용
-            //            ToolbarItem(placement: .topBarTrailing) {
-            //                Menu("\(viewModel.categorySelected?.rawValue ?? "") \(Image(systemName: "square.grid.2x2"))") {
-            //                    ForEach(ExhibitionViewModel.CategoryOption.allCases, id: \.self) { option in
-            //                        Button(option.rawValue) {
-            //                            Task {
-            //                                try? await viewModel.categorySelected(option: option)
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-        })
-        .onAppear {
-            viewModel.getExhibitions()
+            //        .onAppear(
+            //            try? await viewModel.getExhibitions()
+            //        )
+            
+            .listStyle(.plain)
+            
+            // NavigationBar 안 검색창 UI
+            .searchable(
+                text: $searchText,
+                placement: .automatic,
+                prompt: "Search..."
+            )
         }
-        
-        // CATEGORY 추가 시 사용
-        //        .onAppear(
-        //            try? await viewModel.getExhibitions()
-        //        )
-        
-        .listStyle(.plain)
-        
-        // NavigationBar 안 검색창 UI
-        .searchable(
-            text: $searchText,
-            placement: .automatic,
-            prompt: "Search..."
-        )
+        .viewBackground()
     }
 }
 
