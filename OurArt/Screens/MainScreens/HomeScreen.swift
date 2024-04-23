@@ -24,18 +24,21 @@ struct HomeScreen: View {
                     .padding(.top, 20)
                     
                     NavigationView {
-                        ScrollView(.horizontal) {
-                            LazyHStack(spacing: 10) {
-                                ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
-                                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
-                                        ExhibitionPosterView(exhibition: exhibition)
+                        ZStack {
+                            Color.background0
+                            ScrollView(.horizontal) {
+                                LazyHStack(spacing: 10) {
+                                    ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
+                                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                                            ExhibitionPosterView(exhibition: exhibition)
+                                        }
                                     }
+                                    .padding(.horizontal, 12)
                                 }
-                                .padding(.horizontal, 12)
+    //                            .scrollTargetLayout() ~iOS17~
                             }
-//                            .scrollTargetLayout() ~iOS17~
+                            .frame(height: 400)
                         }
-                        .frame(height: 400)
 //                        .scrollTargetBehavior(.paging) iOS17~
                     }
                     
@@ -61,7 +64,7 @@ struct HomeScreen: View {
             }
             .task {
                 try? await profileVM.loadCurrentUser()
-                try? await exhibitionVM.getAllExhibitions()
+                exhibitionVM.getExhibitions()
             }
         }
         .viewBackground()

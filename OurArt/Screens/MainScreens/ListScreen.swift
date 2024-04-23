@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import FirebaseFirestore
 
 @MainActor
 final class ExhibitionViewModel: ObservableObject {
@@ -14,6 +15,7 @@ final class ExhibitionViewModel: ObservableObject {
     @Published private(set) var exhibitions: [Exhibition] = []
     @Published private(set) var exhibition: Exhibition? = nil
     @Published var selectedFilter: FilterOption? = nil
+    private var lastDocument: DocumentSnapshot? = nil
 //    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
     
     enum FilterOption: String, CaseIterable {
@@ -40,6 +42,8 @@ final class ExhibitionViewModel: ObservableObject {
     
     func filterSelected(option: FilterOption) async throws {
         self.selectedFilter = option
+        self.exhibitions = []
+        self.lastDocument = nil
         self.getExhibitions()
         
 //        switch option {
@@ -80,17 +84,29 @@ final class ExhibitionViewModel: ObservableObject {
 //        }
 //    }
     
+//    func getAllExhibitions() async throws {
+//        self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
+//    }
     
-    // CATEGORY 추가 시 !!!!! getAllExhibitions() 코멘트아웃 !!!!!
-    func getAllExhibitions() async throws {
-        self.exhibitions = try await ExhibitionManager.shared.getAllExhibitions()
-    }
-    
+    // With Pagination
     func getExhibitions() {
         Task {
-            self.exhibitions = try await ExhibitionManager.shared.getExhibitions(dateDescending: selectedFilter?.dateDescending)
+            let (newExhibitions, lastDocument) = try await ExhibitionManager.shared.getExhibitions(dateDescending: selectedFilter?.dateDescending, count: 5, lastDocument: lastDocument)
+            
+            self.exhibitions.append(contentsOf: newExhibitions)
+            if let lastDocument {
+                self.lastDocument = lastDocument
+            }
         }
     }
+    
+    // 전시 수 세는 func
+//    func getAllExhibitionsCount() {
+//        Task {
+//            let count = try await ExhibitionManager.shared.getAllExhibitionsCount()
+//            print("All Exhibition Count: \(count)")
+//        }
+//    }
     
     func createExhibition(exhibition: Exhibition) async throws {
         print(exhibition)
@@ -248,6 +264,13 @@ struct ListScreen: View {
                 ForEach(filterExhibitions()) { exhibition in
                     NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                         ExhibitionCellView(exhibition: exhibition)
+                    }
+                    
+                    if exhibition == viewModel.exhibitions.last {
+                        ProgressView()
+                            .onAppear {
+                                viewModel.getExhibitions()
+                            }
                     }
                 }
                 .sectionBackground()

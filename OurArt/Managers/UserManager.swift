@@ -128,6 +128,10 @@ final class UserManager {
         try userDocument(userId: user.userId).setData(from: user, merge: false)
     }
     
+    func loadUser(user: DBUser) async throws {
+        try userDocument(userId: user.userId).setData(from: user, merge: true)
+    }
+    
 //    func creatNewUser(auth: AuthDataResultModel) async throws {
 //        var userData: [String:Any] = [
 //            "user_id" : auth.uid,

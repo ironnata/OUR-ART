@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 
-struct Exhibition: Identifiable, Codable {
+struct Exhibition: Identifiable, Codable, Equatable {
     var id: String
     let dateCreated: Date?
     let title: String?
@@ -77,6 +77,10 @@ struct Exhibition: Identifiable, Codable {
         case images = "images"
         case posterImagePath = "poster_image_path"
         case posterImagePathUrl = "poster_image_path_url"
+    }
+    
+    static func ==(lhs: Exhibition, rhs: Exhibition) -> Bool {
+        return lhs.id == rhs.id
     }
     
     init(from decoder: Decoder) throws {
@@ -151,21 +155,47 @@ final class ExhibitionManager {
         try await exhibitionDocument(id: id).getDocument(as: Exhibition.self)
     }
     
-    func getAllExhibitions() async throws -> [Exhibition] {
-        try await exhibitionsCollection.getDocuments(as: Exhibition.self)
+//    func getAllExhibitions() async throws -> [Exhibition] {
+//        try await exhibitionsCollection.getDocuments(as: Exhibition.self)
+//    }
+//    
+//    func getAllExhibitionsSortedByDate(descending: Bool) async throws -> [Exhibition] {
+//        try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
+//    }
+//    
+//    func getExhibitions(dateDescending descending: Bool?) async throws -> [Exhibition] {
+//        if let descending {
+//            return try await getAllExhibitionsSortedByDate(descending: descending)
+//        }
+//        
+//        return try await getAllExhibitions()
+//    }
+    
+    func getAllExhibitionsQuery() -> Query {
+        exhibitionsCollection
     }
     
-    func getAllExhibitionsSortedByDate(descending: Bool) async throws -> [Exhibition] {
-        try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
+    func getAllExhibitionsSortedByDateQuery(descending: Bool) -> Query {
+        exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending)
     }
     
-    func getExhibitions(dateDescending descending: Bool?) async throws -> [Exhibition] {
+    func getExhibitions(dateDescending descending: Bool?, count: Int, lastDocument: DocumentSnapshot?) async throws -> (exhibitions: [Exhibition], lastDocument: DocumentSnapshot?) {
+        var query: Query = getAllExhibitionsQuery()
+        
+        
         if let descending {
-            return try await getAllExhibitionsSortedByDate(descending: descending)
+            query = getAllExhibitionsSortedByDateQuery(descending: descending)
         }
         
-        return try await getAllExhibitions()
+        return try await query
+            .startOptionally(afterDocument: lastDocument)
+            .getDocumentsWithSnapshot(as: Exhibition.self)
     }
+    
+    // 전시 수 세는 func
+//    func getAllExhibitionsCount() async throws -> Int {
+//        try await exhibitionsCollection.aggregateCount()
+//    }
     
     // !!!!!!! 아래 3개의 FUNCS는 CATEGORY를 넣게되면 사용할 녀석 !!!!!!!
     
@@ -276,11 +306,37 @@ final class ExhibitionManager {
 extension Query {
     
     // T = Type
+//    func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
+//        let snapshot = try await self.getDocuments()
+//        
+//        return try snapshot.documents.map({ document in
+//            try document.data(as: T.self)
+//        })
+//    }
+    
+    // For Pagination
     func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
+        try await getDocumentsWithSnapshot(as: type).exhibitions
+    }
+    
+    // For Pagination
+    func getDocumentsWithSnapshot<T>(as type: T.Type) async throws -> (exhibitions: [T], lastDocument: DocumentSnapshot?) where T : Decodable {
         let snapshot = try await self.getDocuments()
         
-        return try snapshot.documents.map({ document in
+        let product = try snapshot.documents.map({ document in
             try document.data(as: T.self)
         })
+        
+        return (product, snapshot.documents.last)
+    }
+    
+    func startOptionally(afterDocument lastDocument: DocumentSnapshot?) -> Query {
+        guard let lastDocument else { return self }
+        return self.start(afterDocument: lastDocument)
+    }
+    
+    func aggregateCount() async throws -> Int {
+        let snapshot = try await self.count.getAggregation(source: .server)
+        return Int(truncating: snapshot.count)
     }
 }

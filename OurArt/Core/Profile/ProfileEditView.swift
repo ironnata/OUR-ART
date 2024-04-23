@@ -130,11 +130,11 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
-                .task {
-                    try? await viewModel.loadCurrentUser()
-                }
             }
             .viewBackground()
+        }
+        .task {
+            try? await viewModel.loadCurrentUser()
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
