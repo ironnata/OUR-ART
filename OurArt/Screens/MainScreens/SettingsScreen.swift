@@ -28,10 +28,16 @@ struct SettingsScreen: View {
             List {
                 Section {
                     ProfileCellView(showSignInView: $showSignInView)
-                        .sectionBackground()
+                    
+                    NavigationLink("My Exhibitions") {
+                        MyExhibitionsView()
+                            .navigationBarBackButtonHidden()
+                    }
+                    
                 } header: {
                     Text("Profile")
                 }
+                .sectionBackground()
                 
                 if viewModel.authProviders.contains(.email) {
                     emailSection

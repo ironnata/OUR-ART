@@ -106,10 +106,18 @@ final class UserManager {
     static let shared = UserManager()
     private init() { }
     
-    private let userCollection = Firestore.firestore().collection("users")
+    private let userCollection: CollectionReference = Firestore.firestore().collection("users")
     
     private func userDocument(userId: String) -> DocumentReference {
         userCollection.document(userId)
+    }
+    
+    private func userMyExhibitionCollection(userId: String) -> CollectionReference {
+        userDocument(userId: userId).collection("my_exhibitions")
+    }
+    
+    private func userMyExhibitionDocument(userId: String, myExhibitionId: String) -> DocumentReference {
+        userMyExhibitionCollection(userId: userId).document(myExhibitionId)
     }
     
     private let encoder: Firestore.Encoder = {
@@ -201,5 +209,55 @@ final class UserManager {
         ]
         
         try await userDocument(userId: userId).updateData(data)
+    }
+
+    // MARK: - MY EXHIBITIONS
+    
+    func addMyExhibition(userId: String, exhibitionId: String) async throws {
+        let document = userMyExhibitionCollection(userId: userId).document()
+        let documentId = document.documentID
+        
+        let data: [String:Any] = [
+            UserMyExhibition.CodingKeys.id.rawValue : documentId,
+            UserMyExhibition.CodingKeys.exhibitionId.rawValue : exhibitionId,
+            UserMyExhibition.CodingKeys.dateCreated.rawValue : Timestamp()
+        ]
+        
+        try await document.setData(data, merge: false)
+    }
+    
+    func removeMyExhibition(userId: String, myExhibitionId: String) async throws {
+        try await userMyExhibitionDocument(userId: userId, myExhibitionId: myExhibitionId).delete()
+    }
+    
+    func getAllMyExhibitions(userId: String) async throws -> [UserMyExhibition] {
+        try await userMyExhibitionCollection(userId: userId).getDocuments(as: UserMyExhibition.self)
+    }
+}
+
+
+struct UserMyExhibition: Codable {
+    let id: String
+    let exhibitionId: String
+    let dateCreated: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case exhibitionId = "exhibition_id"
+        case dateCreated = "date_created"
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.exhibitionId = try container.decode(String.self, forKey: .exhibitionId)
+        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.exhibitionId, forKey: .exhibitionId)
+        try container.encode(self.dateCreated, forKey: .dateCreated)
     }
 }
