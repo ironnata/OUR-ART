@@ -106,7 +106,7 @@ struct ProfileEditView: View {
                         
                         Button {
                             if nickname.isEmpty {
-                                showInputAlert = true
+                                dismiss()
                             } else {
                                 viewModel.addNickname(text: nickname)
                                 dismiss()
@@ -116,9 +116,6 @@ struct ProfileEditView: View {
                             Text("Done".uppercased())
                         }
                         .modifier(CommonButtonModifier())
-                        .alert(isPresented: $showInputAlert) {
-                            Alert(title: Text("Please input your name."))
-                        }
                         // 프로필 사진 파이어스토어에 저장
                         .onChange(of: selectedItem, perform: { newValue in
                             if let newValue {

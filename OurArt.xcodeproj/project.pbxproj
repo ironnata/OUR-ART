@@ -26,7 +26,7 @@
 		CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */; };
 		CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */; };
 		CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */; };
-		CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */; };
+		CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
 		CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316362AD6C985004F2868 /* OurArtApp.swift */; };
 		CD9316392AD6C985004F2868 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316382AD6C985004F2868 /* ContentView.swift */; };
@@ -68,7 +68,7 @@
 		CD93168E2AD8300F004F2868 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD93168D2AD8300F004F2868 /* RootView.swift */; };
 		CD9316922AD970B1004F2868 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316912AD970B1004F2868 /* GoogleSignIn */; };
 		CD9316942AD970B1004F2868 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316932AD970B1004F2868 /* GoogleSignInSwift */; };
-		CD93169A2AD974F2004F2868 /* ButtonModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316992AD974F2004F2868 /* ButtonModifier.swift */; };
+		CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316992AD974F2004F2868 /* Modifiers.swift */; };
 		CD93169C2AD97522004F2868 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD93169B2AD97521004F2868 /* GoogleService-Info.plist */; };
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
@@ -99,7 +99,7 @@
 		CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionFirstView.swift; sourceTree = "<group>"; };
-		CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldModifier.swift; sourceTree = "<group>"; };
+		CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionsView.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
 		CD9316332AD6C985004F2868 /* OurArt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OurArt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD9316362AD6C985004F2868 /* OurArtApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OurArtApp.swift; sourceTree = "<group>"; };
@@ -115,7 +115,7 @@
 		CD93168B2AD8225E004F2868 /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		CD93168D2AD8300F004F2868 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		CD9316952AD97127004F2868 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		CD9316992AD974F2004F2868 /* ButtonModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonModifier.swift; sourceTree = "<group>"; };
+		CD9316992AD974F2004F2868 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
 		CD93169B2AD97521004F2868 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
@@ -193,6 +193,7 @@
 				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
 				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 				CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */,
+				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -284,8 +285,7 @@
 		CD9316982AD974D2004F2868 /* Modifier */ = {
 			isa = PBXGroup;
 			children = (
-				CD9316992AD974F2004F2868 /* ButtonModifier.swift */,
-				CD88E6132AE98C9800FAD197 /* TextFieldModifier.swift */,
+				CD9316992AD974F2004F2868 /* Modifiers.swift */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -502,16 +502,16 @@
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
 				CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */,
-				CD88E6142AE98C9800FAD197 /* TextFieldModifier.swift in Sources */,
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
-				CD93169A2AD974F2004F2868 /* ButtonModifier.swift in Sources */,
+				CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
+				CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

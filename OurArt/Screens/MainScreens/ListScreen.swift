@@ -236,6 +236,15 @@ final class ExhibitionViewModel: ObservableObject {
 //        self.profileImage = Image(uiImage: uiImage)
 //    }
     
+    // MARK: - MY EXHIBITIONS
+    func addUserMyExhibition(exhibitionId: String) {
+        Task {
+            let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
+            try? await UserManager.shared.addMyExhibition(userId: authDataResult.uid, exhibitionId: exhibitionId)
+        }
+    }
+    
+    
 }
 
 struct ListScreen: View {
@@ -264,6 +273,11 @@ struct ListScreen: View {
                 ForEach(filterExhibitions()) { exhibition in
                     NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                         ExhibitionCellView(exhibition: exhibition)
+                            .contextMenu(menuItems: {
+                                Button("Add to Favorites") {
+                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
+                                }
+                            })
                     }
                     
                     if exhibition == viewModel.exhibitions.last {

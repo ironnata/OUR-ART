@@ -14,7 +14,6 @@ struct ProfileCellView: View {
     
     var body: some View {
         ZStack {
-            Color.background0.ignoresSafeArea()
             
             HStack {
                 if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {

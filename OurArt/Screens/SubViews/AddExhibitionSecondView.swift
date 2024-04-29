@@ -174,6 +174,8 @@ struct AddExhibitionSecondView: View {
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     try? await viewModel.addDescription(text: description)
                                     
+                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
+                                    
                                     showAddingView = false
                                 }
                             }
