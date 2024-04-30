@@ -188,12 +188,14 @@ final class ExhibitionViewModel: ObservableObject {
     }
     
     func deleteExhibition() async throws {
-        guard let exhibition, let path = exhibition.posterImagePath else { return }
+        guard let exhibition else { return }
         
-        Task {
-            try await ExhibitionManager.shared.deleteExhibition(exhibitionId: exhibition.id)
+        try await ExhibitionManager.shared.deleteExhibition(exhibitionId: exhibition.id)
+        
+        if let path = exhibition.posterImagePath {
             try await StorageManager.shared.deleteImage(path: path)
         }
+        
     }
     
     
@@ -275,7 +277,14 @@ struct ListScreen: View {
                         ExhibitionCellView(exhibition: exhibition)
                             .contextMenu(menuItems: {
                                 Button("Add to Favorites") {
+                                    // Favorite func 만들어서 변경
                                     viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
+                                }
+                                // 테스트 용 삭제버튼
+                                Button("Delete") {
+                                    Task {
+                                        try? await viewModel.deleteExhibition()
+                                    }
                                 }
                             })
                     }

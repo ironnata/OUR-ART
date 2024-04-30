@@ -138,19 +138,6 @@ final class ExhibitionManager {
         try exhibitionDocument(id: exhibition.id).setData(from: exhibition, merge: false)
     }
     
-    // 나중에 쓸 favorite or myExhibitons 기능!
-//    func updateExhibition(exhibitionId: String, exhibition: Exhibition) async throws {
-//        guard let data = try? encoder.encode(exhibition) else {
-//            throw URLError(.badURL)
-//        }
-//        
-//        let dict: [String:Any?] = [
-//            Exhibition.CodingKeys.title.rawValue : title
-//        ]
-//        
-//        try await exhibitionDocument(exhibitionId: exhibitionId).updateData(data as [AnyHashable : Any])
-//    }
-    
     func getExhibition(id: String) async throws -> Exhibition {
         try await exhibitionDocument(id: id).getDocument(as: Exhibition.self)
     }
