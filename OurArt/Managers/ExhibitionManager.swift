@@ -169,7 +169,6 @@ final class ExhibitionManager {
     func getExhibitions(dateDescending descending: Bool?, count: Int, lastDocument: DocumentSnapshot?) async throws -> (exhibitions: [Exhibition], lastDocument: DocumentSnapshot?) {
         var query: Query = getAllExhibitionsQuery()
         
-        
         if let descending {
             query = getAllExhibitionsSortedByDateQuery(descending: descending)
         }

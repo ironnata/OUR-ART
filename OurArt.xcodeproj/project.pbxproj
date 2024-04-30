@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
+		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
 		CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD36549E2BBEC11B001A01FC /* Extensions.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
@@ -82,6 +83,7 @@
 /* Begin PBXFileReference section */
 		CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPosterView.swift; sourceTree = "<group>"; };
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionCellViewBuilder.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
 		CD36549E2BBEC11B001A01FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 				CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */,
 				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
+				CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */,
 			);
 			path = SubViews;
 			sourceTree = "<group>";
@@ -507,6 +510,7 @@
 				CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
+				CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,

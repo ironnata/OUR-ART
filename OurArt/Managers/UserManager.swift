@@ -214,13 +214,20 @@ final class UserManager {
     // MARK: - MY EXHIBITIONS
     
     func addMyExhibition(userId: String, exhibitionId: String) async throws {
+        let exhibitionData = try await ExhibitionManager.shared.getExhibition(id: exhibitionId)
+        
+        let dateFrom = exhibitionData.dateFrom
+        let posterImagePath = exhibitionData.posterImagePath
+        
         let document = userMyExhibitionCollection(userId: userId).document()
         let documentId = document.documentID
         
         let data: [String:Any] = [
             UserMyExhibition.CodingKeys.id.rawValue : documentId,
             UserMyExhibition.CodingKeys.exhibitionId.rawValue : exhibitionId,
-            UserMyExhibition.CodingKeys.dateCreated.rawValue : Timestamp()
+            UserMyExhibition.CodingKeys.dateCreated.rawValue : Timestamp(),
+            UserMyExhibition.CodingKeys.dateFrom.rawValue : dateFrom,
+            UserMyExhibition.CodingKeys.posterImagePath.rawValue : posterImagePath
         ]
         
         try await document.setData(data, merge: false)
@@ -240,11 +247,15 @@ struct UserMyExhibition: Codable {
     let id: String
     let exhibitionId: String
     let dateCreated: Date
+    let dateFrom: Date?
+    let posterImagePath: String?
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case exhibitionId = "exhibition_id"
         case dateCreated = "date_created"
+        case dateFrom = "date_from"
+        case posterImagePath = "poster_image_path"
     }
     
     init(from decoder: any Decoder) throws {
@@ -252,6 +263,8 @@ struct UserMyExhibition: Codable {
         self.id = try container.decode(String.self, forKey: .id)
         self.exhibitionId = try container.decode(String.self, forKey: .exhibitionId)
         self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+        self.dateFrom = try container.decodeIfPresent(Date.self, forKey: .dateFrom)
+        self.posterImagePath = try container.decodeIfPresent(String.self, forKey: .posterImagePath)
     }
     
     func encode(to encoder: any Encoder) throws {
@@ -259,5 +272,7 @@ struct UserMyExhibition: Codable {
         try container.encode(self.id, forKey: .id)
         try container.encode(self.exhibitionId, forKey: .exhibitionId)
         try container.encode(self.dateCreated, forKey: .dateCreated)
+        try container.encodeIfPresent(self.dateFrom, forKey: .dateFrom)
+        try container.encodeIfPresent(self.posterImagePath, forKey: .posterImagePath)
     }
 }
