@@ -11,7 +11,9 @@
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
-		CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD36549E2BBEC11B001A01FC /* Extensions.swift */; };
+		CD36549F2BBEC11B001A01FC /* Extensions+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */; };
+		CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */; };
+		CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -85,7 +87,9 @@
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionCellViewBuilder.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
-		CD36549E2BBEC11B001A01FC /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Query.swift"; sourceTree = "<group>"; };
+		CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionViewModel.swift; sourceTree = "<group>"; };
+		CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -171,34 +175,40 @@
 		CD36549D2BBEC0FD001A01FC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				CD36549E2BBEC11B001A01FC /* Extensions.swift */,
-				CD9316982AD974D2004F2868 /* Modifier */,
+				CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		CD6954C02AF3CD6D00312907 /* MainScreens */ = {
+		CD4D0BDB2BEE66DF006EE049 /* MyExhibitions */ = {
 			isa = PBXGroup;
 			children = (
-				CD93167F2AD812AC004F2868 /* HomeScreen.swift */,
-				CD9316822AD812D2004F2868 /* ListScreen.swift */,
-				CD9316842AD812E7004F2868 /* SettingsScreen.swift */,
+				CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */,
+				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
 			);
-			path = MainScreens;
+			path = MyExhibitions;
 			sourceTree = "<group>";
 		};
-		CD6954C12AF3CD7E00312907 /* SubViews */ = {
+		CD4D0BDE2BEE6737006EE049 /* CellViews */ = {
 			isa = PBXGroup;
 			children = (
-				CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */,
 				CD6954C62AF3E26600312907 /* ExhibitionCellView.swift */,
+				CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */,
+			);
+			path = CellViews;
+			sourceTree = "<group>";
+		};
+		CD6954C12AF3CD7E00312907 /* Exhibitions */ = {
+			isa = PBXGroup;
+			children = (
+				CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */,
+				CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */,
 				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
 				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 				CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */,
-				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
-				CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */,
+				CD4D0BDE2BEE6737006EE049 /* CellViews */,
 			);
-			path = SubViews;
+			path = Exhibitions;
 			sourceTree = "<group>";
 		};
 		CD6954C82AF41F9F00312907 /* Fonts */ = {
@@ -250,6 +260,7 @@
 				CDDED79E2AE1B86700150F87 /* Core */,
 				CD9316A02AD989C0004F2868 /* Utilities */,
 				CD36549D2BBEC0FD001A01FC /* Extensions */,
+				CD9316982AD974D2004F2868 /* Modifier */,
 				CD9316A32AD99324004F2868 /* Managers */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
@@ -270,8 +281,9 @@
 		CD93167E2AD8118F004F2868 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				CD6954C02AF3CD6D00312907 /* MainScreens */,
-				CD6954C12AF3CD7E00312907 /* SubViews */,
+				CD93167F2AD812AC004F2868 /* HomeScreen.swift */,
+				CD9316822AD812D2004F2868 /* ListScreen.swift */,
+				CD9316842AD812E7004F2868 /* SettingsScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -281,6 +293,7 @@
 			children = (
 				CD9316362AD6C985004F2868 /* OurArtApp.swift */,
 				CD9316382AD6C985004F2868 /* ContentView.swift */,
+				CD93168D2AD8300F004F2868 /* RootView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -316,7 +329,8 @@
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CD93168D2AD8300F004F2868 /* RootView.swift */,
+				CD6954C12AF3CD7E00312907 /* Exhibitions */,
+				CD4D0BDB2BEE66DF006EE049 /* MyExhibitions */,
 				CDDED7A82AE1BA7900150F87 /* Profile */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CDDED7A62AE1B9DD00150F87 /* Settings */,
@@ -354,8 +368,8 @@
 		CDDED7A82AE1BA7900150F87 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
 				CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */,
+				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
 				CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */,
 				CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */,
 			);
@@ -502,9 +516,11 @@
 				CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
+				CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
-				CD36549F2BBEC11B001A01FC /* Extensions.swift in Sources */,
+				CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */,
+				CD36549F2BBEC11B001A01FC /* Extensions+Query.swift in Sources */,
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
 				CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */,

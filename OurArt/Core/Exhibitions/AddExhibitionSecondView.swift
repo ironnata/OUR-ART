@@ -63,10 +63,12 @@ struct AddExhibitionSecondView: View {
                                         Image(uiImage: uiImage)
                                             .resizable()
                                             .frame(width: 120, height: 150)
+                                            .clipShape(RoundedRectangle(cornerRadius: 5))
                                     } else {
                                         Image(systemName: "questionmark.square.dashed")
                                             .resizable()
                                             .frame(width: 120, height: 150)
+                                            .clipShape(RoundedRectangle(cornerRadius: 5))
                                     }
                                     
                                     Button {
@@ -190,6 +192,10 @@ struct AddExhibitionSecondView: View {
                                 .imageScale(.large)
                                 .onTapGesture {
                                     showDeleteAlert = true
+                                    Task {
+                                        // 사진 업로드된 경우, path 받아오기 위한 현재 전시 재호출
+                                        try await viewModel.loadCurrentExhibition(id: currentId)
+                                    }
                                 }
                                 .alert(isPresented: $showDeleteAlert) {
                                     Alert(

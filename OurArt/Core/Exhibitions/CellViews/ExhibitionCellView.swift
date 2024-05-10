@@ -17,7 +17,7 @@ struct ExhibitionCellView: View {
                 VStack(alignment: .leading) {
                     Text(exhibition.title ?? "n/a")
                         .foregroundStyle(.primary)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 20)
                     
                     if let dateFrom = exhibition.dateFrom,
                         let dateTo = exhibition.dateTo {
@@ -37,6 +37,7 @@ struct ExhibitionCellView: View {
                     image
                         .resizable()
                         .frame(width: 80, height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 2))
                 } placeholder: {
                     ProgressView()
                         .frame(width: 80, height: 100)

@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 // MARK: - DB USER
 
@@ -132,6 +133,8 @@ final class UserManager {
         return decoder
     }()
     
+    private var userMyExhibitionsListener: ListenerRegistration? = nil
+    
     func creatNewUser(user: DBUser) async throws {
         try userDocument(userId: user.userId).setData(from: user, merge: false)
     }
@@ -239,6 +242,48 @@ final class UserManager {
     
     func getAllMyExhibitions(userId: String) async throws -> [UserMyExhibition] {
         try await userMyExhibitionCollection(userId: userId).getDocuments(as: UserMyExhibition.self)
+    }
+    
+    func removeListenerForAllMyExhibitions() {
+        self.userMyExhibitionsListener?.remove()
+    }
+    
+    func addListenerForAllUserMyExhibitions(userId: String, completion: @escaping (_ exhibitions: [UserMyExhibition]) -> Void) {
+        self.userMyExhibitionsListener = userMyExhibitionCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            
+            let exhibitions: [UserMyExhibition] = documents.compactMap({ try? $0.data(as: UserMyExhibition.self) })
+            completion(exhibitions)
+        }
+    }
+    
+    // With Combine
+//    func addListenerForAllUserMyExhibitions(userId: String) -> AnyPublisher<[UserMyExhibition], Error> {
+//        let publisher = PassthroughSubject<[UserMyExhibition], Error>()
+//        
+//        self.userMyExhibitionsListener = userMyExhibitionCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//            
+//            let exhibitions: [UserMyExhibition] = documents.compactMap({ try? $0.data(as: UserMyExhibition.self) })
+//            publisher.send(exhibitions)
+//        }
+//        
+//        return publisher.eraseToAnyPublisher()
+//    }
+    
+    // With Combine + Query
+    func addListenerForAllUserMyExhibitions(userId: String) -> AnyPublisher<[UserMyExhibition], Error> {
+        let (publisher, listener) = userMyExhibitionCollection(userId: userId)
+            .addSnapshotListener(as: UserMyExhibition.self)
+        
+        self.userMyExhibitionsListener = listener
+        return publisher
     }
 }
 
