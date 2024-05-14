@@ -34,7 +34,7 @@ struct AddExhibitionSecondView: View {
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
     
-    @State private var showDeleteAlert: Bool = false
+    @State private var showDeleteAlert = false
     
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []

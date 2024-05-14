@@ -75,6 +75,7 @@
 		CD93169C2AD97522004F2868 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD93169B2AD97521004F2868 /* GoogleService-Info.plist */; };
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
+		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
 		CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */; };
 		CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */; };
 		CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */; };
@@ -125,6 +126,7 @@
 		CD93169B2AD97521004F2868 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
+		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
 		CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettignsViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 			children = (
 				CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */,
 				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
+				CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */,
 			);
 			path = MyExhibitions;
 			sourceTree = "<group>";
@@ -516,6 +519,7 @@
 				CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
+				CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */,
 				CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,

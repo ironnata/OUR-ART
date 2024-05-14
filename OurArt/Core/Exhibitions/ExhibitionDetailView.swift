@@ -13,7 +13,8 @@ struct ExhibitionDetailView: View {
     
     @StateObject private var viewModel = MyExhibitionViewModel()
         
-    @State private var showDeleteAlert: Bool = false
+    @State private var showDeleteAlert = false
+    @State private var showEditView = false
     
     let exhibition: Exhibition
     let myExhibitionId: String?
@@ -76,6 +77,7 @@ struct ExhibitionDetailView: View {
                 .padding(.horizontal)
             }
             .navigationTitle("\(exhibition.title ?? "")")
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
@@ -87,6 +89,14 @@ struct ExhibitionDetailView: View {
                 }
                 
                 if isMyExhibition {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Image(systemName: "square.and.pencil")
+                            .imageScale(.large)
+                            .onTapGesture {
+                                showEditView = true
+                            }
+                    }
+                    
                     ToolbarItem(placement: .topBarTrailing) {
                         Image(systemName: "trash")
                             .imageScale(.large)
@@ -108,6 +118,9 @@ struct ExhibitionDetailView: View {
                     secondaryButton: .cancel()
                 )
             }
+            .sheet(isPresented: $showEditView) {
+                EditMyExhibitionView()
+            }
         }
         .onAppear {
             if let myExhibitionId = myExhibitionId {
@@ -117,8 +130,6 @@ struct ExhibitionDetailView: View {
         .viewBackground()
     }
 }
-
-
 
 
 #Preview {
