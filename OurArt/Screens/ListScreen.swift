@@ -31,7 +31,7 @@ struct ListScreen: View {
         ZStack {
             List {
                 ForEach(filterExhibitions()) { exhibition in
-                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition, myExhibitionId: nil)) {
                         ExhibitionCellView(exhibition: exhibition)
                             .contextMenu(menuItems: {
                                 Button("Add to Favorites") {

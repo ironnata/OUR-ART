@@ -329,10 +329,10 @@
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CD6954C12AF3CD7E00312907 /* Exhibitions */,
 				CD4D0BDB2BEE66DF006EE049 /* MyExhibitions */,
 				CDDED7A82AE1BA7900150F87 /* Profile */,
-				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CDDED7A62AE1B9DD00150F87 /* Settings */,
 			);
 			path = Core;

@@ -17,11 +17,11 @@ struct MyExhibitionsView: View {
         ZStack {
             List {
                 ForEach(viewModel.userMyExhibitions, id: \.id.self) { item in
-                    ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId)
+                    ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
                         .contextMenu(menuItems: {
                             Button("Remove from Favorites") {
                                 // Favorite func 만들어서 변경
-                                viewModel.removeMyExhibitions(myExhibitionId: item.id)
+                                viewModel.deleteMyExhibitions(myExhibitionId: item.id)
                             }
                         })
                 }

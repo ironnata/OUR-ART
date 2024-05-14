@@ -12,6 +12,7 @@ import Combine
 final class MyExhibitionViewModel: ObservableObject {
     
     @Published private(set) var userMyExhibitions: [UserMyExhibition] = []
+    @Published private(set) var myExhibition: UserMyExhibition?
     
     private var cancellables = Set<AnyCancellable>()
     
@@ -26,10 +27,26 @@ final class MyExhibitionViewModel: ObservableObject {
             .sink { complition in
                 
             } receiveValue: { [weak self] exhibitions in
-                self?.userMyExhibitions = exhibitions
+                let sortedExhibitions = exhibitions.sorted { (exhibition1, exhibition2) -> Bool in
+                    let date1 = exhibition1.dateFrom ?? .distantFuture // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
+                    let date2 = exhibition2.dateFrom ?? .distantFuture // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
+                    return date1 > date2 // 내림차순 정렬
+                }
+                self?.userMyExhibitions = sortedExhibitions
             }
             .store(in: &cancellables)
 
+    }
+    
+    func loadMyExhibition(myExhibitionId: String) {
+        Task {
+            guard let authDataResult = try? AuthenticationManager.shared.getAuthenticatedUser() else { return }
+
+            let exhibition = try await UserManager.shared.getMyExhibition(userId: authDataResult.uid, myExhibitionId: myExhibitionId)
+            DispatchQueue.main.async { [weak self] in
+                self?.myExhibition = exhibition
+            }
+        }
     }
     
 //    func getMyExhibitions() {
@@ -48,18 +65,17 @@ final class MyExhibitionViewModel: ObservableObject {
 //        }
 //    }
     
-    // Favorite 기능 넣으면 쓸 기능 // 추가로 디벨롭하여 유저의 전시삭제 기능
-    func removeMyExhibitions(myExhibitionId: String) {
+    func deleteMyExhibitions(myExhibitionId: String) {
+        guard let myExhibition else { return }
+        
         Task {
             let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
             
-            try? await UserManager.shared.removeMyExhibition(userId: authDataResult.uid, myExhibitionId: myExhibitionId)
-            
-//            try await ExhibitionManager.shared.deleteExhibition(exhibitionId: myExhibitionId)
-            // path를 어떻게 선언할지 방법을 찾아야 함
-//            if let path = exhibition.posterImagePath {
-//                try await StorageManager.shared.deleteImage(path: path)
-//            }
+            try await UserManager.shared.removeMyExhibition(userId: authDataResult.uid, myExhibitionId: myExhibition.id)
+            try await ExhibitionManager.shared.deleteExhibition(exhibitionId: myExhibition.exhibitionId)
+            if let path = myExhibition.posterImagePath {
+                try await StorageManager.shared.deleteImage(path: path)
+            }
         }
     }
 }

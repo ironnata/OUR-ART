@@ -236,6 +236,10 @@ final class UserManager {
         try await document.setData(data, merge: false)
     }
     
+    func getMyExhibition(userId: String, myExhibitionId: String) async throws -> UserMyExhibition {
+        try await userMyExhibitionDocument(userId: userId, myExhibitionId: myExhibitionId).getDocument(as: UserMyExhibition.self)
+    }
+    
     func removeMyExhibition(userId: String, myExhibitionId: String) async throws {
         try await userMyExhibitionDocument(userId: userId, myExhibitionId: myExhibitionId).delete()
     }
@@ -248,17 +252,17 @@ final class UserManager {
         self.userMyExhibitionsListener?.remove()
     }
     
-    func addListenerForAllUserMyExhibitions(userId: String, completion: @escaping (_ exhibitions: [UserMyExhibition]) -> Void) {
-        self.userMyExhibitionsListener = userMyExhibitionCollection(userId: userId).addSnapshotListener { querySnapshot, error in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
-            }
-            
-            let exhibitions: [UserMyExhibition] = documents.compactMap({ try? $0.data(as: UserMyExhibition.self) })
-            completion(exhibitions)
-        }
-    }
+//    func addListenerForAllUserMyExhibitions(userId: String, completion: @escaping (_ exhibitions: [UserMyExhibition]) -> Void) {
+//        self.userMyExhibitionsListener = userMyExhibitionCollection(userId: userId).addSnapshotListener { querySnapshot, error in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//            
+//            let exhibitions: [UserMyExhibition] = documents.compactMap({ try? $0.data(as: UserMyExhibition.self) })
+//            completion(exhibitions)
+//        }
+//    }
     
     // With Combine
 //    func addListenerForAllUserMyExhibitions(userId: String) -> AnyPublisher<[UserMyExhibition], Error> {
