@@ -117,6 +117,16 @@ final class ExhibitionViewModel: ObservableObject {
         self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
     }
     
+    // addTitle func
+    func addTitle(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addTitle(exhibitionId: exhibition.id, title: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
     // addArtist func
     func addArtist(text: String) async throws {
         guard let exhibition else { return }

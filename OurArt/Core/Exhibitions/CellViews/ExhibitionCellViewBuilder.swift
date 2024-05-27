@@ -10,13 +10,13 @@ import SwiftUI
 struct ExhibitionCellViewBuilder: View {
     
     let exhibitionId: String
-    let myExhibitionId: String
+    let myExhibitionId: String?
     @State private var exhibition: Exhibition? = nil
     
     var body: some View {
         ZStack {
             if let exhibition {
-                NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition, myExhibitionId: myExhibitionId, isMyExhibition: true)) {
+                NavigationLink(destination: ExhibitionDetailView(myExhibitionId: myExhibitionId, exhibition: exhibition, isMyExhibition: true)) {
                     ExhibitionCellView(exhibition: exhibition)
                 }
             }

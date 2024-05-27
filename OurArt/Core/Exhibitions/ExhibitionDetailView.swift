@@ -15,15 +15,19 @@ struct ExhibitionDetailView: View {
         
     @State private var showDeleteAlert = false
     @State private var showEditView = false
+    var myExhibitionId: String?
     
     let exhibition: Exhibition
-    let myExhibitionId: String?
     
     var isMyExhibition: Bool = false
     
     var body: some View {
         ZStack {
             ScrollView {
+                // TEST용
+                Text(exhibition.id)
+                Text(viewModel.myExhibition?.id ?? "myID is nil")
+                
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
@@ -72,7 +76,7 @@ struct ExhibitionDetailView: View {
                     
                     Text(exhibition.description ?? "n/a")
                         .multilineTextAlignment(.leading)
-                        .font(.objectivityFootnote)
+                        .font(.objectivityCallout)
                 }
                 .padding(.horizontal)
             }
@@ -119,7 +123,7 @@ struct ExhibitionDetailView: View {
                 )
             }
             .sheet(isPresented: $showEditView) {
-                EditMyExhibitionView()
+                EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
             }
         }
         .onAppear {
@@ -134,7 +138,7 @@ struct ExhibitionDetailView: View {
 
 #Preview {
     NavigationStack {
-        ExhibitionDetailView(exhibition: Exhibition(id: "1"), myExhibitionId: "", isMyExhibition: true)
+        ExhibitionDetailView(exhibition: Exhibition(id: "1"), isMyExhibition: true)
     }
 }
 

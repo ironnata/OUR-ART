@@ -31,18 +31,12 @@ struct ListScreen: View {
         ZStack {
             List {
                 ForEach(filterExhibitions()) { exhibition in
-                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition, myExhibitionId: nil)) {
+                    NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                         ExhibitionCellView(exhibition: exhibition)
                             .contextMenu(menuItems: {
                                 Button("Add to Favorites") {
                                     // Favorite func 만들어서 변경
                                     viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
-                                }
-                                // 테스트 용 삭제버튼
-                                Button("Delete") {
-                                    Task {
-                                        try? await viewModel.deleteExhibition()
-                                    }
                                 }
                             })
                     }

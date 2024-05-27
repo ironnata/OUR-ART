@@ -29,7 +29,7 @@ struct HomeScreen: View {
                             ScrollView(.horizontal) {
                                 LazyHStack(spacing: 10) {
                                     ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
-                                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition, myExhibitionId: nil)) {
+                                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
                                             ExhibitionPosterView(exhibition: exhibition)
                                         }
                                     }

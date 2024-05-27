@@ -208,6 +208,15 @@ final class ExhibitionManager {
 //        return try await getAllExhibitions()
 //    }
     
+    // addTitle func
+    func addTitle(exhibitionId: String, title: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.title.rawValue : title
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
     // addArtist func
     func addArtist(exhibitionId: String, artist: String) async throws {
         let data: [String:Any] = [

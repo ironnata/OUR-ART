@@ -38,15 +38,15 @@ struct CommonButtonModifier: ViewModifier {
 struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .font(.objectivityCaption)
+            .font(.objectivityFootnote)
             .foregroundStyle(Color.accentColor)
-            .frame(width: 40, height: 15)
+            .frame(width: 45, height: 20)
             .background(Color.accentButton)
             .overlay {
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(.secondary, lineWidth: 1)
+                RoundedRectangle(cornerRadius: 3)
+                    .stroke(.secondary, lineWidth: 2)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 }
 
