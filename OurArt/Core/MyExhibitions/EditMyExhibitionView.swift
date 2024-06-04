@@ -66,25 +66,17 @@ struct EditMyExhibitionView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         if let exhibition = viewModel.exhibition {
-                            Text("Exhibition ID: \(exhibition.id)") // TEST용
-                            
-                            Text("Title: \(exhibition.title ?? "")") // TEST용
-                            
                             VStack(alignment: .leading) {
                                 Text("Poster")
                                 VStack {
-                                    if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
-                                        AsyncImage(url: url) { image in
-                                            image
-                                                .resizable()
-                                                .frame(width: 120, height: 150)
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                        } placeholder: {
-                                            Image(systemName: "questionmark.square.dashed")
-                                                .resizable()
-                                                .frame(width: 120, height: 150)
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                        }
+                                    AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                                        image
+                                            .resizable()
+                                            .modifier(MidPosterSizeModifier())
+                                    } placeholder: {
+                                        Image(systemName: "questionmark.square.dashed")
+                                            .resizable()
+                                            .modifier(MidPosterSizeModifier())
                                     }
                                     
                                     Button {
@@ -203,6 +195,7 @@ struct EditMyExhibitionView: View {
                             }
                             .modifier(CommonButtonModifier())
                             .navigationTitle(exhibition.title ?? "")
+                            .navigationBarTitleDisplayMode(.inline)
                         }
                     }
                     .ignoresSafeArea()
@@ -220,6 +213,7 @@ struct EditMyExhibitionView: View {
                         UIDatePicker.appearance().minuteInterval = 5
                     }
                 }
+                .toolbarBackground()
                 .task {
                     try? await viewModel.loadCurrentExhibition(id: exhibitionId)
                 }

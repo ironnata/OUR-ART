@@ -20,7 +20,7 @@ struct ExhibitionCellView: View {
                         .padding(.bottom, 20)
                     
                     if let dateFrom = exhibition.dateFrom,
-                        let dateTo = exhibition.dateTo {
+                       let dateTo = exhibition.dateTo {
                         let dateFormatter = DateFormatter.localizedDateFormatter()
                         let formattedDateFrom = dateFormatter.string(from: dateFrom)
                         let formattedDateTo = dateFormatter.string(from: dateTo)
@@ -36,22 +36,22 @@ struct ExhibitionCellView: View {
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
-                        .frame(width: 80, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 2))
+                        .scaledToFit()
+                        .modifier(SmallPosterSizeModifier())
                 } placeholder: {
-                    ProgressView()
-                        .frame(width: 80, height: 100)
+                    EmptyView()
+                        .modifier(SmallPosterSizeModifier())
                 }
                 
             }
             .frame(maxWidth: .infinity)
+            .frame(height: 100)
             .padding()
-            
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(.secondary, lineWidth: 2)
             }
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .viewBackground()
     }

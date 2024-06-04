@@ -30,28 +30,22 @@ struct ContentView: View {
             }.tag(0)
             .tabItem {
                 Image(systemName: "house")
-                Text("Home")
             }
             
             NavigationView {
                 ListScreen()
-                    .navigationBarTitle("Exhibitions")
             }.tag(1)
             .tabItem {
                 Image(systemName: "list.dash")
-                Text("List")
             }
             
             NavigationView {
                 SettingsScreen(showSignInView: $showSignInView)
-                    .navigationBarTitle("Settings")
             }.tag(2)
             .tabItem {
                 Image(systemName: "gearshape.2")
-                Text("Settings")
             }
         }
-        .customNavigationBar()
     }
 }
 

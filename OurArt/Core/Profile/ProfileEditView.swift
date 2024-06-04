@@ -75,7 +75,7 @@ struct ProfileEditView: View {
                                 }
                             }
                             
-                            TextField("Nickname...", text: $nickname)
+                            TextField(user.nickname ?? "Nickname...", text: $nickname)
                                 .modifier(TextFieldModifier())
                                 .padding(.top, 20)
                             
@@ -95,7 +95,8 @@ struct ProfileEditView: View {
                                         }
                                         .font(.objectivityBody)
                                         .buttonStyle(.borderedProminent)
-                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary) // secondary 색상고민좀
+                                        .foregroundStyle(Color.accentButtonText)
                                     }
                                 }
                             }

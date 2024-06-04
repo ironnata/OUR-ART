@@ -15,7 +15,7 @@ struct AuthButtonModifier: ViewModifier {
         content
             .font(.title3)
             .fontWeight(.medium)
-            .foregroundStyle(Color.accentButton)
+            .foregroundStyle(Color.accentButtonText)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.black)
@@ -27,7 +27,7 @@ struct CommonButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.objectivityBody)
-            .foregroundStyle(Color.accentButton)
+            .foregroundStyle(Color.accentButtonText)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.accentColor)
@@ -39,12 +39,12 @@ struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .font(.objectivityFootnote)
-            .foregroundStyle(Color.accentColor)
+            .foregroundStyle(Color.accentButtonText)
             .frame(width: 45, height: 20)
-            .background(Color.accentButton)
+            .background(Color.accentColor)
             .overlay {
                 RoundedRectangle(cornerRadius: 3)
-                    .stroke(.secondary, lineWidth: 2)
+                    .stroke(.accent, lineWidth: 2)
             }
             .clipShape(RoundedRectangle(cornerRadius: 3))
     }
@@ -90,5 +90,34 @@ struct OnFirstAppearViewModifier: ViewModifier {
                     didAppear = true
                 }
             }
+    }
+}
+
+
+struct SmallPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(maxWidth: 80, maxHeight: 120)
+            .clipShape(RoundedRectangle(cornerRadius: 2))
+    }
+}
+
+
+struct MidPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(maxWidth: 120)
+            .clipShape(RoundedRectangle(cornerRadius: 4))
+    }
+}
+
+
+struct BigPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(width: 280, height: 420)
     }
 }

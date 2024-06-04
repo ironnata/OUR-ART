@@ -23,8 +23,6 @@ struct SettingsScreen: View {
     
     var body: some View {
         ZStack {
-            Color.background0.ignoresSafeArea()
-            
             List {
                 Section {
                     ProfileCellView(showSignInView: $showSignInView)
@@ -91,23 +89,21 @@ struct SettingsScreen: View {
                 }
                 
             }
-            .toolbarBackground(.background0, for: .tabBar, .automatic)
+            .toolbarBackground()
             .listStyle(.plain)
             .scrollContentBackground(.hidden)
             .onAppear {
                 viewModel.loadAuthProviders()
                 viewModel.loadAuthUser()
+            }
+            .viewBackground()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("Settings")
+                    .font(.objectivityTitle)
+            }
         }
-//        .toolbar {
-//            ToolbarItem(placement: .topBarLeading) {
-//                Image(systemName: "chevron.left")
-//                    .imageScale(.large)
-//                    .onTapGesture {
-//                        dismiss()
-//                    }
-//            }
-//        }
         
     }
 }

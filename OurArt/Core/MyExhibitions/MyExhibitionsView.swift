@@ -28,8 +28,10 @@ struct MyExhibitionsView: View {
                 .sectionBackground()
                 .listRowSeparator(.hidden)
             }
+            .toolbarBackground()
             .listStyle(.plain)
         }
+        .viewBackground()
         .navigationTitle("My Exhibitions")
         .onFirstAppear {
             viewModel.addListenerForMyExhibitions()
@@ -43,7 +45,6 @@ struct MyExhibitionsView: View {
                     }
             }
         }
-        .viewBackground()
     }
 }
 

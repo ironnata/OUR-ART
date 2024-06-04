@@ -109,27 +109,13 @@ extension View {
         self.background(.background0)
     }
     
-    func customNavigationBar() -> some View {
-        self.modifier(CustomNavigationBar())
+    func toolbarBackground() -> some View {
+        self.toolbarBackground(.background0, for: .tabBar, .automatic)
+
     }
     
     func onFirstAppear(perform: (() -> Void)?) -> some View {
         modifier(OnFirstAppearViewModifier(perform: perform))
-    }
-}
-
-
-
-struct CustomNavigationBar: ViewModifier {
-    
-    init() {
-        UINavigationBar.appearance().largeTitleTextAttributes = [.font: UIFont(name: "Objectivity-ExtraBold", size: 32)!]
-        
-        UINavigationBar.appearance().titleTextAttributes = [.font: UIFont(name: "Objectivity-Bold", size: 17)!]
-    }
-    
-    func body(content: Content) -> some View {
-        content
     }
 }
 

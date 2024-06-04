@@ -25,18 +25,18 @@ struct ExhibitionDetailView: View {
         ZStack {
             ScrollView {
                 // TEST용
-                Text(exhibition.id)
-                Text(viewModel.myExhibition?.id ?? "myID is nil")
+//                Text(exhibition.id)
+//                Text(viewModel.myExhibition?.id ?? "myID is nil")
                 
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
                         .scaledToFit()
-                        .frame(maxWidth: 300, alignment: .center)
+                        .frame(maxWidth: 240, alignment: .center)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                 } placeholder: {
                     Text("No Poster")
-                        .frame(width: 300, height: 100, alignment: .center)
+                        .frame(width: 240, height: 360, alignment: .center)
                         .font(.objectivityTitle2)
                 }
                 .padding(.vertical, 30)
@@ -83,6 +83,7 @@ struct ExhibitionDetailView: View {
             .navigationTitle("\(exhibition.title ?? "")")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
+            .toolbarBackground()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Image(systemName: "chevron.left")
@@ -124,6 +125,12 @@ struct ExhibitionDetailView: View {
             }
             .sheet(isPresented: $showEditView) {
                 EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
+            }
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(exhibition.title ?? "")
+                        .font(.objectivityBody)
+                }
             }
         }
         .onAppear {

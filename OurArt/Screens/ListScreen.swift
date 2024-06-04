@@ -42,17 +42,24 @@ struct ListScreen: View {
                     }
                     
                     if exhibition == viewModel.exhibitions.last {
-                        ProgressView()
-                            .onAppear {
-                                viewModel.getExhibitions()
+                        HStack(alignment: .center) {
+                            ProgressView()
+                                .onAppear {
+                                    viewModel.getExhibitions()
                             }
+                        }
                     }
                 }
                 .sectionBackground()
                 .listRowSeparator(.hidden)
             }
-            .toolbarBackground(.background0, for: .tabBar, .automatic)
+            .toolbarBackground()
             .toolbar(content: {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Exhibitions")
+                        .font(.objectivityTitle)
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in

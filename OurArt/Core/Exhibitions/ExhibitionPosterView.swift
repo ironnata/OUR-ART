@@ -17,18 +17,17 @@ struct ExhibitionPosterView: View {
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
-                        .scaledToFill() // scaledToFit 으로 변경
-                        .frame(width: 270, height: 400) // Poster 사이즈 규격에 맞게 변경
+                        .scaledToFit()
+                        .modifier(BigPosterSizeModifier())
                 } placeholder: {
                     Text(exhibition.title ?? "")
-                        .frame(width: 270, height: 400)
+                        .frame(width: 280, height: 420)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(Color(UIColor.systemGray4), lineWidth: 2)
+                        }
                 }
             }
-            .overlay {
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color(UIColor.systemGray4), lineWidth: 4)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
         .viewBackground()
     }

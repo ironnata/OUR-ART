@@ -114,6 +114,7 @@ struct ProfileView: View {
                                         .font(.headline)
                                         .buttonStyle(.borderedProminent)
                                         .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                        .foregroundStyle(preferenceIsSelected(text: string) ? Color.accentButtonText : Color.accentColor)
                                     }
                                 }
                             }
