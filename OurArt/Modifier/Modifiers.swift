@@ -31,7 +31,7 @@ struct CommonButtonModifier: ViewModifier {
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(RoundedRectangle(cornerRadius: 7))
     }
 }
 

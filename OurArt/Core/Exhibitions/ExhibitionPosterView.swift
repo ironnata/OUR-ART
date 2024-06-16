@@ -22,10 +22,10 @@ struct ExhibitionPosterView: View {
                 } placeholder: {
                     Text(exhibition.title ?? "")
                         .frame(width: 280, height: 420)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(Color(UIColor.systemGray4), lineWidth: 2)
-                        }
+//                        .overlay {
+//                            RoundedRectangle(cornerRadius: 12)
+//                                .stroke(Color(UIColor.systemGray4), lineWidth: 2)
+//                        }
                 }
             }
         }

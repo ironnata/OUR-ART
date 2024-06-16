@@ -43,7 +43,7 @@ struct ExhibitionDetailView: View {
                 
                 VStack(alignment: .leading, spacing: 10) {
                     Text(exhibition.title ?? "n/a")
-                        .font(.objectivityLargeTitle)
+                        .font(.objectivityTitle)
                         .padding(.bottom, 20)
                     
                     

@@ -70,7 +70,7 @@ extension Font {
     
     static let objectivityLargeTitle = Font.custom("Objectivity-Bold", size: 32)
     
-    static let objectivityTitle = Font.custom("Objectivity-Bold", size: 28)
+    static let objectivityTitle = Font.custom("Objectivity-Bold", size: 26)
     
     static let objectivityTitle2 = Font.custom("Objectivity-Bold", size: 23)
     

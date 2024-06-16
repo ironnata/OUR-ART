@@ -55,7 +55,6 @@ struct AddExhibitionFirstView: View {
                             .navigationBarBackButtonHidden(true)
                     }
                 }
-                .navigationTitle("New Exhibiton")
                 .padding()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
@@ -64,6 +63,11 @@ struct AddExhibitionFirstView: View {
                             .onTapGesture {
                                 dismiss()
                             }
+                    }
+                    
+                    ToolbarItem(placement: .topBarLeading) {
+                        Text("New Exhibition")
+                            .font(.objectivityTitle)
                     }
                 }
             }
