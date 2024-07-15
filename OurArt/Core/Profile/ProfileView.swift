@@ -81,7 +81,7 @@ struct ProfileView: View {
                                 .offset(y: 30)
                                 .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
                                 // 선택 즉시 변경한 이미지 표시
-                                .onChange(of: selectedItem) { newItem in
+                                .onChange(of: selectedItem) { _, newItem in
                                     Task {
                                         if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                             selectedImageData = data
@@ -143,11 +143,11 @@ struct ProfileView: View {
                                 Alert(title: Text("Please input your name."))
                             }
                             // 프로필 사진 파이어스토어에 저장
-                            .onChange(of: selectedItem, perform: { newValue in
+                            .onChange(of: selectedItem) { _, newValue in
                                 if let newValue {
                                     viewModel.saveProfileImage(item: newValue)
                                 }
-                            })
+                            }
                         }
                         .navigationTitle("")
                         .navigationBarHidden(true)

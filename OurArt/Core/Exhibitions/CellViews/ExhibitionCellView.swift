@@ -48,10 +48,10 @@ struct ExhibitionCellView: View {
             .frame(height: 100)
             .padding()
             .overlay {
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 10)
                     .stroke(.secondary, lineWidth: 2)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .viewBackground()
     }

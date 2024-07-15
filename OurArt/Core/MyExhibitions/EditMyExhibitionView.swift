@@ -87,7 +87,7 @@ struct EditMyExhibitionView: View {
                                     .modifier(SmallButtonModifier())
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
                                     .offset(y: -5)
-                                    .onChange(of: selectedImage, perform: { newValue in
+                                    .onChange(of: selectedImage) { _, newValue in
                                         if let newValue {
                                             viewModel.savePosterImage(item: newValue)
                                         }
@@ -96,7 +96,7 @@ struct EditMyExhibitionView: View {
                                                 selectedImageData = data
                                             }
                                         }
-                                    })
+                                    }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                             } // POSTER

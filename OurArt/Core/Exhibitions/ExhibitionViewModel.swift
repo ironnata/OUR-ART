@@ -204,6 +204,7 @@ final class ExhibitionViewModel: ObservableObject {
         
         if let path = exhibition.posterImagePath {
             try await StorageManager.shared.deleteImage(path: path)
+            print("The Exhibition is deleted")
         }
         
     }

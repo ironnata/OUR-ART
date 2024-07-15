@@ -11,9 +11,16 @@
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
+		CD1DC1BB2C3D7174004D8617 /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = CD1DC1BA2C3D7174004D8617 /* GoogleMaps */; };
+		CD35AB9B2C3DAC1500F54B0B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD35AB9A2C3DAC1500F54B0B /* GoogleService-Info.plist */; };
 		CD36549F2BBEC11B001A01FC /* Extensions+Query.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */; };
+		CD43EB1E2C3DA02C006DA03A /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = CD43EB1D2C3DA02C006DA03A /* GooglePlaces */; };
 		CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */; };
 		CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */; };
+		CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD60DB9E2C4524980018BE95 /* AdSupport.framework */; };
+		CD60DBA12C4541080018BE95 /* GooglePlacesAutocomplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */; };
+		CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */; };
+		CD60DBA72C4555790018BE95 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* AddressSearchView.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -39,7 +46,6 @@
 		CD93164B2AD6D081004F2868 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = CD93164A2AD6D081004F2868 /* FirebaseAnalyticsOnDeviceConversion */; };
 		CD93164D2AD6D081004F2868 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD93164C2AD6D081004F2868 /* FirebaseAnalyticsSwift */; };
 		CD93164F2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = CD93164E2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		CD9316512AD6D081004F2868 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316502AD6D081004F2868 /* FirebaseAppCheck */; };
 		CD9316532AD6D081004F2868 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316522AD6D081004F2868 /* FirebaseAppDistribution-Beta */; };
 		CD9316552AD6D081004F2868 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316542AD6D081004F2868 /* FirebaseAuth */; };
 		CD9316572AD6D081004F2868 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316562AD6D081004F2868 /* FirebaseAuthCombine-Community */; };
@@ -72,7 +78,6 @@
 		CD9316922AD970B1004F2868 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316912AD970B1004F2868 /* GoogleSignIn */; };
 		CD9316942AD970B1004F2868 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CD9316932AD970B1004F2868 /* GoogleSignInSwift */; };
 		CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316992AD974F2004F2868 /* Modifiers.swift */; };
-		CD93169C2AD97522004F2868 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CD93169B2AD97521004F2868 /* GoogleService-Info.plist */; };
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
@@ -88,9 +93,14 @@
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionCellViewBuilder.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
+		CD35AB9A2C3DAC1500F54B0B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Query.swift"; sourceTree = "<group>"; };
 		CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionViewModel.swift; sourceTree = "<group>"; };
+		CD60DB9E2C4524980018BE95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
+		CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesAutocomplete.swift; sourceTree = "<group>"; };
+		CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesManager.swift; sourceTree = "<group>"; };
+		CD60DBA62C4555790018BE95 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -123,7 +133,6 @@
 		CD93168D2AD8300F004F2868 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		CD9316952AD97127004F2868 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CD9316992AD974F2004F2868 /* Modifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modifiers.swift; sourceTree = "<group>"; };
-		CD93169B2AD97521004F2868 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
@@ -141,6 +150,7 @@
 			files = (
 				CD93165B2AD6D081004F2868 /* FirebaseDatabase in Frameworks */,
 				CD9316692AD6D081004F2868 /* FirebaseFunctionsCombine-Community in Frameworks */,
+				CD1DC1BB2C3D7174004D8617 /* GoogleMaps in Frameworks */,
 				CD9316612AD6D081004F2868 /* FirebaseFirestore in Frameworks */,
 				CD93164D2AD6D081004F2868 /* FirebaseAnalyticsSwift in Frameworks */,
 				CD9316492AD6D081004F2868 /* FirebaseAnalytics in Frameworks */,
@@ -148,13 +158,14 @@
 				CD9316712AD6D081004F2868 /* FirebaseMLModelDownloader in Frameworks */,
 				CD9316942AD970B1004F2868 /* GoogleSignInSwift in Frameworks */,
 				CD9316652AD6D081004F2868 /* FirebaseFirestoreSwift in Frameworks */,
-				CD9316512AD6D081004F2868 /* FirebaseAppCheck in Frameworks */,
 				CD93164F2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				CD9316552AD6D081004F2868 /* FirebaseAuth in Frameworks */,
 				CD9316592AD6D081004F2868 /* FirebaseCrashlytics in Frameworks */,
 				CD9316792AD6D081004F2868 /* FirebaseRemoteConfigSwift in Frameworks */,
 				CD9316922AD970B1004F2868 /* GoogleSignIn in Frameworks */,
 				CD93166B2AD6D081004F2868 /* FirebaseInAppMessaging-Beta in Frameworks */,
+				CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */,
+				CD43EB1E2C3DA02C006DA03A /* GooglePlaces in Frameworks */,
 				CD93165D2AD6D081004F2868 /* FirebaseDatabaseSwift in Frameworks */,
 				CD9316672AD6D081004F2868 /* FirebaseFunctions in Frameworks */,
 				CD93167D2AD6D081004F2868 /* FirebaseStorageCombine-Community in Frameworks */,
@@ -174,6 +185,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD1DC1BC2C3D774C004D8617 /* GoogleMaps */ = {
+			isa = PBXGroup;
+			children = (
+				CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */,
+				CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */,
+				CD60DBA62C4555790018BE95 /* AddressSearchView.swift */,
+			);
+			path = GoogleMaps;
+			sourceTree = "<group>";
+		};
 		CD36549D2BBEC0FD001A01FC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -199,6 +220,14 @@
 				CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */,
 			);
 			path = CellViews;
+			sourceTree = "<group>";
+		};
+		CD60DB9D2C4524970018BE95 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CD60DB9E2C4524980018BE95 /* AdSupport.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CD6954C12AF3CD7E00312907 /* Exhibitions */ = {
@@ -242,6 +271,7 @@
 			children = (
 				CD9316352AD6C985004F2868 /* OurArt */,
 				CD9316342AD6C985004F2868 /* Products */,
+				CD60DB9D2C4524970018BE95 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -267,7 +297,7 @@
 				CD9316A32AD99324004F2868 /* Managers */,
 				CD93163A2AD6C987004F2868 /* Assets.xcassets */,
 				CD93163C2AD6C987004F2868 /* OurArt.entitlements */,
-				CD93169B2AD97521004F2868 /* GoogleService-Info.plist */,
+				CD35AB9A2C3DAC1500F54B0B /* GoogleService-Info.plist */,
 				CD93163D2AD6C987004F2868 /* Preview Content */,
 			);
 			path = OurArt;
@@ -332,6 +362,7 @@
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CD1DC1BC2C3D774C004D8617 /* GoogleMaps */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CD6954C12AF3CD7E00312907 /* Exhibitions */,
 				CD4D0BDB2BEE66DF006EE049 /* MyExhibitions */,
@@ -398,6 +429,7 @@
 				CD93162F2AD6C985004F2868 /* Sources */,
 				CD9316302AD6C985004F2868 /* Frameworks */,
 				CD9316312AD6C985004F2868 /* Resources */,
+				CD35AB9C2C3DB54100F54B0B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -409,7 +441,6 @@
 				CD93164A2AD6D081004F2868 /* FirebaseAnalyticsOnDeviceConversion */,
 				CD93164C2AD6D081004F2868 /* FirebaseAnalyticsSwift */,
 				CD93164E2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport */,
-				CD9316502AD6D081004F2868 /* FirebaseAppCheck */,
 				CD9316522AD6D081004F2868 /* FirebaseAppDistribution-Beta */,
 				CD9316542AD6D081004F2868 /* FirebaseAuth */,
 				CD9316562AD6D081004F2868 /* FirebaseAuthCombine-Community */,
@@ -434,6 +465,8 @@
 				CD93167C2AD6D081004F2868 /* FirebaseStorageCombine-Community */,
 				CD9316912AD970B1004F2868 /* GoogleSignIn */,
 				CD9316932AD970B1004F2868 /* GoogleSignInSwift */,
+				CD1DC1BA2C3D7174004D8617 /* GoogleMaps */,
+				CD43EB1D2C3DA02C006DA03A /* GooglePlaces */,
 			);
 			productName = OurArt;
 			productReference = CD9316332AD6C985004F2868 /* OurArt.app */;
@@ -447,7 +480,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					CD9316322AD6C985004F2868 = {
 						CreatedOnToolsVersion = 15.0;
@@ -467,6 +500,8 @@
 			packageReferences = (
 				CD9316472AD6D081004F2868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				CD9316902AD970B1004F2868 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+				CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
 			);
 			productRefGroup = CD9316342AD6C985004F2868 /* Products */;
 			projectDirPath = "";
@@ -489,8 +524,8 @@
 				CD6954FD2AF41FCC00312907 /* Objectivity-ExtraBold.otf in Resources */,
 				CD6954FA2AF41FCC00312907 /* Objectivity-Thin.otf in Resources */,
 				CD93163F2AD6C987004F2868 /* Preview Assets.xcassets in Resources */,
+				CD35AB9B2C3DAC1500F54B0B /* GoogleService-Info.plist in Resources */,
 				CD93163B2AD6C987004F2868 /* Assets.xcassets in Resources */,
-				CD93169C2AD97522004F2868 /* GoogleService-Info.plist in Resources */,
 				CD6954F62AF41FCC00312907 /* Objectivity-Light.otf in Resources */,
 				CD6954F42AF41FCC00312907 /* Objectivity-Black.otf in Resources */,
 			);
@@ -498,11 +533,37 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CD35AB9C2C3DB54100F54B0B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CD93162F2AD6C985004F2868 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */,
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
 				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
@@ -514,6 +575,7 @@
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
 				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
+				CD60DBA12C4541080018BE95 /* GooglePlacesAutocomplete.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
@@ -522,6 +584,7 @@
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
 				CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */,
 				CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */,
+				CD60DBA72C4555790018BE95 /* AddressSearchView.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
 				CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */,
@@ -548,6 +611,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -610,6 +674,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -665,9 +730,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OurArt/OurArt.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"OurArt/Preview Content\"";
 				DEVELOPMENT_TEAM = W568Y7LT6U;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -683,15 +750,15 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dMO.OurArt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dMO.OurArt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -707,6 +774,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OurArt/OurArt.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
@@ -725,15 +793,15 @@
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dMO.OurArt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dMO.OurArt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -767,6 +835,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+		CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 		CD9316472AD6D081004F2868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -786,6 +870,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CD1DC1BA2C3D7174004D8617 /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
+		};
+		CD43EB1D2C3DA02C006DA03A /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
 		CD9316482AD6D081004F2868 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD9316472AD6D081004F2868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -805,11 +899,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD9316472AD6D081004F2868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsWithoutAdIdSupport;
-		};
-		CD9316502AD6D081004F2868 /* FirebaseAppCheck */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD9316472AD6D081004F2868 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAppCheck;
 		};
 		CD9316522AD6D081004F2868 /* FirebaseAppDistribution-Beta */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -41,7 +41,7 @@ struct SmallButtonModifier: ViewModifier {
             .font(.objectivityFootnote)
             .foregroundStyle(Color.accentButtonText)
             .frame(width: 45, height: 20)
-            .background(Color.accentColor)
+            .background(Color.secondary)
             .overlay {
                 RoundedRectangle(cornerRadius: 3)
                     .stroke(.accent, lineWidth: 2)
@@ -60,7 +60,7 @@ struct TextFieldModifier: ViewModifier {
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(RoundedRectangle(cornerRadius: 7))
     }
 }
 
@@ -72,7 +72,7 @@ struct TextFieldDescriptionModifier: ViewModifier {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(RoundedRectangle(cornerRadius: 7))
     }
 }
 

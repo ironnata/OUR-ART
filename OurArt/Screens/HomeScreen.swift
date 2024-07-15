@@ -30,7 +30,7 @@ struct HomeScreen: View {
 Hey \(profileVM.user?.nickname ?? "")! \nIt's time to explore the world of art 🎨
 """,
                                                  """
-Welcome to our art 🖌️ \n\(profileVM.user?.nickname ?? "")
+Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "")
 """
                     ]
                     

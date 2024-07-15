@@ -130,6 +130,7 @@ struct ExhibitionDetailView: View {
                 ToolbarItem(placement: .principal) {
                     Text(exhibition.title ?? "")
                         .font(.objectivityBody)
+                        .lineLimit(1)
                 }
             }
         }
@@ -162,6 +163,11 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                 if let arrayText = text as? [String] {
                     // 배열일 경우 문자열로 조인
                     Text(arrayText.joined(separator: ", "))
+                } else if icon == "mappin.and.ellipse", let address = text as? String {
+                    Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=\(address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!) {
+                        Text(address)
+                            .foregroundColor(.blue) // 색상 추후 변경!!!!!!!!!!!!!!!!!!!!!!!
+                    }
                 } else {
                     // 아닐 경우 문자열 그대로 출력
                     Text(String(describing: text))

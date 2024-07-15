@@ -32,11 +32,15 @@ struct MyExhibitionsView: View {
             .listStyle(.plain)
         }
         .viewBackground()
-        .navigationTitle("My Exhibitions")
         .onFirstAppear {
             viewModel.addListenerForMyExhibitions()
         }
         .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("My Exhibitions")
+                    .font(.objectivityTitle2)
+            }
+            
             ToolbarItem(placement: .topBarLeading) {
                 Image(systemName: "chevron.left")
                     .imageScale(.large)

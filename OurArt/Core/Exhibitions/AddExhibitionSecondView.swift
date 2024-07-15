@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import GooglePlaces
 
 struct AddExhibitionSecondView: View {
     
@@ -29,7 +30,8 @@ struct AddExhibitionSecondView: View {
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
     
-    @State private var address: String = ""
+    @State private var showSearchView = false
+    @State private var selectedAddress = ""
     
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
@@ -41,6 +43,14 @@ struct AddExhibitionSecondView: View {
     
     private func selectedClosingDays(text: String) -> Bool {
         viewModel.exhibition?.closingDays?.contains(text) == true
+    }
+    
+    func addressWithoutCountry(address: String) -> String {
+        var addressComponents = address.components(separatedBy: ",")
+        if addressComponents.count > 1 {
+            addressComponents.removeLast()
+        }
+        return addressComponents.joined(separator: ",")
     }
     
     
@@ -81,7 +91,7 @@ struct AddExhibitionSecondView: View {
                                     }
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
                                     .offset(y: -5)
-                                    .onChange(of: selectedImage, perform: { newValue in
+                                    .onChange(of: selectedImage) { _, newValue in
                                         if let newValue {
                                             viewModel.savePosterImage(item: newValue)
                                         }
@@ -90,7 +100,7 @@ struct AddExhibitionSecondView: View {
                                                 selectedImageData = data
                                             }
                                         }
-                                    })
+                                    }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                             } // POSTER
@@ -120,10 +130,30 @@ struct AddExhibitionSecondView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Address")
-                                TextField("Address...", text: $address)
+//                                TextField("Find an address", text: Binding(
+//                                    get: {
+//                                        if let place = selectedPlace {
+//                                            return addressWithoutCountry(address: place.formattedAddress ?? "")
+//                                        }
+//                                        return ""
+//                                    },
+//                                    set: { _ in }
+//                                ))
+//                                .disabled(true)
+                                
+                                TextField("Search for places", text: $selectedAddress)
                                     .modifier(TextFieldModifier())
+                                    .disabled(true)
+                                    .onTapGesture {
+                                        showSearchView = true
+                                    }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: 500, alignment: .leading)
+                            .sheet(isPresented: $showSearchView) {
+//                                GooglePlacesAutocomplete(selectedPlace: $selectedPlace, showAutocomplete: $showAutocomplete)
+                                AddressSearchView(selectedAddress: $selectedAddress, isPresented: $showSearchView)
+                                    .presentationDetents([.large])
                             } // ADDRESS
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
                             VStack(alignment: .leading) {
                                 Text("Opening Hours")
@@ -172,7 +202,7 @@ struct AddExhibitionSecondView: View {
                                 Task {
                                     try? await viewModel.addArtist(text: artist)
                                     try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
-                                    try? await viewModel.addAddress(text: address)
+                                    try? await viewModel.addAddress(text: selectedAddress) // !!!!!!!!!!!!!!!!!변경해야함니다!!!!!!!!!!!!!!!
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     try? await viewModel.addDescription(text: description)
                                     
@@ -216,6 +246,9 @@ struct AddExhibitionSecondView: View {
                                 .imageScale(.large)
                                 .onTapGesture {
                                     dismiss()
+                                    Task {
+                                        try? await viewModel.deleteExhibition()
+                                    }
                                 }
                         }
                     }
