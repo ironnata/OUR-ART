@@ -19,7 +19,9 @@ struct EditMyExhibitionView: View {
     @State private var title: String = ""
     @State private var artist: String = ""
     @State private var description: String = ""
-    @State private var address: String = ""
+    
+    @State private var selectedAddress: String = ""
+    @State private var showSearchView = false
     
     @State private var selectedImage: PhotosPickerItem? = nil
     @State private var selectedImageData: Data? = nil
@@ -43,7 +45,7 @@ struct EditMyExhibitionView: View {
         let finalTitle = title.isEmpty ? (viewModel.exhibition?.title ?? "") : title
         let finalArtist = artist.isEmpty ? (viewModel.exhibition?.artist ?? "") : artist
         let finalDescription = description.isEmpty ? (viewModel.exhibition?.description ?? "") : description
-        let finalAddress = address.isEmpty ? (viewModel.exhibition?.address ?? "") : address
+        let finalAddress = selectedAddress.isEmpty ? (viewModel.exhibition?.address ?? "") : selectedAddress
         
         Task {
             try? await viewModel.addTitle(text: finalTitle)
@@ -105,13 +107,15 @@ struct EditMyExhibitionView: View {
                             VStack(alignment: .leading) {
                                 Text("Title")
                                 TextField(exhibition.title ?? "Title...", text: $title)
-                                .modifier(TextFieldModifier())
+                                    .modifier(TextFieldModifier())
+                                    .showClearButton($title)
                             } // TITLE
                             
                             VStack(alignment: .leading) {
                                 Text("Artist")
                                 TextField(exhibition.artist ?? "Artist...", text: $artist)
-                                .modifier(TextFieldModifier())
+                                    .modifier(TextFieldModifier())
+                                    .showClearButton($artist)
                             } // ARTIST
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
@@ -137,10 +141,19 @@ struct EditMyExhibitionView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Address")
-                                TextField(exhibition.address ?? "Address...", text: $address)
-                                .modifier(TextFieldModifier())
+                                TextField(exhibition.address ?? "Search for places...", text: $selectedAddress)
+                                    .modifier(TextFieldModifier())
+                                    .disabled(true)
+                                    .onTapGesture {
+                                        showSearchView = true
+                                    }
+                                    .showClearButton($selectedAddress)
                             } // ADDRESS
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .sheet(isPresented: $showSearchView) {
+                                AddressSearchView(selectedAddress: $selectedAddress, isPresented: $showSearchView)
+                                    .presentationDetents([.large])
+                            }
                             
                             VStack(alignment: .leading) {
                                 Text("Opening Hours")

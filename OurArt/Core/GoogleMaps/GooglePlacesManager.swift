@@ -15,7 +15,7 @@ class GooglePlacesManager: NSObject, ObservableObject, GMSAutocompleteFetcherDel
     override init() {
         super.init()
         let filter = GMSAutocompleteFilter()
-        filter.type = .noFilter
+        
         self.fetcher = GMSAutocompleteFetcher(filter: filter)
         self.fetcher?.delegate = self
     }
@@ -32,7 +32,9 @@ class GooglePlacesManager: NSObject, ObservableObject, GMSAutocompleteFetcherDel
         
         for prediction in predictions {
             group.enter()
-            placesClient.fetchPlace(fromPlaceID: prediction.placeID, placeFields: [.name, .formattedAddress], sessionToken: nil) { (place, error) in
+            
+            let placeRequest = GMSFetchPlaceRequest(placeID: prediction.placeID, placeProperties: ["name", "formatted_address"], sessionToken: nil)
+            placesClient.fetchPlace(with: placeRequest) { (place, error) in
                 if let place = place {
                     places.append(place)
                 }

@@ -117,5 +117,9 @@ extension View {
     func onFirstAppear(perform: (() -> Void)?) -> some View {
         modifier(OnFirstAppearViewModifier(perform: perform))
     }
+    
+    func showClearButton(_ text: Binding<String>) -> some View {
+        self.modifier(TextFieldClearButton(fieldText: text))
+    }
 }
 

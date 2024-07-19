@@ -29,6 +29,7 @@ struct AddExhibitionFirstView: View {
                         Text("Title")
                         TextField("Title...", text: $title)
                             .modifier(TextFieldModifier())
+                            .showClearButton($title)
                     } // Title
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 30)

@@ -18,7 +18,6 @@
 		CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */; };
 		CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */; };
 		CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD60DB9E2C4524980018BE95 /* AdSupport.framework */; };
-		CD60DBA12C4541080018BE95 /* GooglePlacesAutocomplete.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */; };
 		CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */; };
 		CD60DBA72C4555790018BE95 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* AddressSearchView.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
@@ -98,7 +97,6 @@
 		CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD60DB9E2C4524980018BE95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
-		CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesAutocomplete.swift; sourceTree = "<group>"; };
 		CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesManager.swift; sourceTree = "<group>"; };
 		CD60DBA62C4555790018BE95 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
@@ -188,7 +186,6 @@
 		CD1DC1BC2C3D774C004D8617 /* GoogleMaps */ = {
 			isa = PBXGroup;
 			children = (
-				CD60DBA02C4541080018BE95 /* GooglePlacesAutocomplete.swift */,
 				CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */,
 				CD60DBA62C4555790018BE95 /* AddressSearchView.swift */,
 			);
@@ -375,9 +372,9 @@
 		CDDED7A52AE1B9A600150F87 /* Authentication */ = {
 			isa = PBXGroup;
 			children = (
-				CDDED7A72AE1B9FF00150F87 /* SubViews */,
 				CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */,
 				CD9316872AD8191E004F2868 /* AuthenticationView.swift */,
+				CDDED7A72AE1B9FF00150F87 /* SubViews */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -575,7 +572,6 @@
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
 				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
-				CD60DBA12C4541080018BE95 /* GooglePlacesAutocomplete.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,

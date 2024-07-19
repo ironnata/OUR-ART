@@ -164,6 +164,7 @@ final class ExhibitionManager {
     
     func getAllExhibitionsSortedByDateQuery(descending: Bool) -> Query {
         exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending)
+        // /////////////// 추후 아마도 dateTo를 이용한 전시종료임박 필터를 적용할 수도!!! ///////////////
     }
     
     func getExhibitions(dateDescending descending: Bool?, count: Int, lastDocument: DocumentSnapshot?) async throws -> (exhibitions: [Exhibition], lastDocument: DocumentSnapshot?) {

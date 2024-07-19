@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AddressSearchView: View {
+    @Environment(\.dismiss) var dismiss
+
     @Binding var selectedAddress: String
     @Binding var isPresented: Bool
 
@@ -24,14 +26,24 @@ struct AddressSearchView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            TextField("Search for places", text: $query)
-                .modifier(TextFieldModifier())
-                .onChange(of: query) { _, newQuery in
-                    self.placesManager.updateQuery(newQuery)
+            HStack(spacing: 10) {
+                TextField("Search for places...", text: $query)
+                    .modifier(TextFieldModifier())
+                    .onChange(of: query) { _, newQuery in
+                        self.placesManager.updateQuery(newQuery)
+                    }
+                    .showClearButton($query)
+                
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .imageScale(.large)
                 }
+            }
             
             List {
-                ForEach(placesManager.searchResults, id: \.placeID) { place in
+                ForEach(placesManager.searchResults, id: \.self) { place in
                     VStack(alignment: .leading) {
                         Text(place.name ?? "")
                             .font(.headline)

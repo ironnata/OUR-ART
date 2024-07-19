@@ -7,7 +7,6 @@
 
 import SwiftUI
 import PhotosUI
-import GooglePlaces
 
 struct AddExhibitionSecondView: View {
     
@@ -45,14 +44,6 @@ struct AddExhibitionSecondView: View {
         viewModel.exhibition?.closingDays?.contains(text) == true
     }
     
-    func addressWithoutCountry(address: String) -> String {
-        var addressComponents = address.components(separatedBy: ",")
-        if addressComponents.count > 1 {
-            addressComponents.removeLast()
-        }
-        return addressComponents.joined(separator: ",")
-    }
-    
     
     // MARK: - BODY
     
@@ -62,9 +53,9 @@ struct AddExhibitionSecondView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         if let exhibition = viewModel.exhibition {
-                            Text("Exhibition ID: \(exhibition.id)") // TEST용
-                            
-                            Text("Title: \(exhibition.title ?? "")") // TEST용
+//                            Text("Exhibition ID: \(exhibition.id)") // TEST용
+//                            
+//                            Text("Title: \(exhibition.title ?? "")") // TEST용
                             
                             VStack(alignment: .leading) {
                                 Text("Poster")
@@ -111,6 +102,7 @@ struct AddExhibitionSecondView: View {
                                 Text("Artist")
                                 TextField("Artist...", text: $artist)
                                     .modifier(TextFieldModifier())
+                                    .showClearButton($artist)
                             } // ARTIST
                             .frame(maxWidth: .infinity, alignment: .leading)
                             
@@ -130,16 +122,6 @@ struct AddExhibitionSecondView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Address")
-//                                TextField("Find an address", text: Binding(
-//                                    get: {
-//                                        if let place = selectedPlace {
-//                                            return addressWithoutCountry(address: place.formattedAddress ?? "")
-//                                        }
-//                                        return ""
-//                                    },
-//                                    set: { _ in }
-//                                ))
-//                                .disabled(true)
                                 
                                 TextField("Search for places", text: $selectedAddress)
                                     .modifier(TextFieldModifier())
@@ -147,10 +129,10 @@ struct AddExhibitionSecondView: View {
                                     .onTapGesture {
                                         showSearchView = true
                                     }
+                                    .showClearButton($selectedAddress)
                             }
                             .frame(maxWidth: .infinity, maxHeight: 500, alignment: .leading)
                             .sheet(isPresented: $showSearchView) {
-//                                GooglePlacesAutocomplete(selectedPlace: $selectedPlace, showAutocomplete: $showAutocomplete)
                                 AddressSearchView(selectedAddress: $selectedAddress, isPresented: $showSearchView)
                                     .presentationDetents([.large])
                             } // ADDRESS
@@ -202,7 +184,7 @@ struct AddExhibitionSecondView: View {
                                 Task {
                                     try? await viewModel.addArtist(text: artist)
                                     try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
-                                    try? await viewModel.addAddress(text: selectedAddress) // !!!!!!!!!!!!!!!!!변경해야함니다!!!!!!!!!!!!!!!
+                                    try? await viewModel.addAddress(text: selectedAddress)
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     try? await viewModel.addDescription(text: description)
                                     
@@ -256,6 +238,7 @@ struct AddExhibitionSecondView: View {
                         UIDatePicker.appearance().minuteInterval = 5
                     }
                     .navigationTitle("New Exhibiton")
+                    .toolbarBackground()
                 }
                 .task {
                     try? await viewModel.loadCurrentExhibition(id: currentId)
