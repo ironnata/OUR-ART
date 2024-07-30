@@ -123,7 +123,7 @@ struct AddExhibitionSecondView: View {
                             VStack(alignment: .leading) {
                                 Text("Address")
                                 
-                                TextField("Search for places", text: $selectedAddress)
+                                TextField("Search for places...", text: $selectedAddress)
                                     .modifier(TextFieldModifier())
                                     .disabled(true)
                                     .onTapGesture {

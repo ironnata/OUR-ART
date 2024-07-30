@@ -19,7 +19,7 @@
 		CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */; };
 		CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD60DB9E2C4524980018BE95 /* AdSupport.framework */; };
 		CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */; };
-		CD60DBA72C4555790018BE95 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* AddressSearchView.swift */; };
+		CD60DBA72C4555790018BE95 /* GoogleAddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -80,6 +80,8 @@
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
+		CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */; };
+		CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */; };
 		CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */; };
 		CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */; };
 		CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */; };
@@ -98,7 +100,7 @@
 		CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD60DB9E2C4524980018BE95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesManager.swift; sourceTree = "<group>"; };
-		CD60DBA62C4555790018BE95 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
+		CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAddressSearchView.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -134,6 +136,8 @@
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
+		CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
+		CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettignsViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
@@ -187,7 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */,
-				CD60DBA62C4555790018BE95 /* AddressSearchView.swift */,
+				CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */,
 			);
 			path = GoogleMaps;
 			sourceTree = "<group>";
@@ -356,9 +360,19 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
+		CDD90B6C2C551F3300320330 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */,
+				CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */,
+			);
+			path = Maps;
+			sourceTree = "<group>";
+		};
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CDD90B6C2C551F3300320330 /* Maps */,
 				CD1DC1BC2C3D774C004D8617 /* GoogleMaps */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CD6954C12AF3CD7E00312907 /* Exhibitions */,
@@ -564,6 +578,7 @@
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
 				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
+				CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
 				CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */,
@@ -579,8 +594,9 @@
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
 				CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */,
+				CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */,
 				CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */,
-				CD60DBA72C4555790018BE95 /* AddressSearchView.swift in Sources */,
+				CD60DBA72C4555790018BE95 /* GoogleAddressSearchView.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
 				CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */,
 				CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */,

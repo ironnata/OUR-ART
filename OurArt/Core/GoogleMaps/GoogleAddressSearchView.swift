@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddressSearchView: View {
+struct GoogleAddressSearchView: View {
     @Environment(\.dismiss) var dismiss
 
     @Binding var selectedAddress: String
