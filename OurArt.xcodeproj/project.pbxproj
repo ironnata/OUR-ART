@@ -187,13 +187,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CD1DC1BC2C3D774C004D8617 /* GoogleMaps */ = {
+		CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */ = {
 			isa = PBXGroup;
 			children = (
 				CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */,
 				CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */,
 			);
-			path = GoogleMaps;
+			path = "GoogleMaps (not use yet)";
 			sourceTree = "<group>";
 		};
 		CD36549D2BBEC0FD001A01FC /* Extensions */ = {
@@ -373,7 +373,7 @@
 			isa = PBXGroup;
 			children = (
 				CDD90B6C2C551F3300320330 /* Maps */,
-				CD1DC1BC2C3D774C004D8617 /* GoogleMaps */,
+				CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CD6954C12AF3CD7E00312907 /* Exhibitions */,
 				CD4D0BDB2BEE66DF006EE049 /* MyExhibitions */,

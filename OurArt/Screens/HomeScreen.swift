@@ -34,7 +34,9 @@ Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "")
 """
                     ]
                     
-                    Text(messages.randomElement() ?? "Hi there👋")
+                    Text("""
+Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "") 👋
+""")
                         .lineSpacing(7)
                         .frame(height: 120)
                     
@@ -64,13 +66,21 @@ Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "")
             .fullScreenCover(isPresented: $showAddingView) {
                 NavigationView {
                     AddExhibitionFirstView(showAddingView: $showAddingView)
+                        .onDisappear {
+                            Task {
+                                try? await profileVM.loadCurrentUser()
+                                exhibitionVM.getExhibitions()
+                            }
+                        }
                 }
             }
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
-                    Image("Logo-512")
+                    let logoImage = Image(uiImage: UIImage(named: (UITraitCollection.current.userInterfaceStyle == .dark) ? "Logo-512" : "Logo-512-light") ?? UIImage())
+                    
+                    logoImage
                         .resizable()
-                        .frame(width: 57, height: 57)
+                        .frame(width: 40, height: 40)
                         .cornerRadius(9)
                 }
             })

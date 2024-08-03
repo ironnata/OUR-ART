@@ -13,9 +13,9 @@ import GooglePlaces
 @main
 struct OurArtApp: App {
     
-    init() {
-        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .black
-    }
+//    init() {
+//        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .black
+//    }
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
@@ -36,6 +36,16 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         GMSPlacesClient.provideAPIKey("AIzaSyB0diZef53W5Q1SVsy6MNw8N9v18OPN_ww")
         print("Configured Google Maps!")
         
+        // 다크 모드에 따라 tintColor 설정
+        let appearance = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])
+        
+        if #available(iOS 13.0, *) {
+            let userInterfaceStyle = UITraitCollection.current.userInterfaceStyle
+            appearance.tintColor = (userInterfaceStyle == .dark) ? .white : .black
+        } else {
+            // iOS 13 이전 버전에서는 기본 색상 설정
+            appearance.tintColor = .black
+        }
         return true
     }
 }

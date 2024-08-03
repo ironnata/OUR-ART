@@ -19,9 +19,10 @@ struct MyExhibitionsView: View {
                 ForEach(viewModel.userMyExhibitions, id: \.id.self) { item in
                     ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
                         .contextMenu(menuItems: {
-                            Button("Remove from Favorites") {
+                            Button("Add to Favorites") {
                                 // Favorite func 만들어서 변경
-                                viewModel.deleteMyExhibitions(myExhibitionId: item.id)
+                                // viewModel.addFavoriteExhitions
+                                print("Added to Favorites")
                             }
                         })
                 }

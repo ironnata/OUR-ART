@@ -43,10 +43,12 @@ struct ListScreen: View {
                     
                     if exhibition == viewModel.exhibitions.last {
                         HStack(alignment: .center) {
+                            Spacer()
                             ProgressView()
                                 .onAppear {
                                     viewModel.getExhibitions()
                             }
+                            Spacer()
                         }
                     }
                 }
