@@ -15,14 +15,14 @@ struct ProfileEditView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
-    let preferenceOptions: [String] = ["Aritst", "Audience"]
+    let preferenceOptions: [String] = ["Aritst"]
     
     @State private var nickname: String = ""
     @State private var showImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var url: URL? = nil
     @State private var selectedImageData: Data? = nil
     @State private var showInputAlert = false
+    @State private var showImageEditView = false
     
     private func preferenceIsSelected(text: String) -> Bool {
         viewModel.user?.preferences?.contains(text) == true
@@ -48,17 +48,18 @@ struct ProfileEditView: View {
                                             .resizable()
                                             .frame(width: 100, height: 100)
                                             .clipShape(Circle())
-                                            .overlay(Circle().stroke(Color.secondary, lineWidth: 2))
                                     } placeholder: {
-                                        Image(systemName: "person.crop.circle.fill")
+                                        Image(systemName: "person.circle.fill")
                                             .resizable()
                                             .frame(width: 100, height: 100)
-                                            .foregroundStyle(Color.secondary)
+                                            .foregroundStyle(Color.secondAccent)
                                     }
                                 }
                                 
                                 Button {
-                                    showImagePicker.toggle()
+                                    withAnimation {
+                                        showImageEditView.toggle()
+                                    }
                                 } label: {
                                     Text("EDIT")
                                 }
@@ -103,7 +104,7 @@ struct ProfileEditView: View {
                         }
                         
                         Divider()
-                            .padding(.vertical, 10)
+                            .padding(.vertical, 20)
                         
                         Button {
                             if nickname.isEmpty {
@@ -127,6 +128,10 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
+                .sheet(isPresented: $showImageEditView) {
+                    ProfileImageEditView(showImageEditview: $showImageEditView, showSignInView: $showSignInView)
+                        .presentationDetents([.height(200)])
+                }
             }
             .viewBackground()
         }

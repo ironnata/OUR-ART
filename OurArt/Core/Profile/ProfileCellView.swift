@@ -24,8 +24,10 @@ struct ProfileCellView: View {
                             .clipShape(Circle())
                             .overlay(Circle().stroke(Color.secondary, lineWidth: 1))
                     } placeholder: {
-                        ProgressView()
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
                             .frame(width: 50, height: 50)
+                            .foregroundStyle(Color.secondAccent)
                     }
                     .padding(.trailing, 30)
                 }

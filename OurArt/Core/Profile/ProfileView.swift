@@ -64,12 +64,11 @@ struct ProfileView: View {
                                         .resizable()
                                         .frame(width: 100, height: 100)
                                         .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color.accentColor, lineWidth: 2))
                                 } else {
-                                    Image(systemName: "person.crop.circle.fill")
+                                    Image(systemName: "person.circle.fill")
                                         .resizable()
                                         .frame(width: 100, height: 100)
-                                        .foregroundStyle(Color.accentColor)
+                                        .foregroundStyle(Color.secondAccent)
                                 }
                                 
                                 Button {
@@ -151,13 +150,6 @@ struct ProfileView: View {
                         }
                         .navigationTitle("")
                         .navigationBarHidden(true)
-                    }
-                }
-                .overlay(alignment: .topTrailing) {
-                    NavigationLink {
-                        SettingsScreen(showSignInView: $showSignInView)
-                    } label: {
-                        Image(systemName: "gearshape.2")
                     }
                 }
                 .padding(.horizontal, 10)

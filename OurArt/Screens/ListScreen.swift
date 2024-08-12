@@ -12,6 +12,7 @@ struct ListScreen: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     @State var searchText = ""
+    @State var isLoading: Bool = false
     
     func filterExhibitions() -> [Exhibition] {
         guard !searchText.isEmpty else {
@@ -36,9 +37,17 @@ struct ListScreen: View {
                             .contextMenu(menuItems: {
                                 Button("Add to Favorites") {
                                     // Favorite func 만들어서 변경
-                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
+//                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
                                 }
                             })
+                    }
+                    .redacted(reason: isLoading ? .placeholder : [])
+                    .onFirstAppear {
+                        isLoading = true
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            isLoading = false
+                        }
                     }
                     
                     if exhibition == viewModel.exhibitions.last {
@@ -56,6 +65,9 @@ struct ListScreen: View {
                 .listRowSeparator(.hidden)
             }
             .toolbarBackground()
+            .refreshable {
+                viewModel.getExhibitions()
+            }
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
                     Text("Exhibitions")
