@@ -15,10 +15,9 @@ struct ExhibitionDetailView: View {
         
     @State private var showDeleteAlert = false
     @State private var showEditView = false
+    
     var myExhibitionId: String?
-    
     let exhibition: Exhibition
-    
     var isMyExhibition: Bool = false
     
     var body: some View {
@@ -123,7 +122,15 @@ struct ExhibitionDetailView: View {
                     secondaryButton: .cancel()
                 )
             }
-            .sheet(isPresented: $showEditView) {
+            .sheet(isPresented: $showEditView, onDismiss: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.addListenerForMyExhibitions()
+                    
+                    if let myExhibitionId = myExhibitionId {
+                        viewModel.loadMyExhibition(myExhibitionId: myExhibitionId)
+                    }
+                }
+            }) {
                 EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
             }
             .toolbar {

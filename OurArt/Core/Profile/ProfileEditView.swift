@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import PhotosUI
+//import PhotosUI
 
 struct ProfileEditView: View {
     
@@ -18,9 +18,9 @@ struct ProfileEditView: View {
     let preferenceOptions: [String] = ["Aritst"]
     
     @State private var nickname: String = ""
-    @State private var showImagePicker = false
-    @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
+//    @State private var showImagePicker = false
+//    @State private var selectedItem: PhotosPickerItem? = nil
+//    @State private var selectedImageData: Data? = nil
     @State private var showInputAlert = false
     @State private var showImageEditView = false
     
@@ -46,8 +46,7 @@ struct ProfileEditView: View {
                                     AsyncImage(url: url) { image in
                                         image
                                             .resizable()
-                                            .frame(width: 100, height: 100)
-                                            .clipShape(Circle())
+                                            .modifier(ProfileImageModifer())
                                     } placeholder: {
                                         Image(systemName: "person.circle.fill")
                                             .resizable()
@@ -65,15 +64,15 @@ struct ProfileEditView: View {
                                 }
                                 .modifier(SmallButtonModifier())
                                 .offset(y: 30)
-                                .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
-                                // 선택 즉시 변경한 이미지 표시
-                                .onChange(of: selectedItem) { _, newItem in
-                                    Task {
-                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-                                            selectedImageData = data
-                                        }
-                                    }
-                                }
+//                                .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
+//                                // 선택 즉시 변경한 이미지 표시
+//                                .onChange(of: selectedItem) { _, newItem in
+//                                    Task {
+//                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
+//                                            selectedImageData = data
+//                                        }
+//                                    }
+//                                }
                             }
                             
                             TextField(user.nickname ?? "Nickname...", text: $nickname)
@@ -119,16 +118,22 @@ struct ProfileEditView: View {
                         }
                         .modifier(CommonButtonModifier())
                         // 프로필 사진 파이어스토어에 저장
-                        .onChange(of: selectedItem) { _, newValue in
-                            if let newValue {
-                                viewModel.saveProfileImage(item: newValue)
-                            }
-                        }
+//                        .onChange(of: selectedItem) { _, newItem in
+//                            if let newItem {
+//                                viewModel.saveProfileImage(item: newItem)
+//                            }
+//                        }
                     }
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
-                .sheet(isPresented: $showImageEditView) {
+                .sheet(isPresented: $showImageEditView, onDismiss: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        Task {
+                            try? await viewModel.loadCurrentUser()
+                        }
+                    }
+                }) {
                     ProfileImageEditView(showImageEditview: $showImageEditView, showSignInView: $showSignInView)
                         .presentationDetents([.height(200)])
                 }

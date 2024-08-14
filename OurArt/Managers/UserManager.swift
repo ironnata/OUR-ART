@@ -207,8 +207,8 @@ final class UserManager {
     
     func updateUserProfileImagePath(userId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [
-            DBUser.CodingKeys.profileImagePath.rawValue : path,
-            DBUser.CodingKeys.profileImagePathUrl.rawValue : url,
+            DBUser.CodingKeys.profileImagePath.rawValue : path as Any,
+            DBUser.CodingKeys.profileImagePathUrl.rawValue : url as Any,
         ]
         
         try await userDocument(userId: userId).updateData(data)
@@ -229,8 +229,8 @@ final class UserManager {
             UserMyExhibition.CodingKeys.id.rawValue : documentId,
             UserMyExhibition.CodingKeys.exhibitionId.rawValue : exhibitionId,
             UserMyExhibition.CodingKeys.dateCreated.rawValue : Timestamp(),
-            UserMyExhibition.CodingKeys.dateFrom.rawValue : dateFrom,
-            UserMyExhibition.CodingKeys.posterImagePath.rawValue : posterImagePath
+            UserMyExhibition.CodingKeys.dateFrom.rawValue : dateFrom as Any,
+            UserMyExhibition.CodingKeys.posterImagePath.rawValue : posterImagePath as Any
         ]
         
         try await document.setData(data, merge: false)

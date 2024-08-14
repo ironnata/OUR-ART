@@ -13,6 +13,8 @@ struct MyExhibitionsView: View {
     
     @StateObject private var viewModel = MyExhibitionViewModel()
     
+    @State var isLoading: Bool = false
+    
     var body: some View {
         ZStack {
             List {
@@ -28,6 +30,14 @@ struct MyExhibitionsView: View {
                 }
                 .sectionBackground()
                 .listRowSeparator(.hidden)
+                .redacted(reason: isLoading ? .placeholder : [])
+                .onFirstAppear {
+                    isLoading = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        isLoading = false
+                    }
+                }
             }
             .toolbarBackground()
             .listStyle(.plain)

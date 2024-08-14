@@ -62,8 +62,7 @@ struct ProfileView: View {
                                 if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
-                                        .frame(width: 100, height: 100)
-                                        .clipShape(Circle())
+                                        .modifier(ProfileImageModifer())
                                 } else {
                                     Image(systemName: "person.circle.fill")
                                         .resizable()
@@ -142,9 +141,11 @@ struct ProfileView: View {
                                 Alert(title: Text("Please input your name."))
                             }
                             // 프로필 사진 파이어스토어에 저장
-                            .onChange(of: selectedItem) { _, newValue in
-                                if let newValue {
-                                    viewModel.saveProfileImage(item: newValue)
+                            .onChange(of: selectedItem) { _, newItem in
+                                if let newItem {
+                                    Task {
+                                        try await viewModel.saveProfileImage(item: newItem)
+                                    }
                                 }
                             }
                         }

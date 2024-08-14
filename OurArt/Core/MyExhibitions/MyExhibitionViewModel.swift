@@ -28,8 +28,8 @@ final class MyExhibitionViewModel: ObservableObject {
                 
             } receiveValue: { [weak self] exhibitions in
                 let sortedExhibitions = exhibitions.sorted { (exhibition1, exhibition2) -> Bool in
-                    let date1 = exhibition1.dateFrom ?? .distantFuture // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
-                    let date2 = exhibition2.dateFrom ?? .distantFuture // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
+                    let date1 = exhibition1.dateCreated // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
+                    let date2 = exhibition2.dateCreated // nil인 경우 미래 날짜로 처리하여 맨 뒤로 정렬
                     return date1 > date2 // 내림차순 정렬
                 }
                 self?.userMyExhibitions = sortedExhibitions

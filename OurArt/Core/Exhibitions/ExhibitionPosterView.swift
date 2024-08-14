@@ -20,12 +20,15 @@ struct ExhibitionPosterView: View {
                         .scaledToFit()
                         .modifier(BigPosterSizeModifier())
                 } placeholder: {
-                    Text(exhibition.title ?? "")
-                        .frame(width: 280, height: 420)
-//                        .overlay {
-//                            RoundedRectangle(cornerRadius: 12)
-//                                .stroke(Color(UIColor.systemGray4), lineWidth: 2)
-//                        }
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .foregroundStyle(.redacted)
+                            .opacity(0.7)
+                        
+                        Text(exhibition.title ?? "")
+                            .foregroundStyle(.accent)
+                    }
+                    .frame(width: 280, height: 420)
                 }
             }
         }

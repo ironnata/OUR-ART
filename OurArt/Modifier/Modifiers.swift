@@ -15,11 +15,11 @@ struct AuthButtonModifier: ViewModifier {
         content
             .font(.title3)
             .fontWeight(.medium)
-            .foregroundStyle(Color.accentButtonText)
+            .foregroundStyle(Color.white)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.black)
-            .clipShape(RoundedRectangle(cornerRadius: 5))
+            .clipShape(.rect(cornerRadius: 5))
     }
 }
 
@@ -30,8 +30,8 @@ struct CommonButtonModifier: ViewModifier {
             .foregroundStyle(Color.accentButtonText)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
-            .background(Color.accentColor)
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .background(Color.accent)
+            .clipShape(.rect(cornerRadius: 7))
     }
 }
 
@@ -41,12 +41,12 @@ struct SmallButtonModifier: ViewModifier {
             .font(.objectivityFootnote)
             .foregroundStyle(Color.accentButtonText)
             .frame(width: 45, height: 20)
-            .background(Color.secondary)
+            .background(Color.secondAccent)
             .overlay {
                 RoundedRectangle(cornerRadius: 3)
                     .stroke(.accent, lineWidth: 2)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 3))
+            .clipShape(.rect(cornerRadius: 3))
     }
 }
 
@@ -64,7 +64,7 @@ struct TextFieldClearButton: ViewModifier {
                         } label: {
                             Image(systemName: "multiply.circle.fill")
                         }
-                        .foregroundColor(.secondary)
+                        .foregroundColor(.secondAccent)
                         .padding(.trailing, 10)
                     }
                 }
@@ -82,7 +82,7 @@ struct TextFieldModifier: ViewModifier {
             .frame(height: 48)
             .frame(maxWidth: .infinity)
             .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .clipShape(.rect(cornerRadius: 7))
     }
 }
 
@@ -94,10 +94,54 @@ struct TextFieldDescriptionModifier: ViewModifier {
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.gray.opacity(0.1))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .clipShape(.rect(cornerRadius: 7))
     }
 }
 
+
+// MARK: - POSTER MODIFIER
+
+struct SmallPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(maxWidth: 80, maxHeight: 120)
+            .clipShape(.rect(cornerRadius: 2))
+    }
+}
+
+
+struct MidPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(maxWidth: 120)
+            .clipShape(.rect(cornerRadius: 4))
+    }
+}
+
+
+struct BigPosterSizeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .frame(width: 280, height: 420)
+    }
+}
+
+// MARK: - PROFILE IMAGE MODIFIER
+
+struct ProfileImageModifer: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 100, height: 100)
+            .clipShape(Circle())
+    }
+}
+
+
+
+// MARK: - ETC
 
 struct OnFirstAppearViewModifier: ViewModifier {
     
@@ -116,30 +160,3 @@ struct OnFirstAppearViewModifier: ViewModifier {
 }
 
 
-struct SmallPosterSizeModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
-            .frame(maxWidth: 80, maxHeight: 120)
-            .clipShape(RoundedRectangle(cornerRadius: 2))
-    }
-}
-
-
-struct MidPosterSizeModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
-            .frame(maxWidth: 120)
-            .clipShape(RoundedRectangle(cornerRadius: 4))
-    }
-}
-
-
-struct BigPosterSizeModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
-            .frame(width: 280, height: 420)
-    }
-}

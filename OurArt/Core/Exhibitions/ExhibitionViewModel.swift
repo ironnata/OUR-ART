@@ -20,9 +20,9 @@ final class ExhibitionViewModel: ObservableObject {
 //    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
     
     enum FilterOption: String, CaseIterable {
-        case noFilter = "No Filter"
-        case newest = "Most recent at the top"
-        case oldest = "Oldest at the top"
+        case noFilter = "None"
+        case newest = "Latest"
+        case oldest = "Earliest"
         
         var dateDescending: Bool? {
             switch self {
@@ -231,14 +231,16 @@ final class ExhibitionViewModel: ObservableObject {
         }
     }
     
-//    func deleteProfileImage() {
-//        guard let user, let path = user.profileImagePath else { return }
-//
-//        Task {
-//            try await StorageManager.shared.deleteImage(path: path)
-//            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
-//        }
-//    }
+    func deleteExistedPosterImage() async throws {
+        guard let exhibition else { return }
+        
+        try await ExhibitionManager.shared.deleteUserPosterImagePath(exhibitionId: exhibition.id)
+        
+        if let path = exhibition.posterImagePath {
+            try await StorageManager.shared.deleteImage(path: path)
+            print("기존 포스터 삭제 완료.")
+        }
+    }
 //
 //    func loadImage(fromItem item: PhotosPickerItem?) async {
 //        guard let item = item else { return }

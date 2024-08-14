@@ -27,9 +27,11 @@ struct SettingsScreen: View {
                 Section {
                     ProfileCellView(showSignInView: $showSignInView)
                     
-                    NavigationLink("My Exhibitions") {
-                        MyExhibitionsView()
-                            .navigationBarBackButtonHidden()
+                    NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
+                        HStack {
+                            Image(systemName: "list.star")
+                            Text("My Exhibitions")
+                        }
                     }
                     
                 } header: {
@@ -60,7 +62,7 @@ struct SettingsScreen: View {
                         }
                     }
                     .sectionBackground()
-                    .foregroundStyle(Color.secondary)
+                    .foregroundStyle(Color.secondAccent)
                 } header: {
                     Text("Log Out")
                 }
@@ -69,7 +71,7 @@ struct SettingsScreen: View {
                     Button("Delete Account", role: .destructive) {
                         showDeleteAlert = true
                     }
-                    .confirmationDialog("Are you sure?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                    .confirmationDialog("Are you sure you want to delete your account?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
                         Button("Delete", role: .destructive) {
                             Task {
                                 do {
@@ -81,7 +83,7 @@ struct SettingsScreen: View {
                             }
                         }
                     } message: {
-                        Text("After you delete your account, all you uploaded is going to be deleted too.")
+                        Text("Once you delete your account, all associated data will be lost forever. Please confirm if you wish to continue.")
                     }
                     .sectionBackground()
                 } header: {
@@ -102,6 +104,15 @@ struct SettingsScreen: View {
             ToolbarItem(placement: .topBarLeading) {
                 Text("Settings")
                     .font(.objectivityTitle)
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                HStack {
+                    Text("Version 1.0.0")
+                        .font(.objectivityCaption)
+                        .foregroundStyle(.secondAccent)
+                    self.logoImageSettings()
+                }
             }
         }
         

@@ -285,8 +285,17 @@ final class ExhibitionManager {
     
     func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [
-            Exhibition.CodingKeys.posterImagePath.rawValue : path,
-            Exhibition.CodingKeys.posterImagePathUrl.rawValue : url,
+            Exhibition.CodingKeys.posterImagePath.rawValue : path as Any,
+            Exhibition.CodingKeys.posterImagePathUrl.rawValue : url as Any,
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
+    func deleteUserPosterImagePath(exhibitionId: String) async throws {
+        let data: [String: Any] = [
+            Exhibition.CodingKeys.posterImagePath.rawValue: FieldValue.delete(),
+            Exhibition.CodingKeys.posterImagePathUrl.rawValue: FieldValue.delete()
         ]
         
         try await exhibitionDocument(id: exhibitionId).updateData(data)

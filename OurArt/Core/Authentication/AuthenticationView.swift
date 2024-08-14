@@ -20,6 +20,10 @@ struct AuthenticationView: View {
             VStack(spacing: 10) {
                 Spacer()
                 
+                self.logoImageAuth()
+                
+                Spacer()
+                
                 // MARK: - APPLE
                 // *** APPLE Dev Program 가입 후 활성화!!!!! ***
                 Button(action: {
@@ -88,7 +92,6 @@ struct AuthenticationView: View {
                 
             }
             .padding()
-            .navigationTitle("Sign In")
         }
         .viewBackground()
     }

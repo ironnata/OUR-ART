@@ -59,7 +59,7 @@ final class ProfileViewModel: ObservableObject {
     
     // MARK: - PROFILE IMAGE
     
-    func saveProfileImage(item: PhotosPickerItem) {
+    func saveProfileImage(item: PhotosPickerItem) async throws {
         guard let user else { return }
         
         Task {

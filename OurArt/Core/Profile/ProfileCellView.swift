@@ -22,7 +22,6 @@ struct ProfileCellView: View {
                             .resizable()
                             .frame(width: 50, height: 50)
                             .clipShape(Circle())
-                            .overlay(Circle().stroke(Color.secondary, lineWidth: 1))
                     } placeholder: {
                         Image(systemName: "person.circle.fill")
                             .resizable()

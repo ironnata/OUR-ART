@@ -47,8 +47,8 @@ struct SignInEmailView: View {
                         }
                     }
                 } label: {
-                    Text("Sign In")
-                        .modifier(AuthButtonModifier())
+                    Text("SIGN IN")
+                        .modifier(CommonButtonModifier())
                 }
                 .padding(.bottom, 50)
             }

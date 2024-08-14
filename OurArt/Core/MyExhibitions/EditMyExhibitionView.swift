@@ -71,14 +71,20 @@ struct EditMyExhibitionView: View {
                             VStack(alignment: .leading) {
                                 Text("Poster")
                                 VStack {
-                                    AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
-                                        image
+                                    if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
+                                        Image(uiImage: uiImage)
                                             .resizable()
                                             .modifier(MidPosterSizeModifier())
-                                    } placeholder: {
-                                        Image(systemName: "questionmark.square.dashed")
-                                            .resizable()
-                                            .modifier(MidPosterSizeModifier())
+                                    } else {
+                                        AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                                            image
+                                                .resizable()
+                                                .modifier(MidPosterSizeModifier())
+                                        } placeholder: {
+                                            Image(systemName: "questionmark.square.dashed")
+                                                .resizable()
+                                                .modifier(MidPosterSizeModifier())
+                                        }
                                     }
                                     
                                     Button {
@@ -90,13 +96,16 @@ struct EditMyExhibitionView: View {
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
                                     .offset(y: -5)
                                     .onChange(of: selectedImage) { _, newValue in
-                                        if let newValue {
-                                            viewModel.savePosterImage(item: newValue)
-                                        }
                                         Task {
+                                            try await viewModel.deleteExistedPosterImage()
+                                            
                                             if let data = try? await newValue?.loadTransferable(type: Data.self) {
                                                 selectedImageData = data
                                             }
+                                        }
+                                        
+                                        if let newValue {
+                                            viewModel.savePosterImage(item: newValue)
                                         }
                                     }
                                 }

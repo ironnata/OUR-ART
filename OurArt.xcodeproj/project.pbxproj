@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD02595E2C5E5E0B00559A4D /* SkeletonUI in Frameworks */ = {isa = PBXBuildFile; productRef = CD02595D2C5E5E0B00559A4D /* SkeletonUI */; };
 		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
@@ -80,6 +81,7 @@
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
+		CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */; };
 		CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */; };
 		CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */; };
 		CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */; };
@@ -136,6 +138,7 @@
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
+		CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditView.swift; sourceTree = "<group>"; };
 		CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
 		CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettignsViewModel.swift; sourceTree = "<group>"; };
@@ -163,6 +166,7 @@
 				CD93164F2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				CD9316552AD6D081004F2868 /* FirebaseAuth in Frameworks */,
 				CD9316592AD6D081004F2868 /* FirebaseCrashlytics in Frameworks */,
+				CD02595E2C5E5E0B00559A4D /* SkeletonUI in Frameworks */,
 				CD9316792AD6D081004F2868 /* FirebaseRemoteConfigSwift in Frameworks */,
 				CD9316922AD970B1004F2868 /* GoogleSignIn in Frameworks */,
 				CD93166B2AD6D081004F2868 /* FirebaseInAppMessaging-Beta in Frameworks */,
@@ -417,6 +421,7 @@
 				CDDED7A92AE1BA9200150F87 /* ProfileView.swift */,
 				CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */,
 				CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */,
+				CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -478,6 +483,7 @@
 				CD9316932AD970B1004F2868 /* GoogleSignInSwift */,
 				CD1DC1BA2C3D7174004D8617 /* GoogleMaps */,
 				CD43EB1D2C3DA02C006DA03A /* GooglePlaces */,
+				CD02595D2C5E5E0B00559A4D /* SkeletonUI */,
 			);
 			productName = OurArt;
 			productReference = CD9316332AD6C985004F2868 /* OurArt.app */;
@@ -513,6 +519,7 @@
 				CD9316902AD970B1004F2868 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 				CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+				CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */,
 			);
 			productRefGroup = CD9316342AD6C985004F2868 /* Products */;
 			projectDirPath = "";
@@ -611,6 +618,7 @@
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
+				CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */,
 				CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -847,6 +855,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CSolanaM/SkeletonUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.2;
+			};
+		};
 		CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
@@ -882,6 +898,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CD02595D2C5E5E0B00559A4D /* SkeletonUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */;
+			productName = SkeletonUI;
+		};
 		CD1DC1BA2C3D7174004D8617 /* GoogleMaps */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;

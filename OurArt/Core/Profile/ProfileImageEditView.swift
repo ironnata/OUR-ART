@@ -99,6 +99,11 @@ struct ProfileImageEditView: View {
                                 if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                     selectedImageData = data
                                 }
+                                
+                                if let newItem {
+                                    try await viewModel.saveProfileImage(item: newItem)
+                                    dismiss()
+                                }
                             }
                         }
                     }

@@ -13,29 +13,14 @@ struct HomeScreen: View {
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     
     @State var showAddingView = false
+    @State var isLoading: Bool = false
     
     var body: some View {
         ZStack {
             HStack {
                 VStack(alignment: .leading) {
-                    let messages: [String] = [
-                                                 """
-                                                 Hello, \(profileVM.user?.nickname ?? "")! 😁 \nNice to see you today
-                                                 """,
-                                                 """
-                    Hi, \(profileVM.user?.nickname ?? "")! 😄 \nHow are you doing?
-                    """,
-                                                 "How's it going today, \(profileVM.user?.nickname ?? "")? 😀",
-                                                 """
-Hey \(profileVM.user?.nickname ?? "")! \nIt's time to explore the world of art 🎨
-""",
-                                                 """
-Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "")
-"""
-                    ]
-                    
                     Text("""
-Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "") 👋
+Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
 """)
                         .lineSpacing(7)
                         .frame(height: 120)
@@ -50,14 +35,22 @@ Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "") 👋
                                             ExhibitionPosterView(exhibition: exhibition)
                                         }
                                     }
-                                    .padding(.horizontal, 12)
+                                    .padding(.horizontal, 25)
                                     .padding(.bottom, 20)
+                                    .redacted(reason: isLoading ? .placeholder : [])
+                                    .onFirstAppear {
+                                        isLoading = true
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                            isLoading = false
+                                        }
+                                    }
                                 }
-                                //                            .scrollTargetLayout() ~iOS17~
+                                .scrollTargetLayout()
                             }
                             .frame(height: 440)
                         }
-                        //                        .scrollTargetBehavior(.paging) iOS17~
+                        .scrollTargetBehavior(.viewAligned)
                     }
                 }
                 .font(.objectivityTitle2)
@@ -76,12 +69,7 @@ Welcome to WE, ART 🖌️ \n\(profileVM.user?.nickname ?? "") 👋
             }
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
-                    let logoImage = Image(uiImage: UIImage(named: (UITraitCollection.current.userInterfaceStyle == .dark) ? "Logo-512" : "Logo-512-light") ?? UIImage())
-                    
-                    logoImage
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .cornerRadius(9)
+                    self.logoImageHome()
                 }
             })
             .overlay(alignment: .bottomTrailing) {

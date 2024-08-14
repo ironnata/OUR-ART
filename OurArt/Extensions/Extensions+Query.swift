@@ -119,7 +119,33 @@ extension View {
     }
     
     func showClearButton(_ text: Binding<String>) -> some View {
-        self.modifier(TextFieldClearButton(fieldText: text))
+        modifier(TextFieldClearButton(fieldText: text))
+    }
+    
+    func logoImageAuth() -> some View {
+        let uiImage = UIImage(named: (UITraitCollection.current.userInterfaceStyle == .light) ? "Logo-512" : "Logo-512-light") ?? UIImage()
+        
+        return Image(uiImage: uiImage)
+            .resizable()
+            .frame(width: 114, height: 114)
+            .clipShape(.rect(cornerRadius: 18))
+    }
+    
+    func logoImageHome() -> some View {
+        let uiImage = UIImage(named: (UITraitCollection.current.userInterfaceStyle == .dark) ? "Logo-512" : "Logo-512-light") ?? UIImage()
+        
+        return Image(uiImage: uiImage)
+            .resizable()
+            .frame(width: 40, height: 40)
+    }
+    
+    func logoImageSettings() -> some View {
+        let uiImage = UIImage(named: (UITraitCollection.current.userInterfaceStyle == .light) ? "Logo-512" : "Logo-512-light") ?? UIImage()
+        
+        return Image(uiImage: uiImage)
+            .resizable()
+            .frame(width: 25, height: 25)
+            .clipShape(.rect(cornerRadius: 4))
     }
 }
 
