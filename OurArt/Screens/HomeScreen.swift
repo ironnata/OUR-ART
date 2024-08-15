@@ -73,18 +73,20 @@ Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
                 }
             })
             .overlay(alignment: .bottomTrailing) {
-                HStack {
-                    Text("Show yours to the world!")
-                    Button {
-                        withAnimation {
-                            showAddingView.toggle()
+                if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
+                    HStack {
+                        Text("Show yours to the world!")
+                        Button {
+                            withAnimation {
+                                showAddingView.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "plus.circle")
+                                .font(.largeTitle)
                         }
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .font(.largeTitle)
+                        .padding()
+                        .padding(.trailing, 20)
                     }
-                    .padding()
-                    .padding(.trailing, 20)
                 }
             }
             .task {

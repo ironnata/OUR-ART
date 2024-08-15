@@ -14,7 +14,12 @@ struct SettingsScreen: View {
     @State var showEmailSheet = false
     @State private var showDeleteAlert = false
     
+    @State private var isZoomed = false
+    @State private var currentImage: Image? = nil
+
+    
     @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var profileVM = ProfileViewModel()
     
     @Binding var showSignInView: Bool
     
@@ -25,12 +30,14 @@ struct SettingsScreen: View {
         ZStack {
             List {
                 Section {
-                    ProfileCellView(showSignInView: $showSignInView)
+                    ProfileCellView(showSignInView: $showSignInView, isZoomed: $isZoomed, currentImage: $currentImage)
                     
-                    NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
-                        HStack {
-                            Image(systemName: "list.star")
-                            Text("My Exhibitions")
+                    if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
+                        NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
+                            HStack {
+                                Image(systemName: "list.star")
+                                Text("My Exhibitions")
+                            }
                         }
                     }
                     
@@ -98,6 +105,9 @@ struct SettingsScreen: View {
                 viewModel.loadAuthProviders()
                 viewModel.loadAuthUser()
             }
+            .task {
+                try? await profileVM.loadCurrentUser()
+            }
             .viewBackground()
         }
         .toolbar {
@@ -115,7 +125,14 @@ struct SettingsScreen: View {
                 }
             }
         }
-        
+        .overlay(
+            Group {
+                if isZoomed, let image = currentImage {
+                    FullScreenProfileImageView(isZoomed: $isZoomed, image: image)
+                        .presentationBackground(.thinMaterial)
+                }
+            }
+        )
     }
 }
 

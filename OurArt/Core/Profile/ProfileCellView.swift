@@ -11,39 +11,70 @@ struct ProfileCellView: View {
     @StateObject private var viewModel = ProfileViewModel()
     
     @Binding var showSignInView: Bool
+    @Binding var isZoomed: Bool
+    @Binding var currentImage: Image?
+    
+    let placeholderImage = Image(systemName: "person.circle.fill")
     
     var body: some View {
         ZStack {
-            
             HStack {
-                if let urlString = viewModel.user?.profileImagePathUrl, let url = URL(string: urlString) {
-                    AsyncImage(url: url) { image in
-                        image
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .clipShape(Circle())
-                    } placeholder: {
-                        Image(systemName: "person.circle.fill")
-                            .resizable()
-                            .frame(width: 50, height: 50)
-                            .foregroundStyle(Color.secondAccent)
-                    }
-                    .padding(.trailing, 30)
-                }
-                
-                Text("\(viewModel.user?.nickname ?? "" )")
-                
-                Spacer()
-                
-                HStack(alignment: .lastTextBaseline) {
-                    Text("\((viewModel.user?.preferences ?? []).joined(separator: ", "))")
-                        .font(.footnote)
-                        .padding(.trailing, 20)
+                if let user = viewModel.user {
                     
-                    NavigationLink {
-                        ProfileEditView(showSignInView: $showSignInView)
-                            .navigationBarBackButtonHidden(true)
-                    } label: { }.frame(width: 0, height: 0)
+                    if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                        AsyncImage(url: url) { image in
+                            image
+                                .resizable()
+                                .modifier(SmallProfileImageModifer())
+                                .onTapGesture {
+                                    withAnimation {
+                                        currentImage = image
+                                        isZoomed.toggle()
+                                    }
+                                }
+                        } placeholder: {
+                            placeholderImage
+                                .resizable()
+                                .modifier(SmallProfileImageModifer())
+                                .foregroundStyle(Color.secondAccent)
+                                .onTapGesture {
+                                    withAnimation {
+                                        currentImage = placeholderImage
+                                        isZoomed.toggle()
+                                    }
+                                }
+                        }
+                        .padding(.trailing, 30)
+                    } else {
+                        placeholderImage
+                            .resizable()
+                            .modifier(SmallProfileImageModifer())
+                            .foregroundStyle(Color.secondAccent)
+                            .onTapGesture {
+                                withAnimation {
+                                    currentImage = placeholderImage
+                                    isZoomed.toggle()
+                                }
+                            }
+                            .padding(.trailing, 30)
+                    }
+                    
+                    
+                    Text("\(user.nickname ?? "" )")
+                    
+                    Spacer()
+                    
+                    HStack(alignment: .lastTextBaseline) {
+                        Text("\(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
+                            .font(.footnote)
+                            .padding(.trailing, 20)
+                        
+                        NavigationLink {
+                            ProfileEditView(showSignInView: $showSignInView)
+                                .navigationBarBackButtonHidden(true)
+                        } label: { }.frame(width: 0, height: 0)
+                    }
+                    
                 }
             }
             .task {
@@ -55,5 +86,5 @@ struct ProfileCellView: View {
 }
 
 #Preview {
-    ProfileCellView(showSignInView: .constant(true))
+    ProfileCellView(showSignInView: .constant(true), isZoomed: .constant(false), currentImage: .constant(Image(systemName: "person")))
 }

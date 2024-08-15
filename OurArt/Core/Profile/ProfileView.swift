@@ -13,7 +13,7 @@ struct ProfileView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
-    let preferenceOptions: [String] = ["Aritst", "Audience"]
+    let preferenceOptions: [String] = ["Artist"]
     
     @State private var nickname: String = ""
     @State private var showImagePicker = false
@@ -66,7 +66,7 @@ struct ProfileView: View {
                                 } else {
                                     Image(systemName: "person.circle.fill")
                                         .resizable()
-                                        .frame(width: 100, height: 100)
+                                        .modifier(ProfileImageModifer())
                                         .foregroundStyle(Color.secondAccent)
                                 }
                                 
@@ -96,7 +96,7 @@ struct ProfileView: View {
                                 .padding(.top, 20)
                             
                             VStack {
-                                Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                                Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .foregroundStyle(.secondary)
                                 

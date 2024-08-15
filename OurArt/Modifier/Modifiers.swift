@@ -42,10 +42,6 @@ struct SmallButtonModifier: ViewModifier {
             .foregroundStyle(Color.accentButtonText)
             .frame(width: 45, height: 20)
             .background(Color.secondAccent)
-            .overlay {
-                RoundedRectangle(cornerRadius: 3)
-                    .stroke(.accent, lineWidth: 2)
-            }
             .clipShape(.rect(cornerRadius: 3))
     }
 }
@@ -135,6 +131,14 @@ struct ProfileImageModifer: ViewModifier {
     func body(content: Content) -> some View {
         content
             .frame(width: 100, height: 100)
+            .clipShape(Circle())
+    }
+}
+
+struct SmallProfileImageModifer: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 45, height: 45)
             .clipShape(Circle())
     }
 }

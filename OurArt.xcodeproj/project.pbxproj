@@ -81,6 +81,7 @@
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
+		CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */; };
 		CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */; };
 		CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */; };
 		CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */; };
@@ -138,6 +139,7 @@
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
+		CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProfileImageView.swift; sourceTree = "<group>"; };
 		CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditView.swift; sourceTree = "<group>"; };
 		CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
 		CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
@@ -422,6 +424,7 @@
 				CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */,
 				CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */,
 				CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */,
+				CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -619,6 +622,7 @@
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
 				CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */,
+				CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */,
 				CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

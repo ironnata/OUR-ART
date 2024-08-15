@@ -15,7 +15,7 @@ struct ProfileEditView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
-    let preferenceOptions: [String] = ["Aritst"]
+    let preferenceOptions: [String] = ["Artist"]
     
     @State private var nickname: String = ""
 //    @State private var showImagePicker = false
@@ -41,46 +41,46 @@ struct ProfileEditView: View {
                         
                         VStack(spacing: 10) {
                             
-                            ZStack {
-                                if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
-                                    AsyncImage(url: url) { image in
-                                        image
-                                            .resizable()
-                                            .modifier(ProfileImageModifer())
-                                    } placeholder: {
+                            HStack(spacing: 30) {
+                                ZStack {
+                                    if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .modifier(ProfileImageModifer())
+                                        } placeholder: {
+                                            Image(systemName: "person.circle.fill")
+                                                .resizable()
+                                                .modifier(ProfileImageModifer())
+                                                .foregroundStyle(Color.secondAccent)
+                                        } 
+                                    } else {
                                         Image(systemName: "person.circle.fill")
                                             .resizable()
-                                            .frame(width: 100, height: 100)
+                                            .modifier(ProfileImageModifer())
                                             .foregroundStyle(Color.secondAccent)
                                     }
+                                    
+                                    Button {
+                                        withAnimation {
+                                            showImageEditView.toggle()
+                                        }
+                                    } label: {
+                                        Text("EDIT")
+                                    }
+                                    .modifier(SmallButtonModifier())
+                                    .offset(y: 30)
                                 }
                                 
-                                Button {
-                                    withAnimation {
-                                        showImageEditView.toggle()
-                                    }
-                                } label: {
-                                    Text("EDIT")
-                                }
-                                .modifier(SmallButtonModifier())
-                                .offset(y: 30)
-//                                .photosPicker(isPresented: $showImagePicker, selection: $selectedItem, matching: .images)
-//                                // 선택 즉시 변경한 이미지 표시
-//                                .onChange(of: selectedItem) { _, newItem in
-//                                    Task {
-//                                        if let data = try? await newItem?.loadTransferable(type: Data.self) {
-//                                            selectedImageData = data
-//                                        }
-//                                    }
-//                                }
+                                TextField(user.nickname ?? "Nickname...", text: $nickname)
+                                    .modifier(TextFieldModifier())
+                                    .padding(.top, 20)
                             }
+                            .padding(.horizontal, 10)
                             
-                            TextField(user.nickname ?? "Nickname...", text: $nickname)
-                                .modifier(TextFieldModifier())
-                                .padding(.top, 20)
                             
                             VStack {
-                                Text("Choose who you are: \((user.preferences ?? []).joined(separator: " and "))")
+                                Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .foregroundStyle(.secondary)
                                 
@@ -117,12 +117,6 @@ struct ProfileEditView: View {
                             Text("Done".uppercased())
                         }
                         .modifier(CommonButtonModifier())
-                        // 프로필 사진 파이어스토어에 저장
-//                        .onChange(of: selectedItem) { _, newItem in
-//                            if let newItem {
-//                                viewModel.saveProfileImage(item: newItem)
-//                            }
-//                        }
                     }
                 }
                 .padding(.horizontal, 10)

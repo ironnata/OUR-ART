@@ -44,8 +44,15 @@ struct ProfileImageEditView: View {
                                         Image(systemName: "person.circle.fill")
                                             .resizable()
                                             .frame(width: 45, height: 45)
+                                            .clipShape(Circle())
                                             .foregroundStyle(Color.secondAccent)
                                     }
+                                } else {
+                                    Image(systemName: "person.circle.fill")
+                                        .resizable()
+                                        .frame(width: 45, height: 45)
+                                        .clipShape(Circle())
+                                        .foregroundStyle(Color.secondAccent)
                                 }
                             }
                             
@@ -86,7 +93,8 @@ struct ProfileImageEditView: View {
                             }
                             .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
                                 Button("Delete", role: .destructive) {
-                                    // Delete Func
+                                    viewModel.deleteProfileImage()
+                                    dismiss()
                                 }
                             }
                         }
