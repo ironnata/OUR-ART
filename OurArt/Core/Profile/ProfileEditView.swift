@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//import PhotosUI
 
 struct ProfileEditView: View {
     
@@ -18,9 +17,6 @@ struct ProfileEditView: View {
     let preferenceOptions: [String] = ["Artist"]
     
     @State private var nickname: String = ""
-//    @State private var showImagePicker = false
-//    @State private var selectedItem: PhotosPickerItem? = nil
-//    @State private var selectedImageData: Data? = nil
     @State private var showInputAlert = false
     @State private var showImageEditView = false
     
@@ -130,6 +126,7 @@ struct ProfileEditView: View {
                 }) {
                     ProfileImageEditView(showImageEditview: $showImageEditView, showSignInView: $showSignInView)
                         .presentationDetents([.height(200)])
+                        .presentationBackground(.thinMaterial)
                 }
             }
             .viewBackground()

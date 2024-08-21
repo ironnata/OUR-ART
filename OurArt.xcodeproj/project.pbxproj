@@ -35,6 +35,7 @@
 		CD6955062AF41FCC00312907 /* Objectivity-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */; };
 		CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */; };
 		CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */; };
+		CD77E80C2C7606F900AC4D26 /* ExhibitionImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77E80B2C7606F900AC4D26 /* ExhibitionImageEditView.swift */; };
 		CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */; };
 		CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
@@ -118,6 +119,7 @@
 		CD6954E62AF41FCC00312907 /* Objectivity-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Objectivity-Medium.otf"; sourceTree = "<group>"; };
 		CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
+		CD77E80B2C7606F900AC4D26 /* ExhibitionImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionImageEditView.swift; sourceTree = "<group>"; };
 		CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionFirstView.swift; sourceTree = "<group>"; };
 		CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionsView.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */,
 				CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */,
 				CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */,
+				CD77E80B2C7606F900AC4D26 /* ExhibitionImageEditView.swift */,
 			);
 			path = MyExhibitions;
 			sourceTree = "<group>";
@@ -615,6 +618,7 @@
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
 				CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
+				CD77E80C2C7606F900AC4D26 /* ExhibitionImageEditView.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
 				CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,

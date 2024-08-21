@@ -30,11 +30,18 @@ struct AddExhibitionFirstView: View {
                         TextField("Title...", text: $title)
                             .modifier(TextFieldModifier())
                             .showClearButton($title)
+                        Text("If the title is empty, it will be set to 'No title'")
+                            .font(.objectivityFootnote)
+                            .foregroundStyle(.secondAccent)
                     } // Title
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 20)
                     
                     Button {
+                        if title.isEmpty {
+                            title = "No title"
+                        }
+                        
                         let newExhibition = Exhibition(
                             id: currentId,
                             dateCreated: Date(),

@@ -63,12 +63,11 @@ struct AddExhibitionSecondView: View {
                                     if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                                         Image(uiImage: uiImage)
                                             .resizable()
-                                            .frame(width: 120, height: 150)
-                                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                                            .modifier(MidPosterSizeModifier())
                                     } else {
-                                        Image(systemName: "questionmark.square.dashed")
+                                        Image(systemName: "photo.on.rectangle.angled")
                                             .resizable()
-                                            .frame(width: 120, height: 150)
+                                            .frame(width: 150, height: 120)
                                             .clipShape(RoundedRectangle(cornerRadius: 5))
                                     }
                                     
@@ -76,9 +75,14 @@ struct AddExhibitionSecondView: View {
                                         showImagePicker.toggle()
                                     } label: {
                                         // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
-                                        Image(systemName: "plus.rectangle")
-                                            .resizable()
-                                            .frame(width: 30, height: 20)
+                                        if selectedImageData != nil {
+                                            Text("EDIT")
+                                                .modifier(SmallButtonModifier())
+                                        } else {
+                                            Image(systemName: "plus.rectangle")
+                                                .resizable()
+                                                .frame(width: 45, height: 20)
+                                        }
                                     }
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
                                     .offset(y: -5)

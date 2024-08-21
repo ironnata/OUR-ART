@@ -75,7 +75,7 @@ Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
             .overlay(alignment: .bottomTrailing) {
                 if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
                     HStack {
-                        Text("Show yours to the world!")
+                        Text("Show your world to the world!")
                         Button {
                             withAnimation {
                                 showAddingView.toggle()

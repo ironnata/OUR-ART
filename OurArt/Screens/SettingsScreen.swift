@@ -16,7 +16,6 @@ struct SettingsScreen: View {
     
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
-
     
     @StateObject private var viewModel = SettingsViewModel()
     @StateObject private var profileVM = ProfileViewModel()
@@ -133,6 +132,7 @@ struct SettingsScreen: View {
                 }
             }
         )
+        .toolbar(isZoomed ? .hidden : .visible, for: .tabBar, .navigationBar)
     }
 }
 

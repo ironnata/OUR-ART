@@ -1,21 +1,21 @@
 //
-//  ProfileImageEditView.swift
+//  ExhibitionImageEditView.swift
 //  OurArt
 //
-//  Created by Jongmo You on 12.08.24.
+//  Created by Jongmo You on 21.08.24.
 //
 
 import SwiftUI
 import PhotosUI
 
-struct ProfileImageEditView: View {
+struct ExhibitionImageEditView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var viewModel = ProfileViewModel()
+    @StateObject private var viewModel = ExhibitionViewModel()
     
     @Binding var showImageEditview: Bool
-    @Binding var showSignInView: Bool
+    var exhibitionId: String
     
     @State private var showImagePicker = false
     @State private var selectedItem: PhotosPickerItem? = nil
@@ -25,39 +25,39 @@ struct ProfileImageEditView: View {
     var body: some View {
         ZStack {
             VStack(alignment: .leading ,spacing: 30) {
-                if let user = viewModel.user {
+                if let exhibition = viewModel.exhibition {
                     HStack(alignment: .center) {
                         ZStack {
                             if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                                 Image(uiImage: uiImage)
                                     .resizable()
-                                    .frame(width: 45, height: 45)
-                                    .clipShape(Circle())
-                            } else if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+                                    .frame(maxHeight: 50)
+                                    .clipShape(.rect(cornerRadius: 2))
+                            } else if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
                                 AsyncImage(url: url) { image in
                                     image
                                         .resizable()
-                                        .frame(width: 45, height: 45)
-                                        .clipShape(Circle())
+                                        .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+                                        .frame(maxHeight: 50)
+                                        .clipShape(.rect(cornerRadius: 2))
                                 } placeholder: {
-                                    Image(systemName: "person.circle.fill")
+                                    Image(systemName: "photo.on.rectangle.angled")
                                         .resizable()
                                         .frame(width: 45, height: 45)
-                                        .clipShape(Circle())
-                                        .foregroundStyle(Color.secondAccent)
+                                        .clipShape(.rect(cornerRadius: 2))
                                 }
                             } else {
-                                Image(systemName: "person.circle.fill")
+                                Image(systemName: "photo.on.rectangle.angled")
                                     .resizable()
                                     .frame(width: 45, height: 45)
-                                    .clipShape(Circle())
-                                    .foregroundStyle(Color.secondAccent)
+                                    .clipShape(.rect(cornerRadius: 2))
                             }
                         }
                         
                         Spacer()
                         
-                        Text("Edit Profile Image")
+                        Text("Edit Poster Image")
                         
                         Spacer()
                         
@@ -66,6 +66,7 @@ struct ProfileImageEditView: View {
                         } label: {
                             Image(systemName: "xmark")
                         }
+                        
                     }
                     
                     Divider()
@@ -77,7 +78,7 @@ struct ProfileImageEditView: View {
                         } label: {
                             HStack(alignment: .center, spacing: 20) {
                                 Image(systemName: "photo")
-                                Text("Select Profile Image")
+                                Text("Select Poster Image")
                             }
                         }
                         .padding(.bottom, 30)
@@ -87,14 +88,16 @@ struct ProfileImageEditView: View {
                         } label: {
                             HStack(alignment: .center, spacing: 20) {
                                 Image(systemName: "trash")
-                                Text("Delete Profile Image")
+                                Text("Delete Poster Image")
                             }
                         }
                         .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
                             Button("Delete", role: .destructive) {
                                 //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
-                                viewModel.deleteAllProfileImages()
-                                dismiss()
+                                Task {
+                                    try await viewModel.deleteAllPosterImages()
+                                    dismiss()
+                                }
                             }
                         }
                     }
@@ -109,7 +112,7 @@ struct ProfileImageEditView: View {
                             }
                             
                             if let newItem {
-                                try await viewModel.saveProfileImage(item: newItem)
+                                viewModel.savePosterImage(item: newItem)
                                 dismiss()
                             }
                         }
@@ -122,11 +125,11 @@ struct ProfileImageEditView: View {
         .padding()
         .viewBackground()
         .task {
-            try? await viewModel.loadCurrentUser()
+            try? await viewModel.loadCurrentExhibition(id: exhibitionId)
         }
     }
 }
 
 #Preview {
-    ProfileImageEditView(showImageEditview: .constant(false), showSignInView: .constant(false))
+    ExhibitionImageEditView(showImageEditview: .constant(false), exhibitionId: "1")
 }

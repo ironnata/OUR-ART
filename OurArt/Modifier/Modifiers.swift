@@ -40,7 +40,8 @@ struct SmallButtonModifier: ViewModifier {
         content
             .font(.objectivityFootnote)
             .foregroundStyle(Color.accentButtonText)
-            .frame(width: 45, height: 20)
+            .frame(height: 20)
+            .padding(.horizontal, 5)
             .background(Color.secondAccent)
             .clipShape(.rect(cornerRadius: 3))
     }
