@@ -147,5 +147,13 @@ extension View {
             .frame(width: 25, height: 25)
             .clipShape(.rect(cornerRadius: 4))
     }
+    
+    @ViewBuilder
+    func setUpTab(_ tab: Tab) -> some View {
+        self
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .tag(tab)
+            .toolbar(.hidden, for: .tabBar)
+    }
 }
 

@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ExhibitionDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var viewModel = MyExhibitionViewModel()
-        
+    @StateObject private var myExhibitionVM = MyExhibitionViewModel()
+    @StateObject private var exhibitionVM = ExhibitionViewModel()
+    @StateObject private var mapVM = MapViewModel()
+    
     @State private var showDeleteAlert = false
     @State private var showEditView = false
     
@@ -56,6 +59,28 @@ struct ExhibitionDetailView: View {
                     }
                     
                     InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
+                    
+                    // 지도 표시
+                    if let coordinate = mapVM.coordinate {
+                        // 좌표를 기준으로 지역 설정
+                        let region = MKCoordinateRegion(
+                            center: coordinate,
+                            span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+                        )
+                        
+                        Map(initialPosition: .region(region)) {
+                            Annotation("", coordinate: coordinate, anchor: .bottom) {
+                                Image(systemName: "mappin.and.ellipse.circle.fill")
+                                    .font(.title2)
+                                    .foregroundStyle(Color.accent)
+                            }
+                        }
+                        .frame(height: 140)
+                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                        
+                        Divider()
+                    }
+                    
                     
                     if let openingTimeFrom = exhibition.openingTimeFrom,
                        let openingTimeTo = exhibition.openingTimeTo {
@@ -115,7 +140,7 @@ struct ExhibitionDetailView: View {
                     title: Text("Your Exhibhition will be completely deleted, Is it okay?"),
                     primaryButton: .default(Text("OK")) {
                         if let myExhibitionId = myExhibitionId {
-                            viewModel.deleteMyExhibitions(myExhibitionId: myExhibitionId)
+                            myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
                             dismiss()
                         }
                     },
@@ -124,11 +149,11 @@ struct ExhibitionDetailView: View {
             }
             .sheet(isPresented: $showEditView, onDismiss: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    viewModel.addListenerForMyExhibitions()
-                    
-                    if let myExhibitionId = myExhibitionId {
-                        viewModel.loadMyExhibition(myExhibitionId: myExhibitionId)
+                    Task {
+                        try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
+                        print(exhibition.id)
                     }
+                    
                 }
             }) {
                 EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
@@ -143,8 +168,13 @@ struct ExhibitionDetailView: View {
         }
         .onAppear {
             if let myExhibitionId = myExhibitionId {
-                viewModel.loadMyExhibition(myExhibitionId: myExhibitionId)
+                myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
+                Task {
+                    try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
+                    print(exhibition.id)
+                }
             }
+            mapVM.fetchCoordinates(for: exhibition.address)
         }
         .viewBackground()
     }
@@ -170,11 +200,6 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                 if let arrayText = text as? [String] {
                     // 배열일 경우 문자열로 조인
                     Text(arrayText.joined(separator: ", "))
-                } else if icon == "mappin.and.ellipse", let address = text as? String {
-                    Link(destination: URL(string: "https://www.google.com/maps/search/?api=1&query=\(address.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")")!) {
-                        Text(address)
-                            .foregroundColor(.blue) // 색상 추후 변경!!!!!!!!!!!!!!!!!!!!!!!
-                    }
                 } else {
                     // 아닐 경우 문자열 그대로 출력
                     Text(String(describing: text))
