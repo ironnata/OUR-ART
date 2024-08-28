@@ -123,6 +123,7 @@ struct BigPosterSizeModifier: ViewModifier {
         content
             .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
             .frame(width: 280, height: 420)
+            .clipShape(.rect(cornerRadius: 8))
     }
 }
 

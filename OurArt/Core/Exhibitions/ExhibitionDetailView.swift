@@ -48,6 +48,8 @@ struct ExhibitionDetailView: View {
                         .font(.objectivityTitle)
                         .padding(.bottom, 20)
                     
+                    InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
+                    
                     
                     if let dateFrom = exhibition.dateFrom,
                        let dateTo = exhibition.dateTo {
@@ -58,7 +60,19 @@ struct ExhibitionDetailView: View {
                         InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                     }
                     
-                    InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a")
+                    if let openingTimeFrom = exhibition.openingTimeFrom,
+                       let openingTimeTo = exhibition.openingTimeTo {
+                        let dateFormatter = DateFormatter.timeOnlyFormatter()
+                        
+                        let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
+                        let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                        
+                        InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
+                    }
+                    
+                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
+                    
+                    InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a").textSelection(.enabled)
                     
                     // 지도 표시
                     if let coordinate = mapVM.coordinate {
@@ -73,6 +87,7 @@ struct ExhibitionDetailView: View {
                                 Image(systemName: "mappin.and.ellipse.circle.fill")
                                     .font(.title2)
                                     .foregroundStyle(Color.accent)
+                                    .symbolEffect(.pulse)
                             }
                         }
                         .frame(height: 140)
@@ -80,21 +95,6 @@ struct ExhibitionDetailView: View {
                         
                         Divider()
                     }
-                    
-                    
-                    if let openingTimeFrom = exhibition.openingTimeFrom,
-                       let openingTimeTo = exhibition.openingTimeTo {
-                        let dateFormatter = DateFormatter.timeOnlyFormatter()
-                        
-                        let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
-                        let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
-                        
-                        InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
-                    }
-                    
-                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
-                    
-                    InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
                     
                     Image(systemName: "doc.richtext")
                     

@@ -31,6 +31,7 @@ struct AddExhibitionSecondView: View {
     
     @State private var showSearchView = false
     @State private var selectedAddress = ""
+    @State private var selectedCity = ""
     
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
@@ -85,7 +86,6 @@ struct AddExhibitionSecondView: View {
                                         }
                                     }
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
-                                    .offset(y: -5)
                                     .onChange(of: selectedImage) { _, newValue in
                                         if let newValue {
                                             viewModel.savePosterImage(item: newValue)
@@ -113,11 +113,12 @@ struct AddExhibitionSecondView: View {
                             VStack(alignment: .leading) {
                                 Text("Date")
                                 HStack(alignment: .center) {
-                                    Spacer()
-                                    DatePicker("", selection: $selectedFromDate, displayedComponents: [.date])
+//                                    Spacer()
+                                    Text("From")
+                                    DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
                                     Text("to")
-                                    DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: [.date])
-                                    Spacer()
+                                    DatePicker("", selection: $selectedToDate, in: selectedFromDate... ,displayedComponents: .date)
+//                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
@@ -137,18 +138,18 @@ struct AddExhibitionSecondView: View {
                             }
                             .frame(maxWidth: .infinity, maxHeight: 500, alignment: .leading)
                             .sheet(isPresented: $showSearchView) {
-                                AddressSearchView(selectedAddress: $selectedAddress, isPresented: $showSearchView)
+                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
                                     .presentationDetents([.large])
                             } // ADDRESS
                             
                             VStack(alignment: .leading) {
                                 Text("Opening Hours")
                                 HStack(alignment: .center, spacing: 20) {
-                                    Spacer()
-                                    DatePicker("", selection: $selectedFromTime, displayedComponents: [.hourAndMinute])
+//                                    Spacer()
+                                    DatePicker("", selection: $selectedFromTime, displayedComponents: .hourAndMinute)
                                     Text("-")
-                                    DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: [.hourAndMinute])
-                                    Spacer()
+                                    DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: .hourAndMinute)
+//                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
@@ -168,6 +169,7 @@ struct AddExhibitionSecondView: View {
                                         }
                                         .font(.objectivityCaption)
                                         .buttonStyle(.borderedProminent)
+                                        .foregroundStyle(Color.accentButtonText)
                                         .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                     }
                                 }
@@ -189,6 +191,7 @@ struct AddExhibitionSecondView: View {
                                     try? await viewModel.addArtist(text: artist)
                                     try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
                                     try? await viewModel.addAddress(text: selectedAddress)
+                                    try? await viewModel.addCity(text: selectedCity)
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     try? await viewModel.addDescription(text: description)
                                     
@@ -219,12 +222,18 @@ struct AddExhibitionSecondView: View {
                                         primaryButton: .default(Text("OK")) {
                                             Task {
                                                 try? await viewModel.deleteExhibition()
+                                                try? await viewModel.deleteAllPosterImages()
                                                 showAddingView = false
                                             }
                                         },
                                         secondaryButton: .cancel()
                                     )
                                 }
+                        }
+                        
+                        ToolbarItem(placement: .principal) {
+                            Text("New Exhibition")
+                                .font(.objectivityBody)
                         }
                         
                         ToolbarItem(placement: .topBarLeading) {
@@ -234,6 +243,7 @@ struct AddExhibitionSecondView: View {
                                     dismiss()
                                     Task {
                                         try? await viewModel.deleteExhibition()
+                                        try await viewModel.deleteAllPosterImages()
                                     }
                                 }
                         }
@@ -241,7 +251,6 @@ struct AddExhibitionSecondView: View {
                     .onAppear {
                         UIDatePicker.appearance().minuteInterval = 5
                     }
-                    .navigationTitle("New Exhibiton")
                     .toolbarBackground()
                 }
                 .task {

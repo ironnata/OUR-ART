@@ -54,6 +54,7 @@ final class StorageManager {
         return image
     }
     
+    // MARK: - PROFILE IMAGES
     
     func saveImage(data: Data, userId: String) async throws -> (path: String, name: String) {
         let meta = StorageMetadata()
@@ -78,10 +79,30 @@ final class StorageManager {
         return try await saveImage(data: data, userId: userId)
     }
     
+    // MARK: - DELETE FUNCs
+    
     func deleteImage(path: String) async throws {
         try await getPathForImage(path: path).delete()
     }
     
+    func deleteUserImageFolder(userId: String) async throws {
+        let listResults = try await userReference(userId: userId).list(maxResults: 1000)
+        
+        for item in listResults.items {
+            try await item.delete()
+        }
+    }
+    
+    func deleteExhibitionImageFolder(exhibitionId: String) async throws {
+        let listResults = try await exhibitionReference(exhibitionId: exhibitionId).list(maxResults: 1000)
+        
+        for item in listResults.items {
+            try await item.delete()
+        }
+    }
+    
+    
+    // MARK: - POSTERS
     
     func savePoster(data: Data, exhibitionId: String) async throws -> (path: String, name: String) {
         let meta = StorageMetadata()

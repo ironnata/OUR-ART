@@ -21,18 +21,15 @@ struct EditMyExhibitionView: View {
     @State private var description: String = ""
     
     @State private var selectedAddress: String = ""
+    @State private var selectedCity: String = ""
     @State private var showSearchView = false
     
-    @State private var selectedImage: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
+    @State private var showImageEditView = false
     
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
-    
-    @State private var showImagePicker = false
-    @State private var showDeleteAlert = false
     
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
@@ -46,12 +43,14 @@ struct EditMyExhibitionView: View {
         let finalArtist = artist.isEmpty ? (viewModel.exhibition?.artist ?? "") : artist
         let finalDescription = description.isEmpty ? (viewModel.exhibition?.description ?? "") : description
         let finalAddress = selectedAddress.isEmpty ? (viewModel.exhibition?.address ?? "") : selectedAddress
+        let finalCity = selectedCity.isEmpty ? (viewModel.exhibition?.city ?? "") : selectedCity
         
         Task {
             try? await viewModel.addTitle(text: finalTitle)
             try? await viewModel.addArtist(text: finalArtist)
             try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
             try? await viewModel.addAddress(text: finalAddress)
+            try? await viewModel.addCity(text: finalCity)
             try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
             try? await viewModel.addDescription(text: finalDescription)
             
@@ -71,43 +70,57 @@ struct EditMyExhibitionView: View {
                             VStack(alignment: .leading) {
                                 Text("Poster")
                                 VStack {
-                                    if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .modifier(MidPosterSizeModifier())
-                                    } else {
-                                        AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                                    if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
+                                        AsyncImage(url: url) { image in
                                             image
                                                 .resizable()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
-                                            Image(systemName: "questionmark.square.dashed")
+                                            Image(systemName: "photo.on.rectangle.angled")
                                                 .resizable()
-                                                .modifier(MidPosterSizeModifier())
+                                                .frame(width: 150, height: 120)
+                                                .clipShape(RoundedRectangle(cornerRadius: 5))
                                         }
+                                    } else {
+                                        Image(systemName: "photo.on.rectangle.angled")
+                                            .resizable()
+                                            .frame(width: 150, height: 120)
+                                            .clipShape(RoundedRectangle(cornerRadius: 5))
                                     }
                                     
+                                    
                                     Button {
-                                        showImagePicker.toggle()
+                                        withAnimation {
+                                            showImageEditView.toggle()
+                                        }
                                     } label: {
                                         Text("EDIT")
                                     }
                                     .modifier(SmallButtonModifier())
-                                    .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
-                                    .offset(y: -5)
-                                    .onChange(of: selectedImage) { _, newValue in
-                                        Task {
-                                            try await viewModel.deleteExistedPosterImage()
-                                            
-                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                                selectedImageData = data
+                                    .sheet(isPresented: $showImageEditView, onDismiss: {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            Task {
+                                                try? await viewModel.loadCurrentExhibition(id: exhibitionId)
                                             }
                                         }
-                                        
-                                        if let newValue {
-                                            viewModel.savePosterImage(item: newValue)
-                                        }
+                                    }) {
+                                        ExhibitionImageEditView(showImageEditview: $showImageEditView, exhibitionId: exhibitionId)
+                                            .presentationDetents([.height(200)])
                                     }
+//                                    .onChange(of: selectedImage) { _, newValue in
+//                                        Task {
+//                                            //                                                try await viewModel.deleteExistedPosterImage()
+//                                            
+//                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+//                                                selectedImageData = data
+//                                            }
+//                                        }
+//                                        
+//                                        if let newValue {
+//                                            viewModel.savePosterImage(item: newValue)
+//                                        }
+//                                    }
+                                    
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                             } // POSTER
@@ -131,17 +144,15 @@ struct EditMyExhibitionView: View {
                             VStack(alignment: .leading) {
                                 Text("Date")
                                 HStack(alignment: .center) {
-                                    Spacer()
-                                    DatePicker("", selection: $selectedFromDate, displayedComponents: [.date])
+                                    DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
                                         .onAppear {
                                             self.selectedFromDate = exhibition.dateFrom ?? Date()
                                         }
                                     Text("to")
-                                    DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: [.date])
+                                    DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: .date)
                                         .onAppear {
                                             self.selectedToDate = exhibition.dateTo ?? Date()
                                         }
-                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
@@ -160,24 +171,22 @@ struct EditMyExhibitionView: View {
                             } // ADDRESS
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .sheet(isPresented: $showSearchView) {
-                                AddressSearchView(selectedAddress: $selectedAddress, isPresented: $showSearchView)
+                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
                                     .presentationDetents([.large])
                             }
                             
                             VStack(alignment: .leading) {
                                 Text("Opening Hours")
                                 HStack(alignment: .center, spacing: 20) {
-                                    Spacer()
-                                    DatePicker("", selection: $selectedFromTime, displayedComponents: [.hourAndMinute])
+                                    DatePicker("", selection: $selectedFromTime, displayedComponents: .hourAndMinute)
                                         .onAppear {
                                             self.selectedFromTime = exhibition.openingTimeFrom ?? Date()
                                         }
                                     Text("-")
-                                    DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: [.hourAndMinute])
+                                    DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: .hourAndMinute)
                                         .onAppear {
                                             self.selectedToTime = exhibition.openingTimeTo ?? Date()
                                         }
-                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
@@ -197,6 +206,7 @@ struct EditMyExhibitionView: View {
                                         }
                                         .font(.objectivityCaption)
                                         .buttonStyle(.borderedProminent)
+                                        .foregroundStyle(Color.accentButtonText)
                                         .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                     }
                                 }

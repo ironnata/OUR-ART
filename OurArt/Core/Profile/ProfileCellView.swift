@@ -11,8 +11,6 @@ struct ProfileCellView: View {
     @StateObject private var viewModel = ProfileViewModel()
     
     @Binding var showSignInView: Bool
-    @Binding var isZoomed: Bool
-    @Binding var currentImage: Image?
     
     let placeholderImage = Image(systemName: "person.circle.fill")
     
@@ -26,23 +24,11 @@ struct ProfileCellView: View {
                             image
                                 .resizable()
                                 .modifier(SmallProfileImageModifer())
-                                .onTapGesture {
-                                    withAnimation {
-                                        currentImage = image
-                                        isZoomed.toggle()
-                                    }
-                                }
                         } placeholder: {
                             placeholderImage
                                 .resizable()
                                 .modifier(SmallProfileImageModifer())
                                 .foregroundStyle(Color.secondAccent)
-                                .onTapGesture {
-                                    withAnimation {
-                                        currentImage = placeholderImage
-                                        isZoomed.toggle()
-                                    }
-                                }
                         }
                         .padding(.trailing, 30)
                     } else {
@@ -50,12 +36,6 @@ struct ProfileCellView: View {
                             .resizable()
                             .modifier(SmallProfileImageModifer())
                             .foregroundStyle(Color.secondAccent)
-                            .onTapGesture {
-                                withAnimation {
-                                    currentImage = placeholderImage
-                                    isZoomed.toggle()
-                                }
-                            }
                             .padding(.trailing, 30)
                     }
                     
@@ -86,5 +66,5 @@ struct ProfileCellView: View {
 }
 
 #Preview {
-    ProfileCellView(showSignInView: .constant(true), isZoomed: .constant(false), currentImage: .constant(Image(systemName: "person")))
+    ProfileCellView(showSignInView: .constant(true))
 }

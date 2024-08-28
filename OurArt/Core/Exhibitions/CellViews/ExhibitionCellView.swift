@@ -28,7 +28,7 @@ struct ExhibitionCellView: View {
                         CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                     }
                     
-                    CellDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "no information")
+                    CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "no information")
                 }
                 
                 Spacer()

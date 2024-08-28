@@ -20,6 +20,11 @@ struct ProfileEditView: View {
     @State private var showInputAlert = false
     @State private var showImageEditView = false
     
+    @State private var isZoomed = false
+    @State private var currentImage: Image? = nil
+    
+    let placeholderImage = Image(systemName: "person.circle.fill")
+    
     private func preferenceIsSelected(text: String) -> Bool {
         viewModel.user?.preferences?.contains(text) == true
     }
@@ -38,23 +43,41 @@ struct ProfileEditView: View {
                         VStack(spacing: 10) {
                             
                             HStack(spacing: 30) {
-                                ZStack {
+                                VStack {
                                     if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
                                         AsyncImage(url: url) { image in
                                             image
                                                 .resizable()
                                                 .modifier(ProfileImageModifer())
+                                                .onTapGesture {
+                                                    withAnimation {
+                                                        currentImage = image
+                                                        isZoomed.toggle()
+                                                    }
+                                                }
                                         } placeholder: {
-                                            Image(systemName: "person.circle.fill")
+                                            placeholderImage
                                                 .resizable()
                                                 .modifier(ProfileImageModifer())
                                                 .foregroundStyle(Color.secondAccent)
-                                        } 
+                                                .onTapGesture {
+                                                    withAnimation {
+                                                        currentImage = placeholderImage
+                                                        isZoomed.toggle()
+                                                    }
+                                                }
+                                        }
                                     } else {
-                                        Image(systemName: "person.circle.fill")
+                                        placeholderImage
                                             .resizable()
                                             .modifier(ProfileImageModifer())
                                             .foregroundStyle(Color.secondAccent)
+                                            .onTapGesture {
+                                                withAnimation {
+                                                    currentImage = placeholderImage
+                                                    isZoomed.toggle()
+                                                }
+                                            }
                                     }
                                     
                                     Button {
@@ -65,41 +88,40 @@ struct ProfileEditView: View {
                                         Text("EDIT")
                                     }
                                     .modifier(SmallButtonModifier())
-                                    .offset(y: 30)
+                                    .padding(.top, 10)
                                 }
                                 
-                                TextField(user.nickname ?? "Nickname...", text: $nickname)
-                                    .modifier(TextFieldModifier())
-                                    .padding(.top, 20)
-                            }
-                            .padding(.horizontal, 10)
-                            
-                            
-                            VStack {
-                                Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .foregroundStyle(.secondary)
-                                
-                                HStack {
-                                    ForEach(preferenceOptions, id: \.self) { string in
-                                        Button(string) {
-                                            if preferenceIsSelected(text: string) {
-                                                viewModel.removeUserPreference(text: string)
-                                            } else {
-                                                viewModel.addUserPreference(text: string)
+                                VStack {
+                                    TextField(user.nickname ?? "Nickname...", text: $nickname)
+                                        .modifier(TextFieldModifier())
+                                        .padding(.bottom, 20)
+                                    
+                                    HStack {
+                                        Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .foregroundStyle(.secondary)
+                                        
+                                        ForEach(preferenceOptions, id: \.self) { string in
+                                            Button(string) {
+                                                if preferenceIsSelected(text: string) {
+                                                    viewModel.removeUserPreference(text: string)
+                                                } else {
+                                                    viewModel.addUserPreference(text: string)
+                                                }
                                             }
+                                            .font(.objectivityBody)
+                                            .buttonStyle(.borderedProminent)
+                                            .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary) // secondary 색상고민좀
+                                            .foregroundStyle(Color.accentButtonText)
                                         }
-                                        .font(.objectivityBody)
-                                        .buttonStyle(.borderedProminent)
-                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary) // secondary 색상고민좀
-                                        .foregroundStyle(Color.accentButtonText)
                                     }
                                 }
                             }
+                            .padding(.horizontal, 10)
                         }
                         
                         Divider()
-                            .padding(.vertical, 20)
+                            .padding(.vertical, 10)
                         
                         Button {
                             if nickname.isEmpty {
@@ -143,6 +165,14 @@ struct ProfileEditView: View {
                     }
             }
         }
+        .overlay(
+            Group {
+                if isZoomed, let image = currentImage {
+                    FullScreenProfileImageView(isZoomed: $isZoomed, image: image)
+                        .presentationBackground(.ultraThinMaterial)
+                }
+            }
+        )
     }
 }
 

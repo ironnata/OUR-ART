@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import Combine
 
 
 struct Exhibition: Identifiable, Codable, Equatable {
@@ -19,10 +20,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
     let dateFrom: Date?
     let dateTo: Date?
     let address: String?
+    let city: String?
     let openingTimeFrom: Date?
     let openingTimeTo: Date?
     let closingDays: [String]?
-    let thumbnail: String? // 필요유무 추후 확인
     let images: [String]? // 필요유무 추후 확인
     let posterImagePath: String?
     let posterImagePathUrl: String?
@@ -36,10 +37,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
         dateFrom: Date? = nil,
         dateTo: Date? = nil,
         address: String? = nil,
+        city: String? = nil,
         openingTimeFrom: Date? = nil,
         openingTimeTo: Date? = nil,
         closingDays: [String]? = nil,
-        thumbnail: String? = nil,
         images: [String]? = nil,
         posterImagePath: String? = nil,
         posterImagePathUrl: String? = nil
@@ -52,10 +53,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.dateFrom = dateFrom
         self.dateTo = dateTo
         self.address = address
+        self.city = city
         self.openingTimeFrom = openingTimeFrom
         self.openingTimeTo = openingTimeTo
         self.closingDays = closingDays
-        self.thumbnail = thumbnail
         self.images = images
         self.posterImagePath = posterImagePath
         self.posterImagePathUrl = posterImagePathUrl
@@ -70,10 +71,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
         case dateFrom = "date_from"
         case dateTo = "date_to"
         case address = "address"
+        case city = "city"
         case openingTimeFrom = "opening_time_from"
         case openingTimeTo = "opening_time_to"
         case closingDays = "closing_days"
-        case thumbnail = "thumbnail"
         case images = "images"
         case posterImagePath = "poster_image_path"
         case posterImagePathUrl = "poster_image_path_url"
@@ -93,10 +94,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.dateFrom = try container.decodeIfPresent(Date.self, forKey: .dateFrom)
         self.dateTo = try container.decodeIfPresent(Date.self, forKey: .dateTo)
         self.address = try container.decodeIfPresent(String.self, forKey: .address)
+        self.city = try container.decodeIfPresent(String.self, forKey: .city)
         self.openingTimeFrom = try container.decodeIfPresent(Date.self, forKey: .openingTimeFrom)
         self.openingTimeTo = try container.decodeIfPresent(Date.self, forKey: .openingTimeTo)
         self.closingDays = try container.decodeIfPresent([String].self, forKey: .closingDays)
-        self.thumbnail = try container.decodeIfPresent(String.self, forKey: .thumbnail)
         self.images = try container.decodeIfPresent([String].self, forKey: .images)
         self.posterImagePath = try container.decodeIfPresent(String.self, forKey: .posterImagePath)
         self.posterImagePathUrl = try container.decodeIfPresent(String.self, forKey: .posterImagePathUrl)
@@ -112,10 +113,10 @@ struct Exhibition: Identifiable, Codable, Equatable {
         try container.encodeIfPresent(self.dateFrom, forKey: .dateFrom)
         try container.encodeIfPresent(self.dateTo, forKey: .dateTo)
         try container.encodeIfPresent(self.address, forKey: .address)
+        try container.encodeIfPresent(self.city, forKey: .city)
         try container.encodeIfPresent(self.openingTimeFrom, forKey: .openingTimeFrom)
         try container.encodeIfPresent(self.openingTimeTo, forKey: .openingTimeTo)
         try container.encodeIfPresent(self.closingDays, forKey: .closingDays)
-        try container.encodeIfPresent(self.thumbnail, forKey: .thumbnail)
         try container.encodeIfPresent(self.images, forKey: .images)
         try container.encodeIfPresent(self.posterImagePath, forKey: .posterImagePath)
         try container.encodeIfPresent(self.posterImagePathUrl, forKey: .posterImagePathUrl)
@@ -241,6 +242,15 @@ final class ExhibitionManager {
     func addAddress(exhibitionId: String, address: String) async throws {
         let data: [String:Any] = [
             Exhibition.CodingKeys.address.rawValue : address
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
+    // addCity func
+    func addCity(exhibitionId: String, city: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.city.rawValue : city
         ]
         
         try await exhibitionDocument(id: exhibitionId).updateData(data)

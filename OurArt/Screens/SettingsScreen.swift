@@ -14,9 +14,6 @@ struct SettingsScreen: View {
     @State var showEmailSheet = false
     @State private var showDeleteAlert = false
     
-    @State private var isZoomed = false
-    @State private var currentImage: Image? = nil
-    
     @StateObject private var viewModel = SettingsViewModel()
     @StateObject private var profileVM = ProfileViewModel()
     
@@ -29,7 +26,7 @@ struct SettingsScreen: View {
         ZStack {
             List {
                 Section {
-                    ProfileCellView(showSignInView: $showSignInView, isZoomed: $isZoomed, currentImage: $currentImage)
+                    ProfileCellView(showSignInView: $showSignInView)
                     
                     if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
                         NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
@@ -124,15 +121,6 @@ struct SettingsScreen: View {
                 }
             }
         }
-        .overlay(
-            Group {
-                if isZoomed, let image = currentImage {
-                    FullScreenProfileImageView(isZoomed: $isZoomed, image: image)
-                        .presentationBackground(.thinMaterial)
-                }
-            }
-        )
-        .toolbar(isZoomed ? .hidden : .visible, for: .tabBar, .navigationBar)
     }
 }
 

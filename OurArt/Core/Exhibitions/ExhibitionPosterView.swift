@@ -17,7 +17,6 @@ struct ExhibitionPosterView: View {
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
-                        .scaledToFit()
                         .modifier(BigPosterSizeModifier())
                 } placeholder: {
                     ZStack {

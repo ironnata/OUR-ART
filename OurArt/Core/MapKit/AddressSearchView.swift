@@ -13,12 +13,14 @@ struct AddressSearchView: View {
     @StateObject private var viewModel = AddressSearchViewModel()
 
     @Binding var selectedAddress: String
+    @Binding var selectedCity: String
     @Binding var isPresented: Bool
     
     private func searchForSelectedResult(from result: LocalizedSearchResult) {
         viewModel.searchForSelectedResult(result: result) { selectedResult in
             if let selectedResult = selectedResult {
                 self.selectedAddress = selectedResult.formattedAddress
+                self.selectedCity = selectedResult.city ?? ""
             }
             self.isPresented = false
             UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) // 키보드 닫기
@@ -61,5 +63,5 @@ struct AddressSearchView: View {
 }
 
 #Preview {
-    AddressSearchView(selectedAddress: .constant(""), isPresented: .constant(false))
+    AddressSearchView(selectedAddress: .constant(""), selectedCity: .constant(""), isPresented: .constant(false))
 }

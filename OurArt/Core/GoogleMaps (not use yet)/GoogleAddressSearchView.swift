@@ -69,5 +69,5 @@ struct GoogleAddressSearchView: View {
 }
 
 #Preview {
-    AddressSearchView(selectedAddress: .constant(""), isPresented: .constant(false))
+    GoogleAddressSearchView(selectedAddress: .constant(""), isPresented: .constant(false))
 }

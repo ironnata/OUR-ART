@@ -83,6 +83,14 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    func deleteAllProfileImages() {
+        guard let user else { return }
+        
+        Task {
+            try await StorageManager.shared.deleteUserImageFolder(userId: user.userId)
+        }
+    }
+    
     func loadImage(fromItem item: PhotosPickerItem?) async {
         guard let item = item else { return }
         
