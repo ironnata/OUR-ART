@@ -14,10 +14,22 @@ struct ExhibitionCellView: View {
     var body: some View {
         ZStack {
             HStack {
+                AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                        .modifier(SmallPosterSizeModifier())
+                } placeholder: {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(.redacted)
+                        .modifier(SmallPosterSizeModifier())
+                }
+                .padding(.trailing, 10)
+                
                 VStack(alignment: .leading) {
                     Text(exhibition.title ?? "n/a")
-                        .foregroundStyle(.primary)
-                        .padding(.bottom, 20)
+                        .lineLimit(1)
+                        .padding(.bottom, 13)
                     
                     if let dateFrom = exhibition.dateFrom,
                        let dateTo = exhibition.dateTo {
@@ -26,31 +38,23 @@ struct ExhibitionCellView: View {
                         let formattedDateTo = dateFormatter.string(from: dateTo)
                         
                         CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
+                            .foregroundStyle(Color.secondAccent)
                     }
                     
                     CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "no information")
+                        .foregroundStyle(Color.secondAccent)
                 }
                 
                 Spacer()
                 
-                AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .modifier(SmallPosterSizeModifier())
-                } placeholder: {
-                    EmptyView()
-                        .modifier(SmallPosterSizeModifier())
-                }
-                
             }
             .frame(maxWidth: .infinity)
             .frame(height: 100)
-            .padding()
-            .overlay {
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(.secondary, lineWidth: 2)
-            }
+//            .padding()
+//            .overlay {
+//                RoundedRectangle(cornerRadius: 10)
+//                    .stroke(.secondary, lineWidth: 2)
+//            }
             .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .viewBackground()

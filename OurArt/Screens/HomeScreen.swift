@@ -20,10 +20,10 @@ struct HomeScreen: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("""
-Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
+Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
 """)
                         .lineSpacing(7)
-                        .frame(height: 120)
+                        .frame(height: 100)
                     
                     NavigationView {
                         ZStack {
@@ -41,7 +41,7 @@ Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
                                     .onFirstAppear {
                                         isLoading = true
                                         
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                             isLoading = false
                                         }
                                     }
@@ -62,7 +62,7 @@ Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
                         .onDisappear {
                             Task {
                                 try? await profileVM.loadCurrentUser()
-                                exhibitionVM.getExhibitions()
+                                exhibitionVM.addListenerForAllExhibitions()
                             }
                         }
                 }
@@ -91,7 +91,7 @@ Welcome to WE ART 🖌️ \n\(profileVM.user?.nickname ?? "")👋
             }
             .task {
                 try? await profileVM.loadCurrentUser()
-                exhibitionVM.getExhibitions()
+                exhibitionVM.addListenerForAllExhibitions()
             }
         }
         .viewBackground()

@@ -170,6 +170,7 @@ struct ProfileEditView: View {
                 if isZoomed, let image = currentImage {
                     FullScreenProfileImageView(isZoomed: $isZoomed, image: image)
                         .presentationBackground(.ultraThinMaterial)
+                        .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
                 }
             }
         )

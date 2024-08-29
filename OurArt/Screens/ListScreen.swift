@@ -45,28 +45,29 @@ struct ListScreen: View {
                     .onFirstAppear {
                         isLoading = true
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                             isLoading = false
                         }
                     }
                     
-                    if exhibition == viewModel.exhibitions.last {
-                        HStack(alignment: .center) {
-                            Spacer()
-                            ProgressView()
-                                .onAppear {
-                                    viewModel.getExhibitions()
-                            }
-                            Spacer()
-                        }
-                    }
+//                    if exhibition == viewModel.exhibitions.last {
+//                        HStack(alignment: .center) {
+//                            Spacer()
+//                            ProgressView()
+//                                .onAppear {
+//                                    viewModel.getExhibitions()
+//                            }
+//                            Spacer()
+//                        }
+//                    }
                 }
                 .sectionBackground()
                 .listRowSeparator(.hidden)
             }
             .toolbarBackground()
             .refreshable {
-                viewModel.getExhibitions()
+                try? await Task.sleep(nanoseconds: 900_000_000)
+                viewModel.addListenerForAllExhibitions()
             }
             .toolbar(content: {
                 ToolbarItem(placement: .topBarLeading) {
@@ -105,7 +106,7 @@ struct ListScreen: View {
                 //            }
             })
             .onAppear {
-                viewModel.getExhibitions()
+                viewModel.addListenerForAllExhibitions()
             }
             
             // CATEGORY 추가 시 사용

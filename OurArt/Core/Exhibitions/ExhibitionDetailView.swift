@@ -19,6 +19,9 @@ struct ExhibitionDetailView: View {
     @State private var showDeleteAlert = false
     @State private var showEditView = false
     
+    @State private var isZoomed = false
+    @State private var currentImage: Image? = nil
+    
     var myExhibitionId: String?
     let exhibition: Exhibition
     var isMyExhibition: Bool = false
@@ -35,7 +38,13 @@ struct ExhibitionDetailView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(maxWidth: 240, alignment: .center)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .clipShape(.rect(cornerRadius: 8))
+                        .onTapGesture {
+                            withAnimation {
+                                currentImage = image
+                                isZoomed.toggle()
+                            }
+                        }
                 } placeholder: {
                     Text("No Poster")
                         .frame(width: 240, height: 360, alignment: .center)
@@ -74,9 +83,7 @@ struct ExhibitionDetailView: View {
                     
                     InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a").textSelection(.enabled)
                     
-                    // 지도 표시
                     if let coordinate = mapVM.coordinate {
-                        // 좌표를 기준으로 지역 설정
                         let region = MKCoordinateRegion(
                             center: coordinate,
                             span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
@@ -96,18 +103,16 @@ struct ExhibitionDetailView: View {
                         Divider()
                     }
                     
-                    Image(systemName: "doc.richtext")
-                    
                     Text(exhibition.description ?? "n/a")
                         .multilineTextAlignment(.leading)
+                        .lineSpacing(7)
                         .font(.objectivityCallout)
                 }
                 .padding(.horizontal)
             }
-            .navigationTitle("\(exhibition.title ?? "")")
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarBackButtonHidden(true)
-            .toolbarBackground()
+            .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Image(systemName: "chevron.left")
@@ -124,6 +129,7 @@ struct ExhibitionDetailView: View {
                             .onTapGesture {
                                 showEditView = true
                             }
+                            .padding(.trailing, 10)
                     }
                     
                     ToolbarItem(placement: .topBarTrailing) {
@@ -135,17 +141,15 @@ struct ExhibitionDetailView: View {
                     }
                 }
             }
-            .alert(isPresented: $showDeleteAlert) {
-                Alert(
-                    title: Text("Your Exhibhition will be completely deleted, Is it okay?"),
-                    primaryButton: .default(Text("OK")) {
-                        if let myExhibitionId = myExhibitionId {
-                            myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
-                            dismiss()
-                        }
-                    },
-                    secondaryButton: .cancel()
-                )
+            .alert("", isPresented: $showDeleteAlert) {
+                Button("Delete", role: .destructive) {
+                    if let myExhibitionId = myExhibitionId {
+                        myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
+                        dismiss()
+                    }
+                }
+            } message: {
+                Text("This exhibition will be permanently deleted. Do you wish to proceed?")
             }
             .sheet(isPresented: $showEditView, onDismiss: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -158,21 +162,24 @@ struct ExhibitionDetailView: View {
             }) {
                 EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(exhibition.title ?? "")
-                        .font(.objectivityBody)
-                        .lineLimit(1)
+        }
+        .overlay {
+            Group {
+                if isZoomed, let image = currentImage {
+                    FullScreenPosterView(isZoomed: $isZoomed, image: image)
+                        .presentationBackground(.ultraThinMaterial)
+                        .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
                 }
             }
         }
         .onAppear {
             if let myExhibitionId = myExhibitionId {
                 myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
-                Task {
-                    try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
-                    print(exhibition.id)
-                }
+            }
+            
+            Task {
+                try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
+                print(exhibition.id)
             }
             mapVM.fetchCoordinates(for: exhibition.address)
         }

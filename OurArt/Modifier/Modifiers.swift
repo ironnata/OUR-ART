@@ -102,7 +102,7 @@ struct SmallPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
-            .frame(maxWidth: 80, maxHeight: 120)
+            .frame(maxWidth: 60, maxHeight: 90)
             .clipShape(.rect(cornerRadius: 2))
     }
 }
