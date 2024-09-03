@@ -26,6 +26,7 @@ struct MainScreen: View {
                 
                 NavigationView {
                     ListScreen()
+                        .id(activeTab == .list ? UUID() : nil)
                 }
                 .setUpTab(.list)
                 
@@ -52,7 +53,7 @@ struct MainScreen: View {
                         .symbolEffect(.bounce.byLayer.down, value: animatedTab.isAnimating)
                 }
                 .frame(maxWidth: .infinity)
-                .foregroundStyle(activeTab == tab ? Color.accent : Color.secondAccent.opacity(0.8))
+                .foregroundStyle(activeTab == tab ? Color.accent : Color.secondAccent.opacity(0.7))
                 .padding(.top, 15)
                 .padding(.bottom, 10)
                 .contentShape(.rect)

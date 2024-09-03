@@ -13,8 +13,9 @@ struct FullScreenProfileImageView: View {
     
     var body: some View {
         ZStack {
-            Color.black.opacity(0.8)
+            Color.black.opacity(0.2)
                 .ignoresSafeArea()
+                .background(.ultraThinMaterial)
                 .onTapGesture {
                     withAnimation {
                         isZoomed.toggle()

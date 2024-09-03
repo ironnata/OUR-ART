@@ -15,6 +15,10 @@ struct HomeScreen: View {
     @State var showAddingView = false
     @State var isLoading: Bool = false
     
+    @State private var isRotating: Bool = false
+    @State private var rotation: Double = 0
+    @State private var animationAmount: CGFloat = 1
+    
     var body: some View {
         ZStack {
             HStack {
@@ -41,7 +45,7 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                                     .onFirstAppear {
                                         isLoading = true
                                         
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                             isLoading = false
                                         }
                                     }
@@ -76,13 +80,27 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                 if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
                     HStack {
                         Text("Show your world to the world!")
+                            .animation(.easeInOut(duration: 0.5))
+                            .scaleEffect(animationAmount)
+                            .opacity(isRotating ? 0 : 1)
+                        
                         Button {
-                            withAnimation {
+                            withAnimation(.easeInOut(duration: 0.8)) {
+                                isRotating = true
+                                rotation = 90
+                                self.animationAmount -= 0.3
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                                 showAddingView.toggle()
+                                isRotating = false
+                                rotation = 0
+                                self.animationAmount = 1
                             }
                         } label: {
                             Image(systemName: "plus.circle")
                                 .font(.largeTitle)
+                                .rotationEffect(.degrees(rotation))
                         }
                         .padding()
                         .padding(.trailing, 20)
@@ -91,7 +109,12 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
             }
             .task {
                 try? await profileVM.loadCurrentUser()
+            }
+            .onAppear {
                 exhibitionVM.addListenerForAllExhibitions()
+            }
+            .onDisappear {
+                exhibitionVM.removeListenerForAllExhibitions()
             }
         }
         .viewBackground()

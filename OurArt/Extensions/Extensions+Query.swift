@@ -68,13 +68,13 @@ extension Query {
 
 extension Font {
     
-    static let objectivityLargeTitle = Font.custom("Objectivity-Bold", size: 32)
-    
     static let objectivityTitle = Font.custom("Objectivity-Bold", size: 26)
     
     static let objectivityTitle2 = Font.custom("Objectivity-Bold", size: 23)
     
     static let objectivityBody = Font.custom("Objectivity-Medium", size: 17)
+    
+    static let objectivityThinBody = Font.custom("Objectivity-Regular", size: 17)
     
     static let objectivityCallout = Font.custom("Objectivity-Regular", size: 15)
     

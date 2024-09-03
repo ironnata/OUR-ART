@@ -35,7 +35,7 @@ struct AddExhibitionFirstView: View {
                             .foregroundStyle(.secondAccent)
                     } // Title
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 30)
                     
                     Button {
                         if title.isEmpty {
