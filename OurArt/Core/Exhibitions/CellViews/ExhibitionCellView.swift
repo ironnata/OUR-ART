@@ -29,7 +29,7 @@ struct ExhibitionCellView: View {
                 VStack(alignment: .leading) {
                     Text(exhibition.title ?? "n/a")
                         .lineLimit(1)
-                        .padding(.bottom, 13)
+                        .padding(.bottom, 8)
                     
                     if let dateFrom = exhibition.dateFrom,
                        let dateTo = exhibition.dateTo {
@@ -39,6 +39,7 @@ struct ExhibitionCellView: View {
                         
                         CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
                             .foregroundStyle(Color.secondAccent)
+                            .offset(y: 7)
                     }
                     
                     CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "no information")
@@ -49,7 +50,7 @@ struct ExhibitionCellView: View {
                 
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 100)
+            .frame(height: 80)
 //            .padding()
 //            .overlay {
 //                RoundedRectangle(cornerRadius: 10)

@@ -8,9 +8,9 @@
 import SwiftUI
 
 enum Tab: String, CaseIterable {
-    case home = "house"
+    case home = "globe"
     case list = "list.dash"
-    case settings = "gearshape.2"
+    case settings = "gearshape"
 }
 
 struct AnimatedTab: Identifiable {

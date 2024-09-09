@@ -78,8 +78,9 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
             })
             .overlay(alignment: .bottomTrailing) {
                 if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
-                    HStack {
+                    HStack(spacing: -10) {
                         Text("Show your world to the world!")
+                            .font(.objectivityCallout)
                             .animation(.easeInOut(duration: 0.5))
                             .scaleEffect(animationAmount)
                             .opacity(isRotating ? 0 : 1)
@@ -99,7 +100,7 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                             }
                         } label: {
                             Image(systemName: "plus.circle")
-                                .font(.largeTitle)
+                                .font(.title)
                                 .rotationEffect(.degrees(rotation))
                         }
                         .padding()
@@ -112,9 +113,6 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
             }
             .onAppear {
                 exhibitionVM.addListenerForAllExhibitions()
-            }
-            .onDisappear {
-                exhibitionVM.removeListenerForAllExhibitions()
             }
         }
         .viewBackground()
