@@ -13,23 +13,35 @@ struct ExhibitionCellView: View {
     
     var body: some View {
         ZStack {
+            let currentDate = Date()
+            
             HStack {
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                     image
                         .resizable()
                         .scaledToFit()
                         .modifier(SmallPosterSizeModifier())
+                        .opacity(exhibition.dateTo != nil && currentDate > exhibition.dateTo! ? 0.3 : 1.0)
                 } placeholder: {
                     RoundedRectangle(cornerRadius: 2)
                         .fill(.redacted)
                         .modifier(SmallPosterSizeModifier())
                 }
                 .padding(.trailing, 10)
+                .overlay {
+                    if exhibition.dateTo != nil && currentDate > exhibition.dateTo! {
+                        Image(systemName: "calendar.badge.minus")
+                            .font(.title)
+                            .symbolRenderingMode(.hierarchical)
+                            .offset(x: -5)
+                    }
+                }
                 
                 VStack(alignment: .leading) {
-                    Text(exhibition.title ?? "n/a")
+                    Text(exhibition.title ?? "")
                         .lineLimit(1)
                         .padding(.bottom, 8)
+                        .foregroundStyle(exhibition.dateTo != nil && currentDate > exhibition.dateTo! ? Color.secondAccent : Color.accent)
                     
                     if let dateFrom = exhibition.dateFrom,
                        let dateTo = exhibition.dateTo {
@@ -38,12 +50,12 @@ struct ExhibitionCellView: View {
                         let formattedDateTo = dateFormatter.string(from: dateTo)
                         
                         CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
-                            .foregroundStyle(Color.secondAccent)
+                            .foregroundStyle(exhibition.dateTo != nil && currentDate > exhibition.dateTo! ? Color.secondAccent : Color.accent)
                             .offset(y: 7)
                     }
                     
                     CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "no information")
-                        .foregroundStyle(Color.secondAccent)
+                        .foregroundStyle(exhibition.dateTo != nil && currentDate > exhibition.dateTo! ? Color.secondAccent : Color.accent)
                 }
                 
                 Spacer()
@@ -56,7 +68,6 @@ struct ExhibitionCellView: View {
 //                RoundedRectangle(cornerRadius: 10)
 //                    .stroke(.secondary, lineWidth: 2)
 //            }
-            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .viewBackground()
     }

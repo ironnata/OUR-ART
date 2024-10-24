@@ -2,20 +2,18 @@
 //  MapViewModel.swift
 //  OurArt
 //
-//  Created by Jongmo You on 24.08.24.
+//  Created by Jongmo You on 07.10.24.
 //
 
-import Foundation
-import CoreLocation
-import Combine
+import SwiftUI
+import MapKit
 
 class MapViewModel: ObservableObject {
     @Published var coordinate: CLLocationCoordinate2D?
-    private var cancellables = Set<AnyCancellable>()
     
-    func fetchCoordinates(for address: String?) {
-        
+    func showAddress(for address: String?) {
         guard let address else { return }
+        
         CLGeocoder().geocodeAddressString(address) { [weak self] placemarks, error in
             if let coordinate = placemarks?.first?.location?.coordinate {
                 DispatchQueue.main.async {
@@ -27,3 +25,4 @@ class MapViewModel: ObservableObject {
         }
     }
 }
+

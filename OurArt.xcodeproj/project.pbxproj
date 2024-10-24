@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD02595E2C5E5E0B00559A4D /* SkeletonUI in Frameworks */ = {isa = PBXBuildFile; productRef = CD02595D2C5E5E0B00559A4D /* SkeletonUI */; };
 		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
+		CD0D63D62C7A148D0003374E /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D63D52C7A148D0003374E /* Tab.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
@@ -18,6 +18,10 @@
 		CD43EB1E2C3DA02C006DA03A /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = CD43EB1D2C3DA02C006DA03A /* GooglePlaces */; };
 		CD4D0BDA2BEE662D006EE049 /* ExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */; };
 		CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */; };
+		CD5407692CB434A000EA1F63 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5407682CB434A000EA1F63 /* MapViewModel.swift */; };
+		CD54076B2CB4351500EA1F63 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD54076A2CB4351500EA1F63 /* AddressSearchView.swift */; };
+		CD54076F2CB5529C00EA1F63 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD54076E2CB5529C00EA1F63 /* AddressSearchViewModel.swift */; };
+		CD5407712CCA706100EA1F63 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5407702CCA706100EA1F63 /* MapView.swift */; };
 		CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD60DB9E2C4524980018BE95 /* AdSupport.framework */; };
 		CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */; };
 		CD60DBA72C4555790018BE95 /* GoogleAddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */; };
@@ -82,10 +86,10 @@
 		CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A12AD989E1004F2868 /* Utilities.swift */; };
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
+		CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB01A472C7A1C0000C3320E /* MainScreen.swift */; };
 		CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */; };
 		CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */; };
-		CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */; };
-		CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */; };
+		CDDE57CB2C80941F0034A271 /* FullScreenPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */; };
 		CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */; };
 		CDDED7A22AE1B8F200150F87 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */; };
 		CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */; };
@@ -95,6 +99,7 @@
 
 /* Begin PBXFileReference section */
 		CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPosterView.swift; sourceTree = "<group>"; };
+		CD0D63D52C7A148D0003374E /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionCellViewBuilder.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
@@ -102,6 +107,10 @@
 		CD36549E2BBEC11B001A01FC /* Extensions+Query.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+Query.swift"; sourceTree = "<group>"; };
 		CD4D0BD92BEE662D006EE049 /* ExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionViewModel.swift; sourceTree = "<group>"; };
 		CD4D0BDC2BEE6703006EE049 /* MyExhibitionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionViewModel.swift; sourceTree = "<group>"; };
+		CD5407682CB434A000EA1F63 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		CD54076A2CB4351500EA1F63 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
+		CD54076E2CB5529C00EA1F63 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
+		CD5407702CCA706100EA1F63 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		CD60DB9E2C4524980018BE95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesManager.swift; sourceTree = "<group>"; };
 		CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAddressSearchView.swift; sourceTree = "<group>"; };
@@ -141,10 +150,10 @@
 		CD9316A12AD989E1004F2868 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
+		CDB01A472C7A1C0000C3320E /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProfileImageView.swift; sourceTree = "<group>"; };
 		CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditView.swift; sourceTree = "<group>"; };
-		CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
-		CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
+		CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPosterView.swift; sourceTree = "<group>"; };
 		CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettignsViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
@@ -170,7 +179,6 @@
 				CD93164F2AD6D081004F2868 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				CD9316552AD6D081004F2868 /* FirebaseAuth in Frameworks */,
 				CD9316592AD6D081004F2868 /* FirebaseCrashlytics in Frameworks */,
-				CD02595E2C5E5E0B00559A4D /* SkeletonUI in Frameworks */,
 				CD9316792AD6D081004F2868 /* FirebaseRemoteConfigSwift in Frameworks */,
 				CD9316922AD970B1004F2868 /* GoogleSignIn in Frameworks */,
 				CD93166B2AD6D081004F2868 /* FirebaseInAppMessaging-Beta in Frameworks */,
@@ -195,6 +203,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD0D63D42C7A146C0003374E /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				CD0D63D52C7A148D0003374E /* Tab.swift */,
+			);
+			name = Animation;
+			sourceTree = "<group>";
+		};
 		CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +264,7 @@
 				CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */,
 				CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */,
 				CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */,
+				CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */,
 				CD4D0BDE2BEE6737006EE049 /* CellViews */,
 			);
 			path = Exhibitions;
@@ -296,6 +313,7 @@
 		CD9316352AD6C985004F2868 /* OurArt */ = {
 			isa = PBXGroup;
 			children = (
+				CD0D63D42C7A146C0003374E /* Animation */,
 				CD6954C82AF41F9F00312907 /* Fonts */,
 				CD9316952AD97127004F2868 /* Info.plist */,
 				CD9316812AD812B4004F2868 /* App */,
@@ -324,6 +342,7 @@
 		CD93167E2AD8118F004F2868 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				CDB01A472C7A1C0000C3320E /* MainScreen.swift */,
 				CD93167F2AD812AC004F2868 /* HomeScreen.swift */,
 				CD9316822AD812D2004F2868 /* ListScreen.swift */,
 				CD9316842AD812E7004F2868 /* SettingsScreen.swift */,
@@ -369,19 +388,21 @@
 			path = Managers;
 			sourceTree = "<group>";
 		};
-		CDD90B6C2C551F3300320330 /* Maps */ = {
+		CDD90B6C2C551F3300320330 /* MapKit */ = {
 			isa = PBXGroup;
 			children = (
-				CDD90B6D2C551F6600320330 /* AddressSearchViewModel.swift */,
-				CDD90B6F2C551FBE00320330 /* AddressSearchView.swift */,
+				CD5407682CB434A000EA1F63 /* MapViewModel.swift */,
+				CD54076A2CB4351500EA1F63 /* AddressSearchView.swift */,
+				CD54076E2CB5529C00EA1F63 /* AddressSearchViewModel.swift */,
+				CD5407702CCA706100EA1F63 /* MapView.swift */,
 			);
-			path = Maps;
+			path = MapKit;
 			sourceTree = "<group>";
 		};
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				CDD90B6C2C551F3300320330 /* Maps */,
+				CDD90B6C2C551F3300320330 /* MapKit */,
 				CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
 				CD6954C12AF3CD7E00312907 /* Exhibitions */,
@@ -489,7 +510,6 @@
 				CD9316932AD970B1004F2868 /* GoogleSignInSwift */,
 				CD1DC1BA2C3D7174004D8617 /* GoogleMaps */,
 				CD43EB1D2C3DA02C006DA03A /* GooglePlaces */,
-				CD02595D2C5E5E0B00559A4D /* SkeletonUI */,
 			);
 			productName = OurArt;
 			productReference = CD9316332AD6C985004F2868 /* OurArt.app */;
@@ -525,7 +545,6 @@
 				CD9316902AD970B1004F2868 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 				CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
-				CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */,
 			);
 			productRefGroup = CD9316342AD6C985004F2868 /* Products */;
 			projectDirPath = "";
@@ -587,14 +606,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD5407692CB434A000EA1F63 /* MapViewModel.swift in Sources */,
 				CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */,
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
 				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
-				CDD90B6E2C551F6600320330 /* AddressSearchViewModel.swift in Sources */,
+				CD54076F2CB5529C00EA1F63 /* AddressSearchViewModel.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
 				CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */,
+				CD5407712CCA706100EA1F63 /* MapView.swift in Sources */,
 				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
@@ -603,11 +624,11 @@
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
+				CDDE57CB2C80941F0034A271 /* FullScreenPosterView.swift in Sources */,
 				CD9316A22AD989E2004F2868 /* Utilities.swift in Sources */,
 				CD9316372AD6C985004F2868 /* OurArtApp.swift in Sources */,
 				CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */,
 				CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */,
-				CDD90B702C551FBE00320330 /* AddressSearchView.swift in Sources */,
 				CD4D0BDD2BEE6703006EE049 /* MyExhibitionViewModel.swift in Sources */,
 				CD60DBA72C4555790018BE95 /* GoogleAddressSearchView.swift in Sources */,
 				CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */,
@@ -620,8 +641,11 @@
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD77E80C2C7606F900AC4D26 /* ExhibitionImageEditView.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
+				CD54076B2CB4351500EA1F63 /* AddressSearchView.swift in Sources */,
 				CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
+				CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */,
+				CD0D63D62C7A148D0003374E /* Tab.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
@@ -757,6 +781,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = OurArt/OurArt.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -801,6 +826,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = OurArt/OurArt.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -863,14 +889,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/CSolanaM/SkeletonUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.2;
-			};
-		};
 		CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
@@ -906,11 +924,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CD02595D2C5E5E0B00559A4D /* SkeletonUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CD02595C2C5E5E0B00559A4D /* XCRemoteSwiftPackageReference "SkeletonUI" */;
-			productName = SkeletonUI;
-		};
 		CD1DC1BA2C3D7174004D8617 /* GoogleMaps */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;

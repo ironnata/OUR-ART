@@ -1,5 +1,5 @@
 {
-  "originHash" : "c5de3b4b6363fb51c0eca995fc6be010a2117d9431c549264894de88596770b1",
+  "originHash" : "8243d0c026d5585b643d6ea3e2693f2aa73f6e3ffc3cdaf82ccbbe90d7c101e0",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -155,39 +155,12 @@
       }
     },
     {
-      "identity" : "skeletonui",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CSolanaM/SkeletonUI",
-      "state" : {
-        "revision" : "f025e9ba5d051374d7344efa8859df5b9399a181",
-        "version" : "2.0.2"
-      }
-    },
-    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
         "revision" : "d57a5aecf24a25b32ec4a74be2f5d0a995a47c4b",
         "version" : "1.27.0"
-      }
-    },
-    {
-      "identity" : "swift-snapshot-testing",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/swift-snapshot-testing",
-      "state" : {
-        "revision" : "e883fc9ea51e76dc9ed13fd4a92b0ee258a1e8c9",
-        "version" : "1.17.3"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-syntax",
-      "state" : {
-        "revision" : "06b5cdc432e93b60e3bdf53aff2857c6b312991a",
-        "version" : "600.0.0-prerelease-2024-07-30"
       }
     }
   ],

@@ -1,34 +1,53 @@
 //
-//  SearchViewModel.swift
+//  AddressSearchViewModel.swift
 //  OurArt
 //
-//  Created by Jongmo You on 27.07.24.
+//  Created by Jongmo You on 08.10.24.
 //
 
 import SwiftUI
 import MapKit
 import Combine
 
-struct LocalizedSearchResult: Identifiable {
-    var id = UUID()
-    var name: String
-    var formattedAddress: String
-    var city: String?
-    var coordinate: CLLocationCoordinate2D
+struct SearchCompletions: Identifiable {
+    let id = UUID()
+    let title: String
+    let subtitle: String
+}
+
+struct SearchResult: Identifiable, Hashable {
+    let id = UUID()
+    let coordinate: CLLocationCoordinate2D
+    
+    static func == (lhs: SearchResult, rhs: SearchResult) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
 class AddressSearchViewModel: NSObject, ObservableObject, MKLocalSearchCompleterDelegate {
-    @Published var searchResults: [LocalizedSearchResult] = []
+    @Published var searchResults: [SearchResult] = []
     @Published var queryFragment: String = ""
+    @Published var selectedLocation: SearchResult?
     
-    private var completer: MKLocalSearchCompleter
+    @Published var selectedAddress: String = ""
+    @Published var selectedTitle: String = ""
+    @Published var selectedCity: String = ""
+    
+    var completions = [SearchCompletions]()
+    
+    private let completer: MKLocalSearchCompleter
     private var geocoder = CLGeocoder()
-    private var cancellables = Set<AnyCancellable>()
+    private var cancellables: Set<AnyCancellable> = []
     
-    override init() {
+    init(completer: MKLocalSearchCompleter) {
         self.completer = MKLocalSearchCompleter()
         super.init()
         self.completer.delegate = self
+        self.completer.resultTypes = [.address, .pointOfInterest]
         
         $queryFragment
             .sink { [weak self] query in
@@ -38,50 +57,74 @@ class AddressSearchViewModel: NSObject, ObservableObject, MKLocalSearchCompleter
     }
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
-        self.searchResults = completer.results.map { completion in
-            LocalizedSearchResult(name: completion.title, formattedAddress: completion.subtitle, coordinate: CLLocationCoordinate2D())
+        completions = completer.results.map { completion in
+            return .init(
+                title: completion.title,
+                subtitle: completion.subtitle
+            )
         }
     }
     
-    func searchForSelectedResult(result: LocalizedSearchResult, completionHandler: @escaping (LocalizedSearchResult?) -> Void) {
-            let searchRequest = MKLocalSearch.Request()
-            searchRequest.naturalLanguageQuery = result.name
+//    func didTapOnCompletion(_ completion: SearchCompletions) {
+//        Task {
+//            if let result = try? await search(for: "\(completion.title) \(completion.subtitle)").first {
+//                await MainActor.run {
+//                    self.searchResults = [result]
+//                    self.selectedLocation = result
+//                }
+//                let coordinate = result.coordinate
+//                try await updateAddress(for: coordinate)
+//            }
+//        }
+//    }
+    
+    func search(for query: String, coordinate: CLLocationCoordinate2D? = nil) async throws -> [SearchResult] {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = query
+        request.resultTypes = [.pointOfInterest, .address]
+        
+        if let coordinate {
+            request.region = .init(.init(origin: .init(coordinate), size: .init(width: 1, height: 1)))
+        }
+        let search = MKLocalSearch(request: request)
+        let response = try await search.start()
+        
+        return response.mapItems.compactMap { mapItem in
+            guard let location = mapItem.placemark.location?.coordinate else { return nil }
             
-            let search = MKLocalSearch(request: searchRequest)
+            return SearchResult(coordinate: location)
+        }
+    }
+    
+    func updateAddress(for coordinate: CLLocationCoordinate2D) async throws {
+        let placemarks = try await geocoder.reverseGeocodeLocation(CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude), preferredLocale: Locale(identifier: "de_DE"))
+        
+        if let placemark = placemarks.first {
+            let address = formatAddress(from: placemark)
+            let title = formatPOI(from: placemark)
+            let city = placemark.locality ?? ""
             
-            search.start { response, error in
-                guard let mapItem = response?.mapItems.first else {
-                    completionHandler(nil)
-                    return
-                }
-                
-                let coordinate = mapItem.placemark.coordinate
-                self.geocodeAddress(for: coordinate) { placemark in
-                    if let placemark = placemark {
-                        let formattedAddress = self.formatAddress(from: placemark)
-                        let city = placemark.locality
-                        let result = LocalizedSearchResult(name: result.name, formattedAddress: formattedAddress, city: city, coordinate: coordinate)
-                        completionHandler(result)
-                    } else {
-                        completionHandler(nil)
-                    }
-                }
+            await MainActor.run {
+                self.selectedAddress = address
+                self.selectedTitle = title
+                self.selectedCity = city
             }
         }
-    
-    private func geocodeAddress(for coordinate: CLLocationCoordinate2D, completion: @escaping (CLPlacemark?) -> Void) {
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
-        geocoder.reverseGeocodeLocation(location, preferredLocale: Locale(identifier: "de_DE")) { placemarks, error in
-            completion(placemarks?.first)
-        }
     }
     
-    private func formatAddress(from placemark: CLPlacemark) -> String {
+    func formatAddress(from placemark: CLPlacemark) -> String {
         let components = [
             placemark.thoroughfare,
             placemark.subThoroughfare,
             placemark.postalCode,
             placemark.locality
+        ]
+        return components.compactMap { $0 }.joined(separator: ", ")
+    }
+    
+    private func formatPOI(from placemark: CLPlacemark) -> String {
+        let components = [
+            placemark.name
         ]
         return components.compactMap { $0 }.joined(separator: ", ")
     }

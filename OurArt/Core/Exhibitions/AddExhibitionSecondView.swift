@@ -181,6 +181,7 @@ struct AddExhibitionSecondView: View {
                                 TextField("Describe...", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
                                     .lineLimit(3...7)
+                                    .lineSpacing(10)
                             } // DESCRIPTION
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 30)
