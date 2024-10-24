@@ -65,19 +65,6 @@ class AddressSearchViewModel: NSObject, ObservableObject, MKLocalSearchCompleter
         }
     }
     
-//    func didTapOnCompletion(_ completion: SearchCompletions) {
-//        Task {
-//            if let result = try? await search(for: "\(completion.title) \(completion.subtitle)").first {
-//                await MainActor.run {
-//                    self.searchResults = [result]
-//                    self.selectedLocation = result
-//                }
-//                let coordinate = result.coordinate
-//                try await updateAddress(for: coordinate)
-//            }
-//        }
-//    }
-    
     func search(for query: String, coordinate: CLLocationCoordinate2D? = nil) async throws -> [SearchResult] {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query

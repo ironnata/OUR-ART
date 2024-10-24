@@ -166,3 +166,23 @@ struct OnFirstAppearViewModifier: ViewModifier {
 }
 
 
+struct MagnificationGestureModifier: ViewModifier {
+    @Binding var scale: CGFloat
+    @GestureState private var magnification: CGFloat = 1.0
+    
+    var magnificationGesture: some Gesture {
+        MagnifyGesture()
+            .updating($magnification) { value, gestureState, transaction in
+                gestureState = value.magnification
+            }
+            .onEnded { value in
+                self.scale *= value.magnification
+            }
+    }
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(scale * magnification)
+            .gesture(magnificationGesture)
+    }
+}

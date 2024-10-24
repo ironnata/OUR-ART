@@ -148,6 +148,10 @@ extension View {
             .clipShape(.rect(cornerRadius: 4))
     }
     
+    func magnifiable(scale: Binding<CGFloat>) -> some View {
+        self.modifier(MagnificationGestureModifier(scale: scale))
+    }
+    
     @ViewBuilder
     func setUpTab(_ tab: Tab) -> some View {
         self
