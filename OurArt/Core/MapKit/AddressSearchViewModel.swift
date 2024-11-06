@@ -99,20 +99,21 @@ class AddressSearchViewModel: NSObject, ObservableObject, MKLocalSearchCompleter
         }
     }
     
-    func formatAddress(from placemark: CLPlacemark) -> String {
-        let components = [
-            placemark.thoroughfare,
-            placemark.subThoroughfare,
-            placemark.postalCode,
-            placemark.locality
-        ]
-        return components.compactMap { $0 }.joined(separator: ", ")
+    private func formatAddress(from placemark: CLPlacemark) -> String {
+        let address = [placemark.thoroughfare, placemark.subThoroughfare]
+            .compactMap { $0 }
+            .joined(separator: " ")
+        
+        let additionalComponents = [placemark.postalCode, placemark.locality]
+            .compactMap { $0 }
+            .joined(separator: ", ")
+        
+        return [address, additionalComponents]
+            .filter { !$0.isEmpty }
+            .joined(separator: ", ")
     }
     
     private func formatPOI(from placemark: CLPlacemark) -> String {
-        let components = [
-            placemark.name
-        ]
-        return components.compactMap { $0 }.joined(separator: ", ")
+        return placemark.name ?? placemark.thoroughfare ?? ""
     }
 }

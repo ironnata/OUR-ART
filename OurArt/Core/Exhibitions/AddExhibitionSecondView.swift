@@ -80,9 +80,9 @@ struct AddExhibitionSecondView: View {
                                             Text("EDIT")
                                                 .modifier(SmallButtonModifier())
                                         } else {
-                                            Image(systemName: "plus.rectangle")
-                                                .resizable()
-                                                .frame(width: 45, height: 20)
+                                            Text("+")
+                                                .padding(.horizontal, 10)
+                                                .modifier(SmallButtonModifier())
                                         }
                                     }
                                     .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
@@ -222,8 +222,8 @@ struct AddExhibitionSecondView: View {
                                         title: Text("The whole data you wrote is going to be deleted, is it okay?"),
                                         primaryButton: .default(Text("OK")) {
                                             Task {
-                                                try? await viewModel.deleteExhibition()
                                                 try? await viewModel.deleteAllPosterImages()
+                                                try? await viewModel.deleteExhibition()
                                                 showAddingView = false
                                             }
                                         },
@@ -241,10 +241,10 @@ struct AddExhibitionSecondView: View {
                             Image(systemName: "chevron.left")
                                 .imageScale(.large)
                                 .onTapGesture {
-                                    dismiss()
                                     Task {
+                                        try? await viewModel.deleteAllPosterImages()
                                         try? await viewModel.deleteExhibition()
-                                        try await viewModel.deleteAllPosterImages()
+                                        dismiss()
                                     }
                                 }
                         }

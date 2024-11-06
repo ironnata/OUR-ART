@@ -65,7 +65,7 @@ struct AddressSearchView: View {
             if !isTextFieldFocused && !showList {
                 VStack {
                     Spacer()
-                    Image(systemName: "mappin.and.ellipse")
+                    Image(systemName: "mappin.and.ellipse.circle.fill")
                         .font(.title2)
                         .foregroundColor(.accent)
                     Spacer()
@@ -124,6 +124,7 @@ struct AddressSearchView: View {
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
+                    .cornerRadius(7)
                 }
 
                 Spacer()
@@ -142,7 +143,7 @@ struct AddressSearchView: View {
                         .modifier(CommonButtonModifier())
                     }
                     .padding()
-                    .background(Color.white.opacity(0.7))
+                    .background(Color.background0.opacity(0.7))
                     .cornerRadius(7)
                 }
             }

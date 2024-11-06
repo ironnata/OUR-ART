@@ -66,7 +66,6 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                         .onDisappear {
                             Task {
                                 try? await profileVM.loadCurrentUser()
-                                exhibitionVM.addListenerForAllExhibitions()
                             }
                         }
                 }

@@ -169,20 +169,31 @@ struct OnFirstAppearViewModifier: ViewModifier {
 struct MagnificationGestureModifier: ViewModifier {
     @Binding var scale: CGFloat
     @GestureState private var magnification: CGFloat = 1.0
+    @State private var anchor: UnitPoint = .center
+    
+    private let defaultScale: CGFloat = 3.0
     
     var magnificationGesture: some Gesture {
         MagnifyGesture()
-            .updating($magnification) { value, gestureState, transaction in
+            .updating($magnification) { value, gestureState, _ in
                 gestureState = value.magnification
             }
+            .onChanged { value in
+                let x = value.startLocation.x / UIScreen.main.bounds.width
+                let y = value.startLocation.y / UIScreen.main.bounds.height
+                anchor = UnitPoint(x: x, y: y)
+            }
             .onEnded { value in
-                self.scale *= value.magnification
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    scale = defaultScale
+                    anchor = .center
+                }
             }
     }
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(scale * magnification)
+            .scaleEffect(scale * magnification, anchor: anchor)
             .gesture(magnificationGesture)
     }
 }

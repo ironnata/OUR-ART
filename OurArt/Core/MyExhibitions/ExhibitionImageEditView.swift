@@ -15,6 +15,7 @@ struct ExhibitionImageEditView: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     @Binding var showImageEditview: Bool
+    @Binding var wasImageUpdated: Bool
     var exhibitionId: String
     
     @State private var showImagePicker = false
@@ -96,6 +97,7 @@ struct ExhibitionImageEditView: View {
                                 //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
                                 Task {
                                     try await viewModel.deleteAllPosterImages()
+                                    wasImageUpdated = true
                                     dismiss()
                                 }
                             }
@@ -113,6 +115,7 @@ struct ExhibitionImageEditView: View {
                             
                             if let newItem {
                                 viewModel.savePosterImage(item: newItem)
+                                wasImageUpdated = true
                                 dismiss()
                             }
                         }
@@ -131,5 +134,5 @@ struct ExhibitionImageEditView: View {
 }
 
 #Preview {
-    ExhibitionImageEditView(showImageEditview: .constant(false), exhibitionId: "1")
+    ExhibitionImageEditView(showImageEditview: .constant(false), wasImageUpdated: .constant(false), exhibitionId: "1")
 }

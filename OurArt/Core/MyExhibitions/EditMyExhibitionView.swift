@@ -25,11 +25,24 @@ struct EditMyExhibitionView: View {
     @State private var showSearchView = false
     
     @State private var showImageEditView = false
+    @State private var wasImageUpdated = false
+    @State private var showUpdateMessage = false
     
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
+    
+    var updateMessageBanner: some View {
+        Text("Poster successfully updated!")
+            .font(.objectivityCallout)
+            .foregroundColor(.accentButtonText)
+            .padding(.horizontal, 15)
+            .padding(.vertical, 10)
+            .background(Color.accent.opacity(0.9))
+            .clipShape(RoundedRectangle(cornerRadius: 7))
+            .transition(.move(edge: .top).combined(with: .opacity))
+    }
     
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
@@ -98,13 +111,26 @@ struct EditMyExhibitionView: View {
                                     }
                                     .modifier(SmallButtonModifier())
                                     .sheet(isPresented: $showImageEditView, onDismiss: {
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            Task {
-                                                try? await viewModel.loadCurrentExhibition(id: exhibitionId)
+                                        if wasImageUpdated {
+                                            withAnimation(.spring(response: 0.3)) {
+                                                showUpdateMessage = true
+                                            }
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                                withAnimation(.spring(response: 0.3)) {
+                                                    showUpdateMessage = false
+                                                    wasImageUpdated = false
+                                                }
+                                            }
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                Task {
+                                                    try? await viewModel.loadCurrentExhibition(id: exhibitionId)
+                                                }
                                             }
                                         }
                                     }) {
-                                        ExhibitionImageEditView(showImageEditview: $showImageEditView, exhibitionId: exhibitionId)
+                                        ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: exhibitionId)
                                             .presentationDetents([.height(200)])
                                     }
 //                                    .onChange(of: selectedImage) { _, newValue in
@@ -249,6 +275,14 @@ struct EditMyExhibitionView: View {
                 .toolbarBackground()
                 .task {
                     try? await viewModel.loadCurrentExhibition(id: exhibitionId)
+                }
+                
+                if showUpdateMessage {
+                    VStack {
+                        updateMessageBanner
+                        Spacer()
+                    }
+                    .padding(.top, 100)
                 }
             }
             .viewBackground()
