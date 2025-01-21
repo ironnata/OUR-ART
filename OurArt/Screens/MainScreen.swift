@@ -59,6 +59,9 @@ struct MainScreen: View {
                 .contentShape(.rect)
                 .onTapGesture {
                     withAnimation(.bouncy, completionCriteria: .logicallyComplete) {
+                        if activeTab == tab && tab == .list {
+                            NotificationCenter.default.post(name: .init("ScrollToTop"), object: nil)
+                        }
                         activeTab = tab
                         animatedTab.isAnimating = true
                     } completion: {

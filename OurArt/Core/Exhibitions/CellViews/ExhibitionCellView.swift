@@ -13,7 +13,7 @@ struct ExhibitionCellView: View {
     
     var body: some View {
         ZStack {
-            let currentDate = Date()
+            let currentDate = Calendar.current.startOfDay(for: Date())
             
             HStack {
                 AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
@@ -74,7 +74,7 @@ struct ExhibitionCellView: View {
 }
 
 #Preview {
-    ExhibitionCellView(exhibition: Exhibition(id: "1"))
+    ExhibitionCellView(exhibition: Exhibition(id: "1908DE4D-3D36-45B8-82F8-501E2F6ED739"))
 }
 
 

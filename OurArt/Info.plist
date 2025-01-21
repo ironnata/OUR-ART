@@ -28,5 +28,12 @@
 		<string>Objectivity-Super.otf</string>
 		<string>Objectivity-Thin.otf</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchScreenBackground</string>
+		<key>UIImageName</key>
+		<string>LaunchScreenLogo</string>
+	</dict>
 </dict>
 </plist>

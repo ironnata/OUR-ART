@@ -23,8 +23,29 @@ struct ExhibitionDetailView: View {
     @State private var currentImage: Image? = nil
     
     var myExhibitionId: String?
-    let exhibition: Exhibition
+    var exhibition: Exhibition
     var isMyExhibition: Bool = false
+    
+    private func loadData() {
+        if isMyExhibition {
+            if let myExhibitionId = myExhibitionId {
+                myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
+            }
+//            myExhibitionVM.getExhibition(by: exhibition.id)
+        } else {
+            Task {
+                try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
+            }
+        }
+        mapVM.showAddress(for: exhibition.address)
+    }
+    
+    private func handleDelete() {
+        if let myExhibitionId = myExhibitionId {
+            myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
+            dismiss()
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -57,8 +78,7 @@ struct ExhibitionDetailView: View {
                         .font(.objectivityTitle)
                         .padding(.bottom, 20)
                     
-                    InfoDetailView(icon: "person.crop.square", text: exhibition.artist ?? "n/a")
-                    
+                    InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "No information")
                     
                     if let dateFrom = exhibition.dateFrom,
                        let dateTo = exhibition.dateTo {
@@ -79,9 +99,10 @@ struct ExhibitionDetailView: View {
                         InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
                     }
                     
-                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["n/a"])
+                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
                     
-                    InfoDetailView(icon: "mappin.and.ellipse", text: exhibition.address ?? "n/a").textSelection(.enabled)
+                    InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
+                        .textSelection(.enabled)
                     
                     if let coordinate = mapVM.coordinate {
                         let region = MKCoordinateRegion(
@@ -103,7 +124,7 @@ struct ExhibitionDetailView: View {
                         Divider()
                     }
                     
-                    Text(exhibition.description ?? "n/a")
+                    Text(exhibition.description ?? "")
                         .multilineTextAlignment(.leading)
                         .lineSpacing(7)
                         .font(.objectivityCallout)
@@ -143,19 +164,16 @@ struct ExhibitionDetailView: View {
             }
             .alert("", isPresented: $showDeleteAlert) {
                 Button("Delete", role: .destructive) {
-                    if let myExhibitionId = myExhibitionId {
-                        myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
-                        dismiss()
-                    }
+                    handleDelete()
                 }
             } message: {
                 Text("This exhibition will be permanently deleted. Do you wish to proceed?")
             }
             .sheet(isPresented: $showEditView, onDismiss: {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    Task {
-                        try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
-                        print(exhibition.id)
+//                    myExhibitionVM.getExhibition(by: exhibition.id)
+                    if let myExhibitionId {
+                        myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
                     }
                     
                 }
@@ -167,21 +185,12 @@ struct ExhibitionDetailView: View {
             Group {
                 if isZoomed, let image = currentImage {
                     FullScreenPosterView(isZoomed: $isZoomed, image: image)
-                        .presentationBackground(.ultraThinMaterial)
-                        .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
                 }
             }
         }
+        .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
         .onAppear {
-            if let myExhibitionId = myExhibitionId {
-                myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
-            }
-            
-            Task {
-                try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
-                print(exhibition.id)
-            }
-            mapVM.fetchCoordinates(for: exhibition.address)
+            loadData()
         }
         .viewBackground()
     }
@@ -204,6 +213,7 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
         VStack(alignment: .leading) {
             HStack {
                 Image(systemName: icon)
+                    .symbolRenderingMode(.hierarchical)
                 if let arrayText = text as? [String] {
                     // 배열일 경우 문자열로 조인
                     Text(arrayText.joined(separator: ", "))
@@ -212,6 +222,8 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                     Text(String(describing: text))
                 }
             }
+            .font(.objectivityThinBody)
+            
             Divider()
         }
     }

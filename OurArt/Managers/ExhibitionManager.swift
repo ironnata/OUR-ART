@@ -135,6 +135,8 @@ final class ExhibitionManager {
         exhibitionsCollection.document(id)
     }
     
+    var exhibitionsListener: ListenerRegistration? = nil
+    
     func createExhibition(exhibition: Exhibition) async throws {
         try exhibitionDocument(id: exhibition.id).setData(from: exhibition, merge: false)
     }
@@ -143,21 +145,21 @@ final class ExhibitionManager {
         try await exhibitionDocument(id: id).getDocument(as: Exhibition.self)
     }
     
-//    func getAllExhibitions() async throws -> [Exhibition] {
-//        try await exhibitionsCollection.getDocuments(as: Exhibition.self)
-//    }
-//    
-//    func getAllExhibitionsSortedByDate(descending: Bool) async throws -> [Exhibition] {
-//        try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
-//    }
-//    
-//    func getExhibitions(dateDescending descending: Bool?) async throws -> [Exhibition] {
-//        if let descending {
-//            return try await getAllExhibitionsSortedByDate(descending: descending)
-//        }
-//        
-//        return try await getAllExhibitions()
-//    }
+    //    func getAllExhibitions() async throws -> [Exhibition] {
+    //        try await exhibitionsCollection.getDocuments(as: Exhibition.self)
+    //    }
+    //
+    //    func getAllExhibitionsSortedByDate(descending: Bool) async throws -> [Exhibition] {
+    //        try await exhibitionsCollection.order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending).getDocuments(as: Exhibition.self)
+    //    }
+    //
+    //    func getExhibitions(dateDescending descending: Bool?) async throws -> [Exhibition] {
+    //        if let descending {
+    //            return try await getAllExhibitionsSortedByDate(descending: descending)
+    //        }
+    //
+    //        return try await getAllExhibitions()
+    //    }
     
     func getAllExhibitionsQuery() -> Query {
         exhibitionsCollection
@@ -181,34 +183,34 @@ final class ExhibitionManager {
     }
     
     // 전시 수 세는 func
-//    func getAllExhibitionsCount() async throws -> Int {
-//        try await exhibitionsCollection.aggregateCount()
-//    }
+    //    func getAllExhibitionsCount() async throws -> Int {
+    //        try await exhibitionsCollection.aggregateCount()
+    //    }
     
     // !!!!!!! 아래 3개의 FUNCS는 CATEGORY를 넣게되면 사용할 녀석 !!!!!!!
     
-//    func getAllExhibitionsForCategory(category: String) async throws -> [Exhibition] {
-//        try await exhibitionsCollection.whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category).getDocuments(as: Exhibition.self)
-//    }
+    //    func getAllExhibitionsForCategory(category: String) async throws -> [Exhibition] {
+    //        try await exhibitionsCollection.whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category).getDocuments(as: Exhibition.self)
+    //    }
     
-//    func getAllExhibitionsByDateAndForCategory(descending: Bool, category: String) async throws -> [Exhibition] {
-//        try await exhibitionsCollection
-//            .whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category)
-//            .order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending)
-//            .getDocuments(as: Exhibition.self)
-//    }
+    //    func getAllExhibitionsByDateAndForCategory(descending: Bool, category: String) async throws -> [Exhibition] {
+    //        try await exhibitionsCollection
+    //            .whereField(Exhibition.CodingKeys.category.rawValue, isEqualTo: category)
+    //            .order(by: Exhibition.CodingKeys.dateFrom.rawValue, descending: descending)
+    //            .getDocuments(as: Exhibition.self)
+    //    }
     
-//    func getAllExhibitions(dateDescending descending: Bool?, forCategory category: String?) async throws -> [Exhibition] {
-//        if let descending, let category {
-//            return try await getAllExhibitionsByDateAndForCategory(descending: descending, category: category)
-//        } else if let descending {
-//            return try await getAllExhibitionsSortedByDate(descending: descending)
-//        } else if let category {
-//            return try await getAllExhibitionsForCategory(category: category)
-//        }
-//        
-//        return try await getAllExhibitions()
-//    }
+    //    func getAllExhibitions(dateDescending descending: Bool?, forCategory category: String?) async throws -> [Exhibition] {
+    //        if let descending, let category {
+    //            return try await getAllExhibitionsByDateAndForCategory(descending: descending, category: category)
+    //        } else if let descending {
+    //            return try await getAllExhibitionsSortedByDate(descending: descending)
+    //        } else if let category {
+    //            return try await getAllExhibitionsForCategory(category: category)
+    //        }
+    //
+    //        return try await getAllExhibitions()
+    //    }
     
     // addTitle func
     func addTitle(exhibitionId: String, title: String) async throws {
@@ -315,4 +317,41 @@ final class ExhibitionManager {
         try await exhibitionDocument(id: exhibitionId).delete()
     }
     
+    func addListenerForAllExhibitions() -> AnyPublisher<[Exhibition], Error> {
+        let (publisher, listener) = exhibitionsCollection
+            .addSnapshotListener(as: Exhibition.self)
+        
+        self.exhibitionsListener = listener
+        return publisher
+    }
+    
+    func getExhibitionWithCombine(_ id: String) -> AnyPublisher<Exhibition, Error> {
+        return Future<Exhibition, Error> { promise in
+            self.exhibitionsCollection.document(id)
+                .getDocument { (document, error) in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    guard let document = document, document.exists else {
+                        promise(.failure(NSError(domain: "ExhibitionManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Exhibition not found"])))
+                        return
+                    }
+                    
+                    do {
+                        let exhibition = try document.data(as: Exhibition.self) // Codable을 사용하여 변환
+                        promise(.success(exhibition)) // 전시회 정보 반환
+                        print(exhibition.dateTo ?? "no date")
+                    } catch {
+                        promise(.failure(error)) // 변환 오류 발생 시
+                    }
+                }
+        }
+        .eraseToAnyPublisher()
+    }
+    
+    func removeListenerForAllExhibitions() {
+        self.exhibitionsListener?.remove()
+    }
 }

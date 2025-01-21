@@ -9,15 +9,18 @@ import Foundation
 import SwiftUI
 import PhotosUI
 import FirebaseFirestore
+import Combine
 
 @MainActor
 final class ExhibitionViewModel: ObservableObject {
     
     @Published private(set) var exhibitions: [Exhibition] = []
-    @Published private(set) var exhibition: Exhibition? = nil
+    @Published private(set) var exhibition: Exhibition?
     @Published var selectedFilter: FilterOption? = nil
     private var lastDocument: DocumentSnapshot? = nil
 //    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
+    
+    private var cancellables = Set<AnyCancellable>()
     
     enum FilterOption: String, CaseIterable {
         case noFilter = "None"
@@ -101,6 +104,52 @@ final class ExhibitionViewModel: ObservableObject {
         }
     }
     
+//    func addListenerForAllExhibitions() {
+//        cancellables.removeAll()
+//        
+//        ExhibitionManager.shared.addListenerForAllExhibitions()
+//            .sink { completion in
+//                
+//            } receiveValue: { [weak self] exhibitions in
+////                let sortedExhibitions = exhibitions.sorted {
+////                    ($0.dateFrom ?? Date.distantFuture) > ($1.dateFrom ?? Date.distantFuture)
+////                }
+////                self?.exhibitions = sortedExhibitions
+////                print("the listener is added")
+////                print("전시 데이터 업데이트됨: \(exhibitions.count)개")
+//                Task { @MainActor in
+//                    self?.exhibitions = exhibitions
+//                    
+//                    // 현재 선택된 exhibition이 있다면 해당 exhibition도 업데이트
+//                    if let currentExhibition = self?.exhibition,
+//                       let updatedExhibition = exhibitions.first(where: { $0.id == currentExhibition.id }) {
+//                        self?.exhibition = updatedExhibition
+//                    }
+//                    
+//                    print("전시 데이터 업데이트됨: \(exhibitions.count)개")
+//                }
+//            }
+//            .store(in: &cancellables)
+//    }
+    
+    func addListenerForAllExhibitions() {
+        cancellables.removeAll()
+        
+        ExhibitionManager.shared.addListenerForAllExhibitions()
+            .receive(on: DispatchQueue.main)
+            .sink { completion in
+                
+            } receiveValue: { [weak self] exhibitions in
+                self?.exhibitions = exhibitions
+            }
+            .store(in: &cancellables)
+    }
+    
+    func removeListenerForAllExhibitions() {
+        ExhibitionManager.shared.removeListenerForAllExhibitions()
+        print("the listener is removed")
+    }
+    
     // 전시 수 세는 func
 //    func getAllExhibitionsCount() {
 //        Task {
@@ -115,6 +164,16 @@ final class ExhibitionViewModel: ObservableObject {
     
     func loadCurrentExhibition(id: String) async throws {
         self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
+    }
+    
+    func getExhibition(by exhibitionId: String) {
+        ExhibitionManager.shared.getExhibitionWithCombine(exhibitionId)
+            .sink(receiveCompletion: { completion in
+                
+            }, receiveValue: { [weak self] exhibition in
+                self?.exhibition = exhibition
+            })
+            .store(in: &cancellables)
     }
     
     // addTitle func
@@ -153,6 +212,16 @@ final class ExhibitionViewModel: ObservableObject {
         
         Task {
             try await ExhibitionManager.shared.addAddress(exhibitionId: exhibition.id, address: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
+    // addCity func
+    func addCity(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addCity(exhibitionId: exhibition.id ,city: text)
             self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
         }
     }
@@ -201,12 +270,7 @@ final class ExhibitionViewModel: ObservableObject {
         guard let exhibition else { return }
         
         try await ExhibitionManager.shared.deleteExhibition(exhibitionId: exhibition.id)
-        
-        if let path = exhibition.posterImagePath {
-            try await StorageManager.shared.deleteImage(path: path)
-            print("The Exhibition is deleted")
-        }
-        
+        print("The Exhibition is deleted")
     }
     
     
@@ -240,6 +304,14 @@ final class ExhibitionViewModel: ObservableObject {
             try await StorageManager.shared.deleteImage(path: path)
             print("기존 포스터 삭제 완료.")
         }
+    }
+    
+    func deleteAllPosterImages() async throws {
+        guard let exhibition else { return }
+        
+        try await ExhibitionManager.shared.deleteUserPosterImagePath(exhibitionId: exhibition.id)
+        try await StorageManager.shared.deleteExhibitionImageFolder(exhibitionId: exhibition.id)
+        print("해당 전시폴더 내 모든 포스터 이미지 삭제 완료.")
     }
 //
 //    func loadImage(fromItem item: PhotosPickerItem?) async {

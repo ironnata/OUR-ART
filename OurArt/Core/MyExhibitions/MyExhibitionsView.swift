@@ -20,21 +20,20 @@ struct MyExhibitionsView: View {
             List {
                 ForEach(viewModel.userMyExhibitions, id: \.id.self) { item in
                     ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
-                        .contextMenu(menuItems: {
-                            Button("Add to Favorites") {
+//                        .contextMenu(menuItems: {
+//                            Button("Add to Favorites") {
                                 // Favorite func 만들어서 변경
                                 // viewModel.addFavoriteExhitions
-                                print("Added to Favorites")
-                            }
-                        })
+//                                print("Added to Favorites")
+//                            }
+//                        })
                 }
                 .sectionBackground()
-                .listRowSeparator(.hidden)
                 .redacted(reason: isLoading ? .placeholder : [])
                 .onFirstAppear {
                     isLoading = true
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         isLoading = false
                     }
                 }
@@ -43,9 +42,10 @@ struct MyExhibitionsView: View {
             .listStyle(.plain)
         }
         .viewBackground()
-        .onFirstAppear {
+        .task {
             viewModel.addListenerForMyExhibitions()
         }
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("My Exhibitions")
