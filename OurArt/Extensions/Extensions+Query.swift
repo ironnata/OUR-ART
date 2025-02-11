@@ -148,8 +148,8 @@ extension View {
             .clipShape(.rect(cornerRadius: 4))
     }
     
-    func magnifiable(scale: Binding<CGFloat>) -> some View {
-        self.modifier(MagnificationGestureModifier(scale: scale))
+    func zoomable(isZoomed: Binding<Bool>) -> some View {
+        modifier(ZoomableModifier(isZoomed: isZoomed))
     }
     
     @ViewBuilder
@@ -161,3 +161,14 @@ extension View {
     }
 }
 
+// 네비게이션스택 드래그하여 뒤로가기
+extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
+    override open func viewDidLoad() {
+        super.viewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
+    }
+
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return viewControllers.count > 1
+    }
+}

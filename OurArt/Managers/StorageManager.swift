@@ -57,11 +57,16 @@ final class StorageManager {
     // MARK: - PROFILE IMAGES
     
     func saveImage(data: Data, userId: String) async throws -> (path: String, name: String) {
+        guard let image = UIImage(data: data),
+              let processedData = image.jpegData(compressionQuality: 0.7) else {
+            throw URLError(.badServerResponse)
+        }
+        
         let meta = StorageMetadata()
         meta.contentType = "image/jpeg"
         
         let path = "\(UUID().uuidString).jpeg"
-        let returnedMetaData = try await userReference(userId: userId).child(path).putDataAsync(data, metadata: meta)
+        let returnedMetaData = try await userReference(userId: userId).child(path).putDataAsync(processedData, metadata: meta)
         
         guard let returnedPath = returnedMetaData.path, let returnedName = returnedMetaData.name else {
             throw URLError(.badServerResponse)
@@ -70,9 +75,10 @@ final class StorageManager {
         return (returnedPath, returnedName)
     }
     
+    // 이미지를 직접 저정해야하는 경우 사용 ex) 카메라로 직접 찍은 사진, 앱 내에서 생성된 이미지를 저장, 이미지 편집 후 저장 시
     func saveImage(image: UIImage, userId: String) async throws -> (path: String, name: String) {
         // image.pngData()
-        guard let data = image.jpegData(compressionQuality: 1) else {
+        guard let data = image.jpegData(compressionQuality: 0.1) else {
             throw URLError(.backgroundSessionWasDisconnected)
         }
         
@@ -105,11 +111,16 @@ final class StorageManager {
     // MARK: - POSTERS
     
     func savePoster(data: Data, exhibitionId: String) async throws -> (path: String, name: String) {
+        guard let image = UIImage(data: data),
+              let processedData = image.jpegData(compressionQuality: 0.7) else {
+            throw URLError(.badServerResponse)
+        }
+        
         let meta = StorageMetadata()
         meta.contentType = "image/jpeg"
         
         let path = "\(UUID().uuidString).jpeg"
-        let returnedMetaData = try await exhibitionReference(exhibitionId: exhibitionId).child(path).putDataAsync(data, metadata: meta)
+        let returnedMetaData = try await exhibitionReference(exhibitionId: exhibitionId).child(path).putDataAsync(processedData, metadata: meta)
         
         guard let returnedPath = returnedMetaData.path, let returnedName = returnedMetaData.name else {
             throw URLError(.badServerResponse)
@@ -118,9 +129,10 @@ final class StorageManager {
         return (returnedPath, returnedName)
     }
     
+    // 이미지를 직접 저정해야하는 경우 사용 ex) 카메라로 직접 찍은 사진, 앱 내에서 생성된 이미지를 저장, 이미지 편집 후 저장 시
     func savePoster(image: UIImage, exhibitionId: String) async throws -> (path: String, name: String) {
         // image.pngData()
-        guard let data = image.jpegData(compressionQuality: 1) else {
+        guard let data = image.jpegData(compressionQuality: 0.1) else {
             throw URLError(.backgroundSessionWasDisconnected)
         }
         

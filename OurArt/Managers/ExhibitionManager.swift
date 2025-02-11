@@ -325,32 +325,6 @@ final class ExhibitionManager {
         return publisher
     }
     
-    func getExhibitionWithCombine(_ id: String) -> AnyPublisher<Exhibition, Error> {
-        return Future<Exhibition, Error> { promise in
-            self.exhibitionsCollection.document(id)
-                .getDocument { (document, error) in
-                    if let error = error {
-                        promise(.failure(error))
-                        return
-                    }
-                    
-                    guard let document = document, document.exists else {
-                        promise(.failure(NSError(domain: "ExhibitionManager", code: 404, userInfo: [NSLocalizedDescriptionKey: "Exhibition not found"])))
-                        return
-                    }
-                    
-                    do {
-                        let exhibition = try document.data(as: Exhibition.self) // Codable을 사용하여 변환
-                        promise(.success(exhibition)) // 전시회 정보 반환
-                        print(exhibition.dateTo ?? "no date")
-                    } catch {
-                        promise(.failure(error)) // 변환 오류 발생 시
-                    }
-                }
-        }
-        .eraseToAnyPublisher()
-    }
-    
     func removeListenerForAllExhibitions() {
         self.exhibitionsListener?.remove()
     }

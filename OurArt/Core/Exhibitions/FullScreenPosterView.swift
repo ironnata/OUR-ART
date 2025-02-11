@@ -11,8 +11,6 @@ struct FullScreenPosterView: View {
     @Binding var isZoomed: Bool
     var image: Image
     
-    @State private var scale: CGFloat = 3.0
-    
     var body: some View {
         ZStack {
             Color.black.opacity(0.2)
@@ -27,8 +25,8 @@ struct FullScreenPosterView: View {
             image
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 100, maxHeight: 150)
-                .magnifiable(scale: $scale)
+                .frame(maxWidth: 300, maxHeight: 450)
+                .zoomable(isZoomed: $isZoomed)
                 .onTapGesture {
                     withAnimation {
                         isZoomed.toggle()

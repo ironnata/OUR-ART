@@ -66,11 +66,12 @@ struct AddExhibitionFirstView: View {
                 .padding()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Image(systemName: "xmark")
-                            .imageScale(.large)
-                            .onTapGesture {
-                                dismiss()
-                            }
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .imageScale(.large)
+                        }
                     }
                     
                     ToolbarItem(placement: .topBarLeading) {

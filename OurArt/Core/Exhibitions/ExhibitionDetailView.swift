@@ -136,11 +136,12 @@ struct ExhibitionDetailView: View {
             .toolbarBackground(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Image(systemName: "chevron.left")
-                        .imageScale(.large)
-                        .onTapGesture {
-                            dismiss()
-                        }
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "chevron.left")
+                            .imageScale(.large)
+                    }
                 }
                 
                 if isMyExhibition {
@@ -161,6 +162,9 @@ struct ExhibitionDetailView: View {
                             }
                     }
                 }
+            }
+            .onAppear {
+                UINavigationController.swizzleIfNeeded()
             }
             .alert("", isPresented: $showDeleteAlert) {
                 Button("Delete", role: .destructive) {
@@ -226,5 +230,32 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
             
             Divider()
         }
+    }
+}
+
+
+private extension UINavigationController {
+    static var swizzleDidLoad: Bool = false
+    
+    static func swizzleIfNeeded() {
+        guard !swizzleDidLoad else { return }
+        
+        swizzleDidLoad = true
+        
+        let originalSelector = #selector(viewDidLoad)
+        let swizzledSelector = #selector(swizzledViewDidLoad)
+        
+        let originalMethod = class_getInstanceMethod(UINavigationController.self, originalSelector)
+        let swizzledMethod = class_getInstanceMethod(UINavigationController.self, swizzledSelector)
+        
+        if let originalMethod = originalMethod,
+           let swizzledMethod = swizzledMethod {
+            method_exchangeImplementations(originalMethod, swizzledMethod)
+        }
+    }
+    
+    @objc func swizzledViewDidLoad() {
+        swizzledViewDidLoad()
+        interactivePopGestureRecognizer?.delegate = self
     }
 }

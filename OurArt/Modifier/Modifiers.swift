@@ -166,34 +166,50 @@ struct OnFirstAppearViewModifier: ViewModifier {
 }
 
 
-struct MagnificationGestureModifier: ViewModifier {
-    @Binding var scale: CGFloat
-    @GestureState private var magnification: CGFloat = 1.0
-    @State private var anchor: UnitPoint = .center
+struct ZoomableModifier: ViewModifier {
+    @Binding var isZoomed: Bool
     
-    private let defaultScale: CGFloat = 3.0
-    
-    var magnificationGesture: some Gesture {
-        MagnifyGesture()
-            .updating($magnification) { value, gestureState, _ in
-                gestureState = value.magnification
-            }
-            .onChanged { value in
-                let x = value.startLocation.x / UIScreen.main.bounds.width
-                let y = value.startLocation.y / UIScreen.main.bounds.height
-                anchor = UnitPoint(x: x, y: y)
-            }
-            .onEnded { value in
-                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                    scale = defaultScale
-                    anchor = .center
-                }
-            }
-    }
+    @State private var scale: CGFloat = 1.0
+    @State private var lastScale: CGFloat = 1.0
+    @State private var offset: CGSize = .zero
+    @GestureState private var dragState: CGSize = .zero
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(scale * magnification, anchor: anchor)
-            .gesture(magnificationGesture)
+            .scaleEffect(scale)
+            .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
+            .gesture(
+                SimultaneousGesture(
+                    MagnificationGesture()
+                        .onChanged { value in
+                            let delta = value / lastScale
+                            lastScale = value
+                            scale = min(max(scale * delta, 1), 4)
+                        }
+                        .onEnded { _ in
+                            lastScale = 1.0
+                        },
+                    DragGesture()
+                        .updating($dragState) { value, state, _ in
+                            if scale > 1.0 {
+                                state = value.translation
+                            }
+                        }
+                        .onEnded { value in
+                            if scale > 1.0 {
+                                offset.width += value.translation.width
+                                offset.height += value.translation.height
+                            }
+                        }
+                )
+            )
+            .onChange(of: isZoomed) { _, newValue in
+                if !newValue {  // 닫을 때 초기화
+                    withAnimation(.smooth) {
+                        scale = 1.0
+                        offset = .zero
+                    }
+                }
+            }
     }
 }

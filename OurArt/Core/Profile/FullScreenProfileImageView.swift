@@ -11,8 +11,6 @@ struct FullScreenProfileImageView: View {
     @Binding var isZoomed: Bool
     var image: Image
     
-    @State private var scale: CGFloat = 3.0
-    
     var body: some View {
         ZStack {
             Color.black.opacity(0.2)
@@ -28,8 +26,8 @@ struct FullScreenProfileImageView: View {
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-                .frame(width: 100, height: 100)
-                .magnifiable(scale: $scale)
+                .frame(width: 300, height: 300)
+                .zoomable(isZoomed: $isZoomed)
                 .onTapGesture {
                     withAnimation(.smooth) {
                         isZoomed.toggle()

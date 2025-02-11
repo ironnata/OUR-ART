@@ -236,17 +236,17 @@ struct AddExhibitionSecondView: View {
                             Text("New Exhibition")
                                 .font(.objectivityBody)
                         }
-                        
                         ToolbarItem(placement: .topBarLeading) {
-                            Image(systemName: "chevron.left")
-                                .imageScale(.large)
-                                .onTapGesture {
-                                    Task {
-                                        try? await viewModel.deleteAllPosterImages()
-                                        try? await viewModel.deleteExhibition()
-                                        dismiss()
-                                    }
+                            Button {
+                                Task {
+                                    try? await viewModel.deleteAllPosterImages()
+                                    try? await viewModel.deleteExhibition()
+                                    dismiss()
                                 }
+                            } label: {
+                                Image(systemName: "chevron.left")
+                                    .imageScale(.large)
+                            }
                         }
                     }
                     .onAppear {

@@ -31,62 +31,62 @@ struct ListScreen: View {
     var body: some View {
         
         ZStack {
-            ScrollViewReader { proxy in
-                List {
-                    ForEach(filterExhibitions()) { exhibition in
-                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
-                        
-//                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
-//                            ExhibitionCellView(exhibition: exhibition)
-//                            //                            .contextMenu(menuItems: {
-//                            //                                Button("Add to Favorites") {
-//                            // Favorite func 만들어서 변경
-//                            //                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
-//                            //                                }
-//                            //                            })
-//                        }
-                        
-                        //                    if exhibition == viewModel.exhibitions.last {
-                        //                        HStack(alignment: .center) {
-                        //                            Spacer()
-                        //                            ProgressView()
-                        //                                .onAppear {
-                        //                                    viewModel.getExhibitions()
-                        //                            }
-                        //                            Spacer()
-                        //                        }
-                        //                    }
+            NavigationStack {
+                ScrollViewReader { proxy in
+                    List {
+                        ForEach(filterExhibitions()) { exhibition in
+                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                            
+                            //                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                            //                            ExhibitionCellView(exhibition: exhibition)
+                            //                            //                            .contextMenu(menuItems: {
+                            //                            //                                Button("Add to Favorites") {
+                            //                            // Favorite func 만들어서 변경
+                            //                            //                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
+                            //                            //                                }
+                            //                            //                            })
+                            //                        }
+                            
+                            //                    if exhibition == viewModel.exhibitions.last {
+                            //                        HStack(alignment: .center) {
+                            //                            Spacer()
+                            //                            ProgressView()
+                            //                                .onAppear {
+                            //                                    viewModel.getExhibitions()
+                            //                            }
+                            //                            Spacer()
+                            //                        }
+                            //                    }
+                        }
+                        .sectionBackground()
+                        .redacted(reason: isLoading ? .placeholder : [])
+                        .onFirstAppear {
+                            isLoading = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                isLoading = false
+                            }
+                        }
+                        //                .listRowSeparator(.hidden)
                     }
-                    .sectionBackground()
-                    .redacted(reason: isLoading ? .placeholder : [])
-                    .onFirstAppear {
-                        isLoading = true
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            isLoading = false
+                    .onChange(of: scrollToTop) { _, newValue in
+                        // 맨 위로 스크롤
+                        withAnimation {
+                            proxy.scrollTo(filterExhibitions().first?.id, anchor: .top)
                         }
                     }
-                    //                .listRowSeparator(.hidden)
+                    .toolbarBackground()
+                    .listStyle(.plain)
+                    .searchable(
+                        text: $searchText,
+                        placement: .automatic,
+                        prompt: "Search..."
+                    )
                 }
-                .onChange(of: scrollToTop) { _, newValue in
-                    // 맨 위로 스크롤
-                    withAnimation {
-                        proxy.scrollTo(filterExhibitions().first?.id, anchor: .top)
+                .onAppear {
+                    if scrollToTop {
+                        scrollToTop = false
                     }
-                }
-                .toolbarBackground()
-                .listStyle(.plain)
-                
-                // NavigationBar 안 검색창 UI
-                .searchable(
-                    text: $searchText,
-                    placement: .automatic,
-                    prompt: "Search..."
-                )
-            }
-            .onAppear {
-                if scrollToTop {
-                    scrollToTop = false
                 }
             }
         }

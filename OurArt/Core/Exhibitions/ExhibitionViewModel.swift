@@ -166,16 +166,6 @@ final class ExhibitionViewModel: ObservableObject {
         self.exhibition = try await ExhibitionManager.shared.getExhibition(id: id)
     }
     
-    func getExhibition(by exhibitionId: String) {
-        ExhibitionManager.shared.getExhibitionWithCombine(exhibitionId)
-            .sink(receiveCompletion: { completion in
-                
-            }, receiveValue: { [weak self] exhibition in
-                self?.exhibition = exhibition
-            })
-            .store(in: &cancellables)
-    }
-    
     // addTitle func
     func addTitle(text: String) async throws {
         guard let exhibition else { return }
