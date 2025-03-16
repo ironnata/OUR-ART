@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainScreen: View {
     @State private var activeTab: Tab = .home
+    @State private var shouldScrollToTop: Bool = false
     
     @State private var allTabs: [AnimatedTab] = Tab.allCases.compactMap { Tab -> AnimatedTab? in
         return .init(tab: Tab)
@@ -25,8 +26,7 @@ struct MainScreen: View {
                 .setUpTab(.home)
                 
                 NavigationView {
-                    ListScreen()
-                        .id(activeTab == .list ? UUID() : nil)
+                    ListScreen(shouldScrollToTop: $shouldScrollToTop)
                 }
                 .setUpTab(.list)
                 
@@ -60,7 +60,7 @@ struct MainScreen: View {
                 .onTapGesture {
                     withAnimation(.bouncy, completionCriteria: .logicallyComplete) {
                         if activeTab == tab && tab == .list {
-                            NotificationCenter.default.post(name: .init("ScrollToTop"), object: nil)
+                            shouldScrollToTop = true
                         }
                         activeTab = tab
                         animatedTab.isAnimating = true
@@ -74,7 +74,7 @@ struct MainScreen: View {
                 }
             }
         }
-        .viewBackground()
+        .background(.background0)
     }
 }
 

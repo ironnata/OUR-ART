@@ -106,7 +106,12 @@ extension View {
     }
     
     func viewBackground() -> some View {
-        self.background(.background0)
+        ZStack {
+            Color.background0
+                .ignoresSafeArea()
+            
+            self
+        }
     }
     
     func toolbarBackground() -> some View {

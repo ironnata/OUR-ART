@@ -15,6 +15,8 @@ struct ListScreen: View {
     @State private var scrollToTop: Bool = false
     @State var isLoading: Bool = false
     
+    @Binding var shouldScrollToTop: Bool
+    
     func filterExhibitions() -> [Exhibition] {
         guard !searchText.isEmpty else {
             return viewModel.exhibitions
@@ -69,10 +71,14 @@ struct ListScreen: View {
                         }
                         //                .listRowSeparator(.hidden)
                     }
-                    .onChange(of: scrollToTop) { _, newValue in
-                        // 맨 위로 스크롤
-                        withAnimation {
-                            proxy.scrollTo(filterExhibitions().first?.id, anchor: .top)
+                    .onChange(of: shouldScrollToTop) { oldValue, newValue in
+                        if newValue {
+                            withAnimation {
+                                if let firstId = filterExhibitions().first?.id {
+                                    proxy.scrollTo(firstId, anchor: .top)
+                                }
+                            }
+                            shouldScrollToTop = false  // 스크롤 후 상태 리셋
                         }
                     }
                     .toolbarBackground()
@@ -83,18 +89,10 @@ struct ListScreen: View {
                         prompt: "Search..."
                     )
                 }
-                .onAppear {
-                    if scrollToTop {
-                        scrollToTop = false
-                    }
-                }
             }
         }
         .task {
             viewModel.addListenerForAllExhibitions()
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .init("ScrollToTop"))) { _ in
-            scrollToTop.toggle()  // 스크롤 상태 토글
         }
         .viewBackground()
         .toolbar(content: {
@@ -143,6 +141,6 @@ struct ListScreen: View {
 
 #Preview {
     NavigationStack {
-        ListScreen()
+        ListScreen(shouldScrollToTop: .constant(false))
     }
 }
