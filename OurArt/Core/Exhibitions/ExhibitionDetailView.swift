@@ -21,9 +21,10 @@ struct ExhibitionDetailView: View {
     
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
+    @State private var isLoading = true
     
     var myExhibitionId: String?
-    var exhibition: Exhibition
+    var exhibitionId: String // exhibition 객체 대신 ID만 받음
     var isMyExhibition: Bool = false
     
     private func loadData() {
@@ -31,13 +32,23 @@ struct ExhibitionDetailView: View {
             if let myExhibitionId = myExhibitionId {
                 myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
             }
-//            myExhibitionVM.getExhibition(by: exhibition.id)
-        } else {
-            Task {
-                try await exhibitionVM.loadCurrentExhibition(id: exhibition.id)
+        }
+        
+        // 모든 경우에 전시회 데이터 로드
+        Task {
+            do {
+                try await exhibitionVM.loadCurrentExhibition(id: exhibitionId)
+                isLoading = false
+                
+                // 주소가 있으면 지도 표시
+                if let address = exhibitionVM.exhibition?.address {
+                    mapVM.showAddress(for: address)
+                }
+            } catch {
+                print("전시회 데이터 로드 실패: \(error)")
+                isLoading = false
             }
         }
-        mapVM.showAddress(for: exhibition.address)
     }
     
     private func handleDelete() {
@@ -49,140 +60,149 @@ struct ExhibitionDetailView: View {
     
     var body: some View {
         ZStack {
-            ScrollView {
-                // TEST용
-//                Text(exhibition.id)
-//                Text(viewModel.myExhibition?.id ?? "myID is nil")
-                
-                AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
-                    image
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxWidth: 240, alignment: .center)
-                        .clipShape(.rect(cornerRadius: 8))
-                        .onTapGesture {
-                            withAnimation {
-                                currentImage = image
-                                isZoomed.toggle()
-                            }
-                        }
-                } placeholder: {
-                    Text("No Poster")
-                        .frame(width: 240, height: 360, alignment: .center)
-                        .font(.objectivityTitle2)
-                }
-                .padding(.vertical, 30)
-                
-                VStack(alignment: .leading, spacing: 10) {
-                    Text(exhibition.title ?? "n/a")
-                        .font(.objectivityTitle)
-                        .padding(.bottom, 20)
+            if isLoading {
+                ProgressView()
+                    .navigationBarBackButtonHidden()
+            } else if let exhibition = exhibitionVM.exhibition {
+                ScrollView {
+                    // TEST용
+                    // Text(exhibitionId)
                     
-                    InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "No information")
-                    
-                    if let dateFrom = exhibition.dateFrom,
-                       let dateTo = exhibition.dateTo {
-                        let dateFormatter = DateFormatter.localizedDateFormatter()
-                        let formattedDateFrom = dateFormatter.string(from: dateFrom)
-                        let formattedDateTo = dateFormatter.string(from: dateTo)
-                        
-                        InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
-                    }
-                    
-                    if let openingTimeFrom = exhibition.openingTimeFrom,
-                       let openingTimeTo = exhibition.openingTimeTo {
-                        let dateFormatter = DateFormatter.timeOnlyFormatter()
-                        
-                        let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
-                        let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
-                        
-                        InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
-                    }
-                    
-                    InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
-                    
-                    InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
-                        .textSelection(.enabled)
-                    
-                    if let coordinate = mapVM.coordinate {
-                        let region = MKCoordinateRegion(
-                            center: coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
-                        )
-                        
-                        Map(initialPosition: .region(region)) {
-                            Annotation("", coordinate: coordinate, anchor: .bottom) {
-                                Image(systemName: "mappin.and.ellipse.circle.fill")
-                                    .font(.title2)
-                                    .foregroundStyle(Color.accent)
-                                    .symbolEffect(.pulse)
-                            }
-                        }
-                        .frame(height: 140)
-                        .clipShape(RoundedRectangle(cornerRadius: 5))
-                        
-                        Divider()
-                    }
-                    
-                    Text(exhibition.description ?? "")
-                        .multilineTextAlignment(.leading)
-                        .lineSpacing(7)
-                        .font(.objectivityCallout)
-                }
-                .padding(.horizontal)
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarBackButtonHidden(true)
-            .toolbarBackground(.hidden, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "chevron.left")
-                            .imageScale(.large)
-                    }
-                }
-                
-                if isMyExhibition {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Image(systemName: "square.and.pencil")
-                            .imageScale(.large)
+                    AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 240, alignment: .center)
+                            .clipShape(.rect(cornerRadius: 8))
                             .onTapGesture {
-                                showEditView = true
+                                withAnimation {
+                                    currentImage = image
+                                    isZoomed.toggle()
+                                }
                             }
-                            .padding(.trailing, 10)
+                    } placeholder: {
+                        Text("No Poster")
+                            .frame(width: 240, height: 360, alignment: .center)
+                            .font(.objectivityTitle2)
+                    }
+                    .padding(.vertical, 30)
+                    
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text(exhibition.title ?? "n/a")
+                            .font(.objectivityTitle)
+                            .padding(.bottom, 20)
+                        
+                        InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "No information")
+                        
+                        if let dateFrom = exhibition.dateFrom,
+                           let dateTo = exhibition.dateTo {
+                            let dateFormatter = DateFormatter.localizedDateFormatter()
+                            let formattedDateFrom = dateFormatter.string(from: dateFrom)
+                            let formattedDateTo = dateFormatter.string(from: dateTo)
+                            
+                            InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
+                        }
+                        
+                        if let openingTimeFrom = exhibition.openingTimeFrom,
+                           let openingTimeTo = exhibition.openingTimeTo {
+                            let dateFormatter = DateFormatter.timeOnlyFormatter()
+                            
+                            let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
+                            let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                            
+                            InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
+                        }
+                        
+                        InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
+                        
+                        InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
+                            .textSelection(.enabled)
+                        
+                        if let coordinate = mapVM.coordinate {
+                            let region = MKCoordinateRegion(
+                                center: coordinate,
+                                span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+                            )
+                            
+                            Map(initialPosition: .region(region)) {
+                                Annotation("", coordinate: coordinate, anchor: .bottom) {
+                                    Image(systemName: "mappin.and.ellipse.circle.fill")
+                                        .font(.title2)
+                                        .foregroundStyle(Color.accent)
+                                        .symbolEffect(.pulse)
+                                }
+                            }
+                            .frame(height: 140)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            
+                            Divider()
+                        }
+                        
+                        Text(exhibition.description ?? "")
+                            .multilineTextAlignment(.leading)
+                            .lineSpacing(7)
+                            .font(.objectivityCallout)
+                    }
+                    .padding(.horizontal)
+                }
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarBackButtonHidden(true)
+                .toolbarBackground(.hidden, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "chevron.left")
+                                .imageScale(.large)
+                        }
                     }
                     
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Image(systemName: "trash")
-                            .imageScale(.large)
-                            .onTapGesture {
-                                showDeleteAlert = true
-                            }
+                    if isMyExhibition {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Image(systemName: "square.and.pencil")
+                                .imageScale(.large)
+                                .onTapGesture {
+                                    showEditView = true
+                                }
+                                .padding(.trailing, 10)
+                        }
+                        
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Image(systemName: "trash")
+                                .imageScale(.large)
+                                .onTapGesture {
+                                    showDeleteAlert = true
+                                }
+                        }
                     }
                 }
-            }
-            .onAppear {
-                UINavigationController.swizzleIfNeeded()
-            }
-            .alert("", isPresented: $showDeleteAlert) {
-                Button("Delete", role: .destructive) {
-                    handleDelete()
+                .onAppear {
+                    UINavigationController.swizzleIfNeeded()
                 }
-            } message: {
-                Text("This exhibition will be permanently deleted. Do you wish to proceed?")
-            }
-            .sheet(isPresented: $showEditView, onDismiss: {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                    myExhibitionVM.getExhibition(by: exhibition.id)
-                    if let myExhibitionId {
-                        myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
+                .alert("", isPresented: $showDeleteAlert) {
+                    Button("Delete", role: .destructive) {
+                        handleDelete()
                     }
-                    
+                } message: {
+                    Text("This exhibition will be permanently deleted. Do you wish to proceed?")
                 }
-            }) {
-                EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibition.id)
+                .sheet(isPresented: $showEditView, onDismiss: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        if let myExhibitionId {
+                            myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
+                        }
+                        
+                        // 편집 후 데이터 다시 로드
+                        Task {
+                            try await exhibitionVM.loadCurrentExhibition(id: exhibitionId)
+                        }
+                    }
+                }) {
+                    EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibitionId)
+                }
+            } else {
+                Text("전시회 정보를 불러올 수 없습니다.")
             }
         }
         .overlay {
@@ -200,14 +220,12 @@ struct ExhibitionDetailView: View {
     }
 }
 
-
+// Preview 수정
 #Preview {
     NavigationStack {
-        ExhibitionDetailView(exhibition: Exhibition(id: "1"), isMyExhibition: true)
+        ExhibitionDetailView(exhibitionId: "1", isMyExhibition: true)
     }
 }
-
-
 
 struct InfoDetailView<T: CustomStringConvertible>: View {
     var icon: String
@@ -232,7 +250,6 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
         }
     }
 }
-
 
 private extension UINavigationController {
     static var swizzleDidLoad: Bool = false
@@ -259,3 +276,4 @@ private extension UINavigationController {
         interactivePopGestureRecognizer?.delegate = self
     }
 }
+

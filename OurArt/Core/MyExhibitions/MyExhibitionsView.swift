@@ -11,15 +11,17 @@ struct MyExhibitionsView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var viewModel = MyExhibitionViewModel()
+    @StateObject private var myExhibitionVM = MyExhibitionViewModel()
+    @StateObject private var exhibitionVM = ExhibitionViewModel()
     
     @State var isLoading: Bool = false
     
     var body: some View {
         ZStack {
             List {
-                ForEach(viewModel.userMyExhibitions, id: \.id.self) { item in
+                ForEach(myExhibitionVM.userMyExhibitions, id: \.id.self) { item in
                     ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
+                        .environmentObject(exhibitionVM)
 //                        .contextMenu(menuItems: {
 //                            Button("Add to Favorites") {
                                 // Favorite func 만들어서 변경
@@ -43,7 +45,12 @@ struct MyExhibitionsView: View {
         }
         .viewBackground()
         .task {
-            viewModel.addListenerForMyExhibitions()
+            myExhibitionVM.addListenerForMyExhibitions()
+            exhibitionVM.addListenerForAllExhibitions()
+        }
+        .onDisappear {
+            myExhibitionVM.removeListenerForMyExhibitions()
+            exhibitionVM.removeListenerForAllExhibitions()
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

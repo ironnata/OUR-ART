@@ -14,6 +14,7 @@ struct ListScreen: View {
     @State var searchText = ""
     @State private var scrollToTop: Bool = false
     @State var isLoading: Bool = false
+    @State private var isRefreshing = false // 새로고침 상태 추적
     
     @Binding var shouldScrollToTop: Bool
     
@@ -30,69 +31,73 @@ struct ListScreen: View {
         }
     }
     
-    var body: some View {
+    // 새로고침 함수
+    func refreshData() async {
+        isRefreshing = true
         
+        // 데이터 로드 전에 0.8초 지연
+        try? await Task.sleep(for: .seconds(0.8))
+        
+        // 실제 데이터 새로고침
+        do {
+            try await viewModel.filterSelected(option: viewModel.selectedFilter ?? .noFilter)
+        } catch {
+            print("새로고침 중 오류 발생: \(error)")
+        }
+        
+        // 작업 완료 후 상태 업데이트
+        isRefreshing = false
+    }
+    
+    var body: some View {
         ZStack {
             NavigationStack {
                 ScrollViewReader { proxy in
-                    List {
-                        ForEach(filterExhibitions()) { exhibition in
-                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
-                            
-                            //                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
-                            //                            ExhibitionCellView(exhibition: exhibition)
-                            //                            //                            .contextMenu(menuItems: {
-                            //                            //                                Button("Add to Favorites") {
-                            //                            // Favorite func 만들어서 변경
-                            //                            //                                    viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
-                            //                            //                                }
-                            //                            //                            })
-                            //                        }
-                            
-                            //                    if exhibition == viewModel.exhibitions.last {
-                            //                        HStack(alignment: .center) {
-                            //                            Spacer()
-                            //                            ProgressView()
-                            //                                .onAppear {
-                            //                                    viewModel.getExhibitions()
-                            //                            }
-                            //                            Spacer()
-                            //                        }
-                            //                    }
-                        }
-                        .sectionBackground()
-                        .redacted(reason: isLoading ? .placeholder : [])
-                        .onFirstAppear {
-                            isLoading = true
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                isLoading = false
+                    ZStack {
+                        List {
+                            ForEach(filterExhibitions()) { exhibition in
+                                ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                    .environmentObject(viewModel)
                             }
-                        }
-                        //                .listRowSeparator(.hidden)
-                    }
-                    .onChange(of: shouldScrollToTop) { oldValue, newValue in
-                        if newValue {
-                            withAnimation {
-                                if let firstId = filterExhibitions().first?.id {
-                                    proxy.scrollTo(firstId, anchor: .top)
+                            .sectionBackground()
+                            .redacted(reason: isLoading ? .placeholder : [])
+                            .onFirstAppear {
+                                isLoading = true
+                                
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                    isLoading = false
                                 }
                             }
-                            shouldScrollToTop = false  // 스크롤 후 상태 리셋
                         }
+                        .refreshable {
+                            await refreshData()
+                        }
+                        .onChange(of: shouldScrollToTop) { oldValue, newValue in
+                            if newValue {
+                                withAnimation {
+                                    if let firstId = filterExhibitions().first?.id {
+                                        proxy.scrollTo(firstId, anchor: .top)
+                                    }
+                                }
+                                shouldScrollToTop = false
+                            }
+                        }
+                        .toolbarBackground()
+                        .listStyle(.plain)
+                        .searchable(
+                            text: $searchText,
+                            placement: .automatic,
+                            prompt: "Search..."
+                        )
                     }
-                    .toolbarBackground()
-                    .listStyle(.plain)
-                    .searchable(
-                        text: $searchText,
-                        placement: .automatic,
-                        prompt: "Search..."
-                    )
                 }
             }
         }
         .task {
             viewModel.addListenerForAllExhibitions()
+        }
+        .onDisappear {
+            viewModel.removeListenerForAllExhibitions()
         }
         .viewBackground()
         .toolbar(content: {

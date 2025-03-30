@@ -133,14 +133,21 @@ final class ExhibitionViewModel: ObservableObject {
 //    }
     
     func addListenerForAllExhibitions() {
-        cancellables.removeAll()
+//        cancellables.removeAll()
         
         ExhibitionManager.shared.addListenerForAllExhibitions()
-            .receive(on: DispatchQueue.main)
+//            .receive(on: DispatchQueue.main)  
             .sink { completion in
                 
             } receiveValue: { [weak self] exhibitions in
                 self?.exhibitions = exhibitions
+                for exhibition in exhibitions {
+                    if let dateTo = exhibition.dateTo {
+                        print("Exhibition ID: \(exhibition.id), dateTo: \(dateTo)")
+                    } else {
+                        print("Exhibition ID: \(exhibition.id), dateTo: nil")
+                    }
+                }
             }
             .store(in: &cancellables)
     }

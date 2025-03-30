@@ -35,7 +35,7 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 10) {
                                     ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
-                                        NavigationLink(destination: ExhibitionDetailView(exhibition: exhibition)) {
+                                        NavigationLink(destination: ExhibitionDetailView(exhibitionId: exhibition.id)) {
                                             ExhibitionPosterView(exhibition: exhibition)
                                         }
                                     }
