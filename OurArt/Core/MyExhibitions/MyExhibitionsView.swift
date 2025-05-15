@@ -15,6 +15,24 @@ struct MyExhibitionsView: View {
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     
     @State var isLoading: Bool = false
+    @State private var isRefreshing = false
+    @State private var refreshCount = 0
+    
+    private func refreshData() async {
+        isRefreshing = true
+        
+        try? await Task.sleep(for: .seconds(0.8))
+        
+        // exhibitionVM의 리스너 재설정
+        exhibitionVM.removeListenerForAllExhibitions()
+        myExhibitionVM.removeListenerForMyExhibitions()
+        
+        exhibitionVM.addListenerForAllExhibitions()
+        myExhibitionVM.addListenerForMyExhibitions()
+        
+        refreshCount += 1
+        isRefreshing = false
+    }
     
     var body: some View {
         ZStack {
@@ -30,6 +48,7 @@ struct MyExhibitionsView: View {
 //                            }
 //                        })
                 }
+                .id("exhibitions-\(refreshCount)")
                 .sectionBackground()
                 .redacted(reason: isLoading ? .placeholder : [])
                 .onFirstAppear {
@@ -40,11 +59,15 @@ struct MyExhibitionsView: View {
                     }
                 }
             }
+            .refreshable {
+                await refreshData()
+                print("\(refreshCount) refreshed")
+            }
             .toolbarBackground()
             .listStyle(.plain)
         }
         .viewBackground()
-        .task {
+        .onAppear {
             myExhibitionVM.addListenerForMyExhibitions()
             exhibitionVM.addListenerForAllExhibitions()
         }

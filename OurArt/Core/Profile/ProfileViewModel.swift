@@ -57,6 +57,13 @@ final class ProfileViewModel: ObservableObject {
         }
     }
     
+    func deleteUser() async throws {
+        guard let user else { return }
+        Task {
+            try await UserManager.shared.deleteUser(userId: user.userId)
+        }
+    }
+    
     // MARK: - PROFILE IMAGE
     
     func saveProfileImage(item: PhotosPickerItem) async throws {
@@ -88,6 +95,7 @@ final class ProfileViewModel: ObservableObject {
         
         Task {
             try await StorageManager.shared.deleteUserImageFolder(userId: user.userId)
+            try await UserManager.shared.updateUserProfileImagePath(userId: user.userId, path: nil, url: nil)
         }
     }
     

@@ -95,24 +95,26 @@ struct ProfileView: View {
                                 .modifier(TextFieldModifier())
                                 .padding(.top, 20)
                             
-                            VStack {
-                                Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .foregroundStyle(.secondary)
-                                
-                                HStack {
-                                    ForEach(preferenceOptions, id: \.self) { string in
-                                        Button(string) {
-                                            if preferenceIsSelected(text: string) {
-                                                viewModel.removeUserPreference(text: string)
-                                            } else {
-                                                viewModel.addUserPreference(text: string)
+                            if user.isAnonymous == false {
+                                VStack {
+                                    Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .foregroundStyle(.secondary)
+                                    
+                                    HStack {
+                                        ForEach(preferenceOptions, id: \.self) { string in
+                                            Button(string) {
+                                                if preferenceIsSelected(text: string) {
+                                                    viewModel.removeUserPreference(text: string)
+                                                } else {
+                                                    viewModel.addUserPreference(text: string)
+                                                }
                                             }
+                                            .font(.headline)
+                                            .buttonStyle(.borderedProminent)
+                                            .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
+                                            .foregroundStyle(preferenceIsSelected(text: string) ? Color.accentButtonText : Color.accentColor)
                                         }
-                                        .font(.headline)
-                                        .buttonStyle(.borderedProminent)
-                                        .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary)
-                                        .foregroundStyle(preferenceIsSelected(text: string) ? Color.accentButtonText : Color.accentColor)
                                     }
                                 }
                             }
@@ -122,35 +124,33 @@ struct ProfileView: View {
                             .padding(.vertical, 10)
                         
                         // ContentView 로 이동
-                        NavigationLink {
-                            ContentView(showSignInView: $showSignInView)
-                                .toolbar(.hidden)
+                        Button {
+                            if nickname.isEmpty {
+                                showInputAlert = true
+                            } else {
+                                viewModel.addNickname(text: nickname)
+                                print("Nickname was added")
+                            }
                         } label: {
-                            Button {
-                                if nickname.isEmpty {
-                                    showInputAlert = true
-                                } else {
-                                    viewModel.addNickname(text: nickname)
-                                }
-                                
+                            NavigationLink {
+                                ContentView(showSignInView: $showSignInView)
+                                    .toolbar(.hidden)
                             } label: {
-                                Text("Create a profile".uppercased())
+                                Text("Continue to explore".uppercased())
                             }
                             .modifier(CommonButtonModifier())
-                            .alert(isPresented: $showInputAlert) {
-                                Alert(title: Text("Please input your name."))
-                            }
-                            // 프로필 사진 파이어스토어에 저장
-                            .onChange(of: selectedItem) { _, newItem in
-                                if let newItem {
-                                    Task {
-                                        try await viewModel.saveProfileImage(item: newItem)
-                                    }
+                        }
+                        .alert(isPresented: $showInputAlert) {
+                            Alert(title: Text("Please input your name."))
+                        }
+                        // 프로필 사진 파이어스토어에 저장
+                        .onChange(of: selectedItem) { _, newItem in
+                            if let newItem {
+                                Task {
+                                    try await viewModel.saveProfileImage(item: newItem)
                                 }
                             }
                         }
-                        .navigationTitle("")
-                        .navigationBarHidden(true)
                     }
                 }
                 .padding(.horizontal, 10)

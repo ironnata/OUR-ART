@@ -14,7 +14,7 @@ struct ListScreen: View {
     @State var searchText = ""
     @State private var scrollToTop: Bool = false
     @State var isLoading: Bool = false
-    @State private var isRefreshing = false // 새로고침 상태 추적
+    @State private var isRefreshing = false
     
     @Binding var shouldScrollToTop: Bool
     
@@ -32,18 +32,14 @@ struct ListScreen: View {
     }
     
     // 새로고침 함수
-    func refreshData() async {
+    private func refreshData() async {
         isRefreshing = true
         
         // 데이터 로드 전에 0.8초 지연
         try? await Task.sleep(for: .seconds(0.8))
         
         // 실제 데이터 새로고침
-        do {
-            try await viewModel.filterSelected(option: viewModel.selectedFilter ?? .noFilter)
-        } catch {
-            print("새로고침 중 오류 발생: \(error)")
-        }
+        try? await viewModel.filterSelected(option: viewModel.selectedFilter ?? .noFilter)
         
         // 작업 완료 후 상태 업데이트
         isRefreshing = false

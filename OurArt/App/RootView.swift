@@ -41,8 +41,21 @@ struct RootView: View {
             }
         }
         .viewBackground()
-        .fullScreenCover(isPresented: $showSignInView) {
-            NavigationStack { 
+        .fullScreenCover(isPresented: $showSignInView, onDismiss: {
+            // 풀스크린커버가 닫힐 때 사용자 정보 다시 확인
+            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+            if let userId = authUser?.uid {
+                Task {
+                    do {
+                        let user = try await UserManager.shared.getUser(userId: userId)
+                        self.userNickname = user.nickname
+                    } catch {
+                        print("Error fetching user profile: \(error)")
+                    }
+                }
+            }
+        }) {
+            NavigationStack {
                 AuthenticationView(showSignInView: $showSignInView)
             }
         }

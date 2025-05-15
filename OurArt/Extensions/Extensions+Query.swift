@@ -141,7 +141,7 @@ extension View {
         
         return Image(uiImage: uiImage)
             .resizable()
-            .frame(width: 40, height: 40)
+            .frame(width: 50, height: 50)
     }
     
     func logoImageSettings() -> some View {

@@ -117,6 +117,11 @@ struct ExhibitionDetailView: View {
                         
                         InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
                             .textSelection(.enabled)
+                            .onChange(of: exhibition.address) { _, newAddress in
+                                if let address = newAddress {
+                                    mapVM.showAddress(for: address)
+                                }
+                            }
                         
                         if let coordinate = mapVM.coordinate {
                             let region = MKCoordinateRegion(
@@ -124,7 +129,7 @@ struct ExhibitionDetailView: View {
                                 span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
                             )
                             
-                            Map(initialPosition: .region(region)) {
+                            Map(position: .constant(.region(region))) {
                                 Annotation("", coordinate: coordinate, anchor: .bottom) {
                                     Image(systemName: "mappin.and.ellipse.circle.fill")
                                         .font(.title2)
@@ -134,6 +139,7 @@ struct ExhibitionDetailView: View {
                             }
                             .frame(height: 140)
                             .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .disabled(true)
                             
                             Divider()
                         }
@@ -200,6 +206,7 @@ struct ExhibitionDetailView: View {
                     }
                 }) {
                     EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibitionId)
+                        .interactiveDismissDisabled(true)
                 }
             } else {
                 Text("전시회 정보를 불러올 수 없습니다.")

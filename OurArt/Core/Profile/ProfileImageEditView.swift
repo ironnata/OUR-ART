@@ -15,6 +15,7 @@ struct ProfileImageEditView: View {
     @StateObject private var viewModel = ProfileViewModel()
     
     @Binding var showImageEditview: Bool
+    @Binding var wasImageUpdated: Bool
     @Binding var showSignInView: Bool
     
     @State private var showImagePicker = false
@@ -104,12 +105,15 @@ struct ProfileImageEditView: View {
                     // 선택 즉시 변경한 이미지 표시
                     .onChange(of: selectedItem) { _, newItem in
                         Task {
+                            viewModel.deleteAllProfileImages()
+                            
                             if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                 selectedImageData = data
                             }
                             
                             if let newItem {
                                 try await viewModel.saveProfileImage(item: newItem)
+                                wasImageUpdated = true
                                 dismiss()
                             }
                         }
@@ -128,5 +132,5 @@ struct ProfileImageEditView: View {
 }
 
 #Preview {
-    ProfileImageEditView(showImageEditview: .constant(false), showSignInView: .constant(false))
+    ProfileImageEditView(showImageEditview: .constant(false), wasImageUpdated: .constant(false), showSignInView: .constant(false))
 }

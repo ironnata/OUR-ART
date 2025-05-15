@@ -13,6 +13,7 @@ struct MapView: UIViewRepresentable {
     @Binding var selectedLatitude: Double?
     @Binding var selectedLongitude: Double?
     @Binding var region: MKCoordinateRegion?
+    @Binding var mapRotation: Double
     
     var annotations: [MKPointAnnotation]
     
@@ -26,6 +27,9 @@ struct MapView: UIViewRepresentable {
         let region = MKCoordinateRegion(center: initialCoordinate, span: span)
         
         mapView.setRegion(region, animated: false)
+        
+        // 나침반 표시 설정
+        mapView.showsCompass = false // 기본 나침반은 숨김
         
         return mapView
     }
@@ -66,6 +70,7 @@ struct MapView: UIViewRepresentable {
                 DispatchQueue.main.async {
                     self.parent.selectedLatitude = mapView.centerCoordinate.latitude
                     self.parent.selectedLongitude = mapView.centerCoordinate.longitude
+                    self.parent.mapRotation = mapView.camera.heading
                 }
             }
         }

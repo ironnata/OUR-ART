@@ -18,6 +18,7 @@ struct AddressSearchView: View {
     @State private var region: MKCoordinateRegion?
     @State private var annotations: [MKPointAnnotation] = []
     @State private var showList: Bool = false
+    @State private var mapRotation: Double = 0
     
     @FocusState private var isTextFieldFocused: Bool
     
@@ -56,7 +57,11 @@ struct AddressSearchView: View {
     var body: some View {
         ZStack {
             MapReader { proxy in
-                MapView(selectedLatitude: $selectedLatitude, selectedLongitude: $selectedLongitude, region: $region, annotations: [])
+                MapView(selectedLatitude: $selectedLatitude, 
+                       selectedLongitude: $selectedLongitude, 
+                       region: $region, 
+                       mapRotation: $mapRotation,
+                       annotations: [])
                     .ignoresSafeArea()
                     .onChange(of: selectedLatitude) { _, _ in updateAddress() }
                     .onChange(of: selectedLongitude) { _, _ in updateAddress() }
@@ -82,14 +87,12 @@ struct AddressSearchView: View {
                     }
                     
                     ZStack {
-                        Color.background0
                         TextField("Search for an address...", text: $viewModel.queryFragment)
                             .autocorrectionDisabled()
                             .modifier(TextFieldModifier())
                             .showClearButton($viewModel.queryFragment)
                             .focused($isTextFieldFocused)
                             .onSubmit {
-//                                performSearch()
                                 Task {
                                     try await viewModel.search(for: viewModel.queryFragment)
                                 }
@@ -103,7 +106,8 @@ struct AddressSearchView: View {
                     .clipShape(.rect(cornerRadius: 7))
                 }
                 .padding()
-                .background(.clear)
+                .background(Color.background0)
+                .ignoresSafeArea(.all, edges: .top)
                 
                 if showList {
                     List {
@@ -137,17 +141,48 @@ struct AddressSearchView: View {
                         
                         Button("Select this address") {
                             selectedAddress = viewModel.selectedAddress
-                            selectedCity = viewModel.selectedCity // 또는 적절한 도시 정보
+                            selectedCity = viewModel.selectedCity
                             isPresented = false
                         }
                         .modifier(CommonButtonModifier())
                     }
                     .padding()
-                    .background(Color.background0.opacity(0.7))
+                    .padding(.bottom, 20)
+                    .background(Color.background0)
                     .cornerRadius(7)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                    .ignoresSafeArea(.all, edges: .bottom)
                 }
             }
-            .padding(.top, 20)
+            
+            // 나침반 버튼 위치 조정
+            VStack {
+                Spacer()
+                    .frame(height: 120)
+                HStack {
+                    Spacer()
+                    if abs(mapRotation) > 0.1 { // 회전 각도가 0.1도 이상일 때만 표시
+                        Button {
+                            if let latitude = selectedLatitude, let longitude = selectedLongitude {
+                                let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+                                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                region = MKCoordinateRegion(center: coordinate, span: span)
+                            }
+                        } label: {
+                            Image(systemName: "location.north.fill")
+                                .font(.title2)
+                                .foregroundColor(.accent)
+                                .padding(12)
+                                .background(Color.background0)
+                                .clipShape(Circle())
+                                .rotationEffect(.degrees(-mapRotation)) // 나침반이 항상 북쪽을 가리키도록 회전
+                                .animation(.interpolatingSpring(stiffness: 300, damping: 20), value: mapRotation) // 부드러운 회전 애니메이션 추가
+                        }
+                        .padding(.trailing, 16)
+                    }
+                }
+                Spacer()
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ struct ExhibitionImageEditView: View {
                             if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                                 Image(uiImage: uiImage)
                                     .resizable()
-                                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
+                                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
                                     .frame(maxHeight: 50)
                                     .clipShape(.rect(cornerRadius: 2))
                             } else if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
@@ -109,6 +109,8 @@ struct ExhibitionImageEditView: View {
                     // 선택 즉시 변경한 이미지 표시
                     .onChange(of: selectedItem) { _, newItem in
                         Task {
+                            try await viewModel.deleteAllPosterImages()
+                            
                             if let data = try? await newItem?.loadTransferable(type: Data.self) {
                                 selectedImageData = data
                             }

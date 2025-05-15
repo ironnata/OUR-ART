@@ -52,33 +52,43 @@ struct SettingsScreen: View {
                         .sectionBackground()
                 }
                 
+//                /////////// 이 여백 구간은 나중에 써먹을지 아닐지 모름 ///////////
+//                Section {
+//                    Color.background0.frame(height: 120)
+//                        .sectionBackground()
+//                        .listRowSeparator(.hidden)
+//                }
                 
-                Section {
-                    Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
-                        Task {
-                            do {
-                                try viewModel.signOut()
-                                showSignInView = true
-                            } catch {
-                                print(error)
+                if profileVM.user?.isAnonymous == false {
+                    Section {
+                        Button("Log Out", systemImage: "rectangle.portrait.and.arrow.right") {
+                            Task {
+                                do {
+                                    try viewModel.signOut()
+                                    showSignInView = true
+                                } catch {
+                                    print(error)
+                                }
                             }
                         }
+                        .sectionBackground()
+                        .foregroundStyle(Color.secondAccent)
+                    } header: {
+                        Text("Log Out")
                     }
-                    .sectionBackground()
-                    .foregroundStyle(Color.secondAccent)
-                } header: {
-                    Text("Log Out")
                 }
                 
                 Section {
                     Button("Delete Account", role: .destructive) {
                         showDeleteAlert = true
                     }
-                    .confirmationDialog("Are you sure you want to delete your account?", isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                    .confirmationDialog("Final Step", isPresented: $showDeleteAlert, titleVisibility: .visible) {
                         Button("Delete", role: .destructive) {
                             Task {
                                 do {
                                     try await viewModel.deleteAccount()
+                                    try await profileVM.deleteUser()
+                                    print("User successfully deleted")
                                     showSignInView = true
                                 } catch {
                                     print(error)
@@ -86,7 +96,7 @@ struct SettingsScreen: View {
                             }
                         }
                     } message: {
-                        Text("Once you delete your account, all associated data will be lost forever. Please confirm if you wish to continue.")
+                        Text("Heads up! Deleting your account will wipe all your data and can’t be undone. Still want to go ahead?")
                     }
                     .sectionBackground()
                 } header: {
@@ -114,7 +124,7 @@ struct SettingsScreen: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 HStack {
-                    Text("Version 1.0.0")
+                    Text("1.0.0")
                         .font(.objectivityCaption)
                         .foregroundStyle(.secondAccent)
                     self.logoImageSettings()
@@ -153,6 +163,20 @@ extension SettingsScreen {
     private var anonymousSection: some View {
         
         Section {
+            HStack {
+                if #available(iOS 18.0, *) {
+                    Image(systemName: "exclamationmark.brakesignal")
+                        .symbolEffect(.wiggle.byLayer, options: .repeat(.periodic(delay: 2.0)))
+                        .symbolRenderingMode(.palette)
+                } else {
+                    Image(systemName: "exclamationmark.brakesignal")
+                }
+                Text("Just browsing? All good. If you’re here to share your own work, sign up to get started!")
+                    .font(.objectivityFootnote)
+                    .foregroundStyle(.secondary)
+            }
+            .padding(6)
+            
             Button("Link Apple Account", systemImage: "apple.logo") {
                 Task {
                     do {
@@ -183,7 +207,9 @@ extension SettingsScreen {
                 NavigationStack {
                     SignInEmailView(showSignInView: $showSignInView)
                 }
+                .interactiveDismissDisabled(true)
             }
+            
         } header: {
             Text("Create Account")
         }

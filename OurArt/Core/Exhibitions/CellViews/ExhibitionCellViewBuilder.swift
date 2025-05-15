@@ -12,13 +12,12 @@ struct ExhibitionCellViewBuilder: View {
     let exhibitionId: String
     let myExhibitionId: String?
     
-    // EnvironmentObject로 ExhibitionViewModel 받기
     @EnvironmentObject var exhibitionVM: ExhibitionViewModel
+    @State private var exhibition: Exhibition?
     
     var body: some View {
         ZStack {
-            // 모든 전시 데이터 중에서 현재 ID와 일치하는 것을 찾아서 사용
-            if let exhibition = exhibitionVM.exhibitions.first(where: { $0.id == exhibitionId }) {
+            if let exhibition = exhibition {
                 NavigationLink(destination: ExhibitionDetailView(
                     myExhibitionId: myExhibitionId, 
                     exhibitionId: exhibitionId, 
@@ -27,12 +26,16 @@ struct ExhibitionCellViewBuilder: View {
                     ExhibitionCellView(exhibition: exhibition)
                 }
             } else {
-                // 데이터가 아직 로드되지 않은 경우 플레이스홀더 표시
                 ProgressView()
                     .frame(height: 80)
             }
         }
-        // task 블록 제거 - 더 이상 여기서 데이터를 로드하지 않음
+        .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
+            exhibition = newExhibitions.first(where: { $0.id == exhibitionId })
+        }
+        .onAppear {
+            exhibition = exhibitionVM.exhibitions.first(where: { $0.id == exhibitionId })
+        }
     }
 }
 

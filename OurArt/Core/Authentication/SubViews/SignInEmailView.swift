@@ -21,6 +21,7 @@ struct SignInEmailView: View {
                 
                 TextField("e-mail...", text: $viewModel.email)
                     .modifier(TextFieldModifier())
+                    .textInputAutocapitalization(.never)
                 
                 SecureField("password...", text: $viewModel.password)
                     .modifier(TextFieldModifier())

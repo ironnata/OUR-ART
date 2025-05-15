@@ -199,6 +199,7 @@ struct EditMyExhibitionView: View {
                             .sheet(isPresented: $showSearchView) {
                                 AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
                                     .presentationDetents([.large])
+                                    .interactiveDismissDisabled(true)
                             }
                             
                             VStack(alignment: .leading) {

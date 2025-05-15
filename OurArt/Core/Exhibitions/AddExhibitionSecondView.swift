@@ -140,6 +140,7 @@ struct AddExhibitionSecondView: View {
                             .sheet(isPresented: $showSearchView) {
                                 AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
                                     .presentationDetents([.large])
+                                    .interactiveDismissDisabled(true)
                             } // ADDRESS
                             
                             VStack(alignment: .leading) {
@@ -180,7 +181,7 @@ struct AddExhibitionSecondView: View {
                                 Text("Description")
                                 TextField("Describe...", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
-                                    .lineLimit(3...7)
+                                    .lineLimit(3...10)
                                     .lineSpacing(10)
                             } // DESCRIPTION
                             .frame(maxWidth: .infinity, alignment: .leading)

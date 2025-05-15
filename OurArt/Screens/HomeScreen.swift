@@ -14,6 +14,7 @@ struct HomeScreen: View {
     
     @State var showAddingView = false
     @State var isLoading: Bool = false
+    @State private var shuffledExhibitions: [Exhibition] = []
     
     @State private var isRotating: Bool = false
     @State private var rotation: Double = 0
@@ -24,7 +25,7 @@ struct HomeScreen: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("""
-Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
+Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
 """)
                         .lineSpacing(7)
                         .frame(height: 100)
@@ -34,7 +35,7 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
                             Color.background0
                             ScrollView(.horizontal, showsIndicators: false) {
                                 LazyHStack(spacing: 10) {
-                                    ForEach(exhibitionVM.exhibitions.shuffled()) { exhibition in
+                                    ForEach(shuffledExhibitions) { exhibition in
                                         NavigationLink(destination: ExhibitionDetailView(exhibitionId: exhibition.id)) {
                                             ExhibitionPosterView(exhibition: exhibition)
                                         }
@@ -112,6 +113,9 @@ Welcome to WE ART \n\(profileVM.user?.nickname ?? "")👋
             }
             .onAppear {
                 exhibitionVM.addListenerForAllExhibitions()
+            }
+            .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
+                shuffledExhibitions = newExhibitions.shuffled()
             }
         }
         .viewBackground()
