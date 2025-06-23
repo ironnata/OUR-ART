@@ -12,7 +12,6 @@ struct ListScreen: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     @State var searchText = ""
-    @State private var scrollToTop: Bool = false
     @State var isLoading: Bool = false
     @State private var isRefreshing = false
     

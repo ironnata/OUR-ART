@@ -79,7 +79,7 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
             .overlay(alignment: .bottomTrailing) {
                 if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
                     HStack(spacing: -10) {
-                        Text("Show your world to the world!")
+                        Text("Drop your dot on the world")
                             .font(.objectivityCallout)
                             .animation(.easeInOut(duration: 0.5))
                             .scaleEffect(animationAmount)

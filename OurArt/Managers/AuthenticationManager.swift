@@ -95,6 +95,26 @@ extension AuthenticationManager {
         try await Auth.auth().sendPasswordReset(withEmail: email)
     }
     
+    @discardableResult
+    func signInWithEmailLink(email: String) async throws -> AuthDataResultModel {
+        let actionCodeSettings = ActionCodeSettings()
+        actionCodeSettings.handleCodeInApp = true
+        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
+        
+        // Supalink URL 생성
+        let supalinkURL = "https://ourart.app/email-link"
+        actionCodeSettings.url = URL(string: supalinkURL)
+        
+        try await Auth.auth().sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
+        return try getAuthenticatedUser()
+    }
+    
+    @discardableResult
+    func confirmSignInWithEmailLink(email: String, link: String) async throws -> AuthDataResultModel {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, link: link)
+        return AuthDataResultModel(user: authDataResult.user)
+    }
+    
 }
 
 // MARK: - SIGN IN SSO

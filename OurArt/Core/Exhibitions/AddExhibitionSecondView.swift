@@ -22,9 +22,9 @@ struct AddExhibitionSecondView: View {
     @State private var artist: String = ""
     @State private var description: String = ""
     
-    @State private var showImagePicker = false
-    @State private var selectedImage: PhotosPickerItem? = nil
-    @State private var selectedImageData: Data? = nil
+    @State private var showImageEditView = false
+    @State private var wasImageUpdated = false
+    @State private var showUpdateMessage = false
     
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
@@ -61,10 +61,17 @@ struct AddExhibitionSecondView: View {
                             VStack(alignment: .leading) {
                                 Text("Poster")
                                 VStack {
-                                    if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .modifier(MidPosterSizeModifier())
+                                    if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
+                                        AsyncImage(url: url) { image in
+                                            image
+                                                .resizable()
+                                                .modifier(MidPosterSizeModifier())
+                                        } placeholder: {
+                                            Image(systemName: "photo.on.rectangle.angled")
+                                                .resizable()
+                                                .frame(width: 150, height: 120)
+                                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                        }
                                     } else {
                                         Image(systemName: "photo.on.rectangle.angled")
                                             .resizable()
@@ -73,28 +80,41 @@ struct AddExhibitionSecondView: View {
                                     }
                                     
                                     Button {
-                                        showImagePicker.toggle()
+                                        withAnimation {
+                                            showImageEditView.toggle()
+                                        }
                                     } label: {
                                         // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
-                                        if selectedImageData != nil {
+                                        if exhibition.posterImagePathUrl != nil {
                                             Text("EDIT")
-                                                .modifier(SmallButtonModifier())
                                         } else {
                                             Text("+")
                                                 .padding(.horizontal, 10)
-                                                .modifier(SmallButtonModifier())
                                         }
                                     }
-                                    .photosPicker(isPresented: $showImagePicker, selection: $selectedImage, matching: .images)
-                                    .onChange(of: selectedImage) { _, newValue in
-                                        if let newValue {
-                                            viewModel.savePosterImage(item: newValue)
-                                        }
-                                        Task {
-                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                                selectedImageData = data
+                                    .modifier(SmallButtonModifier())
+                                    .sheet(isPresented: $showImageEditView, onDismiss: {
+                                        if wasImageUpdated {
+                                            withAnimation(.spring(response: 0.3)) {
+                                                showUpdateMessage = true
+                                            }
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                                withAnimation(.spring(response: 0.3)) {
+                                                    showUpdateMessage = false
+                                                    wasImageUpdated = false
+                                                }
+                                            }
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                Task {
+                                                    try? await viewModel.loadCurrentExhibition(id: currentId)
+                                                }
                                             }
                                         }
+                                    }) {
+                                        ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: currentId)
+                                            .presentationDetents([.height(200)])
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
@@ -220,7 +240,7 @@ struct AddExhibitionSecondView: View {
                                 }
                                 .alert(isPresented: $showDeleteAlert) {
                                     Alert(
-                                        title: Text("The whole data you wrote is going to be deleted, is it okay?"),
+                                        title: Text("Not saved yet. Leave anyway?"),
                                         primaryButton: .default(Text("OK")) {
                                             Task {
                                                 try? await viewModel.deleteAllPosterImages()
@@ -255,6 +275,8 @@ struct AddExhibitionSecondView: View {
                     }
                     .toolbarBackground()
                 }
+                .scrollDismissesKeyboard(.immediately)
+                .keyboardAware(minDistance: 32)
                 .task {
                     try? await viewModel.loadCurrentExhibition(id: currentId)
                 }

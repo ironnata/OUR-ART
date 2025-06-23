@@ -15,10 +15,10 @@ struct AuthButtonModifier: ViewModifier {
         content
             .font(.title3)
             .fontWeight(.medium)
-            .foregroundStyle(Color.white)
+            .foregroundStyle(Color.accentButtonText)
             .frame(height: 48)
             .frame(maxWidth: .infinity)
-            .background(Color.black)
+            .background(Color.accent)
             .clipShape(.rect(cornerRadius: 5))
     }
 }
@@ -101,7 +101,7 @@ struct TextFieldDescriptionModifier: ViewModifier {
 struct SmallPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
             .frame(maxWidth: 50, maxHeight: 75)
             .clipShape(.rect(cornerRadius: 2))
     }
@@ -111,7 +111,7 @@ struct SmallPosterSizeModifier: ViewModifier {
 struct MidPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
             .frame(maxWidth: 120)
             .clipShape(.rect(cornerRadius: 4))
     }
@@ -121,7 +121,7 @@ struct MidPosterSizeModifier: ViewModifier {
 struct BigPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
+            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
             .frame(width: 280, height: 420)
             .clipShape(.rect(cornerRadius: 8))
     }
@@ -132,7 +132,7 @@ struct BigPosterSizeModifier: ViewModifier {
 struct ProfileImageModifer: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(width: 100, height: 100)
+            .frame(width: 150, height: 150)
             .clipShape(Circle())
     }
 }
@@ -162,6 +162,16 @@ struct OnFirstAppearViewModifier: ViewModifier {
                     didAppear = true
                 }
             }
+    }
+}
+
+struct KeyboardAware: ViewModifier {
+    var minDistance: CGFloat
+    @ObservedObject private var keyboard = KeyboardInfo.shared
+    
+    func body(content: Content) -> some View {
+        content
+            .safeAreaPadding(.bottom, keyboard.height > 0 ? minDistance : 0)
     }
 }
 

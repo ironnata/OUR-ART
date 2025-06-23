@@ -22,9 +22,11 @@
 		CD54076B2CB4351500EA1F63 /* AddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD54076A2CB4351500EA1F63 /* AddressSearchView.swift */; };
 		CD54076F2CB5529C00EA1F63 /* AddressSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD54076E2CB5529C00EA1F63 /* AddressSearchViewModel.swift */; };
 		CD5407712CCA706100EA1F63 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5407702CCA706100EA1F63 /* MapView.swift */; };
+		CD5DC1E92DD65C5F00D20B3C /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5DC1E82DD65C5F00D20B3C /* WelcomeView.swift */; };
 		CD60DB9F2C4524980018BE95 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD60DB9E2C4524980018BE95 /* AdSupport.framework */; };
 		CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */; };
 		CD60DBA72C4555790018BE95 /* GoogleAddressSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */; };
+		CD65D6482E099B3900C512F2 /* AboutDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD65D6472E099B3900C512F2 /* AboutDotView.swift */; };
 		CD6954BD2AEFE88900312907 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BC2AEFE88900312907 /* StorageManager.swift */; };
 		CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */; };
 		CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */; };
@@ -111,9 +113,11 @@
 		CD54076A2CB4351500EA1F63 /* AddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchView.swift; sourceTree = "<group>"; };
 		CD54076E2CB5529C00EA1F63 /* AddressSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressSearchViewModel.swift; sourceTree = "<group>"; };
 		CD5407702CCA706100EA1F63 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		CD5DC1E82DD65C5F00D20B3C /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		CD60DB9E2C4524980018BE95 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.5.sdk/System/Library/Frameworks/AdSupport.framework; sourceTree = DEVELOPER_DIR; };
 		CD60DBA42C4555250018BE95 /* GooglePlacesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlacesManager.swift; sourceTree = "<group>"; };
 		CD60DBA62C4555790018BE95 /* GoogleAddressSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAddressSearchView.swift; sourceTree = "<group>"; };
+		CD65D6472E099B3900C512F2 /* AboutDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutDotView.swift; sourceTree = "<group>"; };
 		CD6954BC2AEFE88900312907 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionManager.swift; sourceTree = "<group>"; };
 		CD6954C42AF3CE7F00312907 /* ExhibitionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionDetailView.swift; sourceTree = "<group>"; };
@@ -342,6 +346,7 @@
 		CD93167E2AD8118F004F2868 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				CD5DC1E82DD65C5F00D20B3C /* WelcomeView.swift */,
 				CDB01A472C7A1C0000C3320E /* MainScreen.swift */,
 				CD93167F2AD812AC004F2868 /* HomeScreen.swift */,
 				CD9316822AD812D2004F2868 /* ListScreen.swift */,
@@ -427,6 +432,7 @@
 			isa = PBXGroup;
 			children = (
 				CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */,
+				CD65D6472E099B3900C512F2 /* AboutDotView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -648,10 +654,12 @@
 				CD0D63D62C7A148D0003374E /* Tab.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
+				CD65D6482E099B3900C512F2 /* AboutDotView.swift in Sources */,
 				CD93168A2AD81D27004F2868 /* SignInEmailView.swift in Sources */,
 				CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */,
 				CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */,
 				CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */,
+				CD5DC1E92DD65C5F00D20B3C /* WelcomeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

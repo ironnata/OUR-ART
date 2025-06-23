@@ -22,39 +22,36 @@ struct SignInEmailView: View {
                 TextField("e-mail...", text: $viewModel.email)
                     .modifier(TextFieldModifier())
                     .textInputAutocapitalization(.never)
+                    .keyboardType(.emailAddress)
+                    .autocorrectionDisabled()
                 
-                SecureField("password...", text: $viewModel.password)
-                    .modifier(TextFieldModifier())
-                    .padding(.bottom, 30)
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .font(.caption)
+                        .padding(.top, 4)
+                }
+                
+                if viewModel.isLinkSent {
+                    Text("이메일로 인증 링크를 보냈습니다. 이메일을 확인해주세요.")
+                        .foregroundColor(.green)
+                        .font(.caption)
+                        .padding(.top, 4)
+                }
                 
                 Button {
                     Task {
-                        do {
-                            try await viewModel.signUp()
-                            showSignInView = false
-                            dismiss()
-                            return
-                        } catch {
-                            print(error)
-                        }
-                        
-                        do {
-                            try await viewModel.signIn()
-                            showSignInView = false
-                            dismiss()
-                            return
-                        } catch {
-                            print(error)
-                        }
+                        try await viewModel.signInWithEmailLink()
                     }
                 } label: {
-                    Text("SIGN IN")
+                    Text("이메일로 로그인 링크 받기")
                         .modifier(CommonButtonModifier())
                 }
+                .padding(.top, 30)
                 .padding(.bottom, 50)
             }
             .padding()
-            .navigationTitle("Sign In with E-mail")
+            .navigationTitle("이메일로 로그인")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Image(systemName: "chevron.left")

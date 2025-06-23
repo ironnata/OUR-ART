@@ -28,6 +28,17 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func deleteAccount() async throws {
+        guard let authUser = try? AuthenticationManager.shared.getAuthenticatedUser() else { return }
+        
+        let myExhibitions = try await UserManager.shared.getAllMyExhibitions(userId: authUser.uid)
+        
+        for myExhibition in myExhibitions {
+            try? await UserManager.shared.removeMyExhibition(userId: authUser.uid, myExhibitionId: myExhibition.id)
+            try? await StorageManager.shared.deleteExhibitionImageFolder(exhibitionId: myExhibition.exhibitionId)
+            try? await ExhibitionManager.shared.deleteExhibition(exhibitionId: myExhibition.exhibitionId)
+        }
+        
+        try await UserManager.shared.deleteUser(userId: authUser.uid)
         try await AuthenticationManager.shared.delete()
     }
     

@@ -107,7 +107,12 @@ struct EditMyExhibitionView: View {
                                             showImageEditView.toggle()
                                         }
                                     } label: {
-                                        Text("EDIT")
+                                        if exhibition.posterImagePathUrl != nil {
+                                            Text("EDIT")
+                                        } else {
+                                            Text("+")
+                                                .padding(.horizontal, 10)
+                                        }
                                     }
                                     .modifier(SmallButtonModifier())
                                     .sheet(isPresented: $showImageEditView, onDismiss: {
@@ -274,6 +279,8 @@ struct EditMyExhibitionView: View {
                         UIDatePicker.appearance().minuteInterval = 5
                     }
                 }
+                .scrollDismissesKeyboard(.immediately)
+                .keyboardAware(minDistance: 32)
                 .toolbarBackground()
                 .task {
                     try? await viewModel.loadCurrentExhibition(id: exhibitionId)

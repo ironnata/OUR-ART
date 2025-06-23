@@ -22,6 +22,8 @@ struct AuthenticationView: View {
                 
                 self.logoImageAuth()
                 
+                Text("Dot's where art connects".uppercased())
+                
                 Spacer()
                 
                 // MARK: - APPLE
@@ -36,8 +38,12 @@ struct AuthenticationView: View {
                         }
                     }
                 }, label: {
-                    SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
-                        .allowsHitTesting(false)
+//                    SignInWithAppleButtonViewRepresentable(type: .default, style: .black)
+//                        .allowsHitTesting(false)
+                    HStack {
+                        Image(systemName: "apple.logo")
+                        Text("Sign in with Apple")
+                    }
                 })
                 .modifier(AuthButtonModifier())
                 
@@ -54,6 +60,9 @@ struct AuthenticationView: View {
                 } label: {
                     HStack {
                         Image("google-logo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
                         Text("Sign in with Google")
                     }
                 }
@@ -66,6 +75,7 @@ struct AuthenticationView: View {
                 } label: {
                     HStack {
                         Image(systemName: "envelope")
+                            .imageScale(.small)
                         Text("Sign in with E-mail")
                     }
                     .modifier(AuthButtonModifier())
@@ -84,6 +94,7 @@ struct AuthenticationView: View {
                 } label: {
                     HStack {
                         Image(systemName: "eyeglasses")
+                            .imageScale(.small)
                         Text("Sign in Anonymously")
                     }
                     .modifier(AuthButtonModifier())

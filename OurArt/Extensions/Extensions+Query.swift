@@ -128,7 +128,7 @@ extension View {
     }
     
     func logoImageAuth() -> some View {
-        let uiImage = UIImage(named: (UITraitCollection.current.userInterfaceStyle == .light) ? "Logo-512" : "Logo-512-light") ?? UIImage()
+        let uiImage = UIImage(named: (UITraitCollection.current.userInterfaceStyle == .light) ? "Logo-512-light" : "Logo-512") ?? UIImage()
         
         return Image(uiImage: uiImage)
             .resizable()
@@ -155,6 +155,10 @@ extension View {
     
     func zoomable(isZoomed: Binding<Bool>) -> some View {
         modifier(ZoomableModifier(isZoomed: isZoomed))
+    }
+    
+    func keyboardAware(minDistance: CGFloat = 32) -> some View {
+        ModifiedContent(content: self, modifier: KeyboardAware(minDistance: minDistance))
     }
     
     @ViewBuilder

@@ -191,7 +191,7 @@ struct ExhibitionDetailView: View {
                         handleDelete()
                     }
                 } message: {
-                    Text("This exhibition will be permanently deleted. Do you wish to proceed?")
+                    Text("Deleting this dot is permanent. Wanna go ahead?")
                 }
                 .sheet(isPresented: $showEditView, onDismiss: {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

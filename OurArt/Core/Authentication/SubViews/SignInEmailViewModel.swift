@@ -11,25 +11,32 @@ import Foundation
 final class SignInEmailViewModel: ObservableObject {
     
     @Published var email = ""
-    @Published var password = ""
+    @Published var isLinkSent = false
+    @Published var errorMessage: String?
     
-    func signUp() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
-            print("No email or password found.")
+    func signInWithEmailLink() async throws {
+        guard !email.isEmpty else {
+            errorMessage = "이메일을 입력해주세요."
             return
         }
         
-        let authDataResult = try await AuthenticationManager.shared.creatUser(email: email, password: password)
-        let user = DBUser(auth: authDataResult)
-        try await UserManager.shared.creatNewUser(user: user)
+        do {
+            let authDataResult = try await AuthenticationManager.shared.signInWithEmailLink(email: email)
+            let user = DBUser(auth: authDataResult)
+            try await UserManager.shared.creatNewUser(user: user)
+            isLinkSent = true
+        } catch {
+            errorMessage = "이메일 전송 중 오류가 발생했습니다: \(error.localizedDescription)"
+        }
     }
     
-    func signIn() async throws {
-        guard !email.isEmpty, !password.isEmpty else {
-            print("No email or password found.")
-            return
+    func handleEmailLink(_ link: String) async throws {
+        do {
+            let authDataResult = try await AuthenticationManager.shared.confirmSignInWithEmailLink(email: email, link: link)
+            let user = DBUser(auth: authDataResult)
+            try await UserManager.shared.creatNewUser(user: user)
+        } catch {
+            errorMessage = "이메일 링크 인증 중 오류가 발생했습니다: \(error.localizedDescription)"
         }
-        
-        try await AuthenticationManager.shared.signInUser(email: email, password: password)
     }
 }
