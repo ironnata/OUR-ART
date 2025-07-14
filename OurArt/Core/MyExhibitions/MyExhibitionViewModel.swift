@@ -34,7 +34,6 @@ final class MyExhibitionViewModel: ObservableObject {
                     return date1 > date2 // 내림차순 정렬
                 }
                 self?.userMyExhibitions = sortedExhibitions
-                print("my exhibition listener is added")
             }
             .store(in: &cancellables)
 
@@ -42,7 +41,6 @@ final class MyExhibitionViewModel: ObservableObject {
     
     func removeListenerForMyExhibitions() {
         UserManager.shared.removeListenerForAllUserMyExhibitions()
-        print("my exhibition listener is removed")
     }
     
     func loadMyExhibition(myExhibitionId: String) {

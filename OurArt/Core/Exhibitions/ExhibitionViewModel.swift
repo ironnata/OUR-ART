@@ -23,9 +23,9 @@ final class ExhibitionViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     enum FilterOption: String, CaseIterable {
-        case noFilter = "None"
-        case newest = "Latest"
-        case oldest = "Earliest"
+        case noFilter = "Default"
+        case newest = "Newest"
+        case oldest = "Oldest"
         
         var dateDescending: Bool? {
             switch self {
@@ -141,20 +141,12 @@ final class ExhibitionViewModel: ObservableObject {
                 
             } receiveValue: { [weak self] exhibitions in
                 self?.exhibitions = exhibitions
-                for exhibition in exhibitions {
-                    if let dateTo = exhibition.dateTo {
-                        print("Exhibition ID: \(exhibition.id), dateTo: \(dateTo)")
-                    } else {
-                        print("Exhibition ID: \(exhibition.id), dateTo: nil")
-                    }
-                }
             }
             .store(in: &cancellables)
     }
     
     func removeListenerForAllExhibitions() {
         ExhibitionManager.shared.removeListenerForAllExhibitions()
-        print("the listener is removed")
     }
     
     // 전시 수 세는 func

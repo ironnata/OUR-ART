@@ -16,6 +16,11 @@ struct ProfileCellView: View {
     
     var body: some View {
         ZStack {
+            NavigationLink(destination: ProfileEditView(showSignInView: $showSignInView).navigationBarBackButtonHidden()) {
+                EmptyView()
+            }
+            .opacity(0)
+            
             HStack {
                 if let user = viewModel.user {
                     
@@ -46,13 +51,8 @@ struct ProfileCellView: View {
                     
                     HStack(alignment: .lastTextBaseline) {
                         Text("\(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
-                            .font(.footnote)
+                            .font(.objectivityFootnote)
                             .padding(.trailing, 20)
-                        
-                        NavigationLink {
-                            ProfileEditView(showSignInView: $showSignInView)
-                                .navigationBarBackButtonHidden(true)
-                        } label: { }.frame(width: 0, height: 0)
                     }
                     
                 }

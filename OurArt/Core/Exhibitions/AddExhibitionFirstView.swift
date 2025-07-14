@@ -67,7 +67,7 @@ struct AddExhibitionFirstView: View {
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            dismiss()
+                            dismiss()   
                         } label: {
                             Image(systemName: "xmark")
                                 .imageScale(.large)

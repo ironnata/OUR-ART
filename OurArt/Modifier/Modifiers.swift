@@ -121,8 +121,7 @@ struct MidPosterSizeModifier: ViewModifier {
 struct BigPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
-            .frame(width: 280, height: 420)
+            .frame(maxWidth: 280)
             .clipShape(.rect(cornerRadius: 8))
     }
 }
@@ -148,6 +147,21 @@ struct SmallProfileImageModifer: ViewModifier {
 
 
 // MARK: - ETC
+
+struct ToolbarBackButton: ToolbarContent {
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .imageScale(.large)
+            }
+        }
+    }
+}
 
 struct OnFirstAppearViewModifier: ViewModifier {
     
@@ -178,48 +192,64 @@ struct KeyboardAware: ViewModifier {
 
 struct ZoomableModifier: ViewModifier {
     @Binding var isZoomed: Bool
-    
+
     @State private var scale: CGFloat = 1.0
     @State private var lastScale: CGFloat = 1.0
     @State private var offset: CGSize = .zero
-    @GestureState private var dragState: CGSize = .zero
-    
+    @State private var lastOffset: CGSize = .zero
+
     func body(content: Content) -> some View {
-        content
-            .scaleEffect(scale)
-            .offset(x: offset.width + dragState.width, y: offset.height + dragState.height)
-            .gesture(
-                SimultaneousGesture(
-                    MagnificationGesture()
-                        .onChanged { value in
-                            let delta = value / lastScale
-                            lastScale = value
-                            scale = min(max(scale * delta, 1), 4)
-                        }
-                        .onEnded { _ in
-                            lastScale = 1.0
-                        },
-                    DragGesture()
-                        .updating($dragState) { value, state, _ in
-                            if scale > 1.0 {
-                                state = value.translation
+        GeometryReader { proxy in
+            let size = proxy.size
+            content
+                .scaleEffect(scale)
+                .offset(offset)
+                .frame(width: size.width, height: size.height, alignment: .center)
+                .gesture(
+                    SimultaneousGesture(
+                        MagnificationGesture()
+                            .onChanged { value in
+                                let newScale = lastScale * value
+                                scale = max(1.0, min(newScale, 3.0))
                             }
-                        }
-                        .onEnded { value in
-                            if scale > 1.0 {
-                                offset.width += value.translation.width
-                                offset.height += value.translation.height
+                            .onEnded { _ in
+                                lastScale = scale
+                                // 확대/축소 후 offset clamp
+                                offset = clampOffset(offset, scale: scale, size: size)
+                                lastOffset = offset
+                            },
+                        DragGesture()
+                            .onChanged { value in
+                                let newOffset = CGSize(
+                                    width: lastOffset.width + value.translation.width,
+                                    height: lastOffset.height + value.translation.height
+                                )
+                                offset = clampOffset(newOffset, scale: scale, size: size)
                             }
-                        }
+                            .onEnded { _ in
+                                lastOffset = offset
+                            }
+                    )
                 )
-            )
-            .onChange(of: isZoomed) { _, newValue in
-                if !newValue {  // 닫을 때 초기화
-                    withAnimation(.smooth) {
-                        scale = 1.0
-                        offset = .zero
+                .onChange(of: isZoomed) { _, newValue in
+                    if !newValue {
+                        withAnimation(.smooth) {
+                            scale = 1.0
+                            lastScale = 1.0
+                            offset = .zero
+                            lastOffset = .zero
+                        }
                     }
                 }
-            }
+        }
+    }
+
+    private func clampOffset(_ offset: CGSize, scale: CGFloat, size: CGSize) -> CGSize {
+        let maxX = (size.width * (scale - 1)) / 2
+        let maxY = (size.height * (scale - 1)) / 2
+        return CGSize(
+            width: min(max(offset.width, -maxX), maxX),
+            height: min(max(offset.height, -maxY), maxY)
+        )
     }
 }

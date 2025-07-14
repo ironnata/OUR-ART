@@ -6,16 +6,16 @@
 //
 
 import SwiftUI
+import MessageUI
 
 struct SettingsScreen: View {
     
-    @Environment(\.dismiss) var dismiss
-    
-    let version: String = "1.0.0"
-    
+    @State var version: String = "1.0.0"
     @State var showEmailSheet = false
     @State private var showDeleteAlert = false
     @State private var showLogoutAlert = false
+    @State private var showMailView = false
+    @State private var showMailErrorAlert = false
     
     @StateObject private var viewModel = SettingsViewModel()
     @StateObject private var profileVM = ProfileViewModel()
@@ -30,27 +30,31 @@ struct SettingsScreen: View {
             List {
                 Section {
                     ProfileCellView(showSignInView: $showSignInView)
-                    
-                    
                 }
                 .listRowSeparator(.hidden, edges: .top)
                 .sectionBackground()
                 
-                if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
-                    Section {
-                        NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
+                Section {
+                    if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
+                        ZStack {
+                            NavigationLink(destination: MyExhibitionsView().navigationBarBackButtonHidden()) {
+                                EmptyView()
+                            }
+                            .opacity(0)
+                            
                             HStack {
-                                Image(systemName: "list.star")
-                                    .frame(width: 24, alignment: .leading)
-                                Text("My Exhibitions")
+                                SettingsRow(icon: "list.star", label: "My Exhibitions")
+                                Spacer()
                             }
                         }
-                    } header: {
-                        Text("My Dots")
-                            .font(.objectivityCallout)
+                        // My Favorites 넣기
+                        
                     }
-                    .sectionBackground()
+                } header: {
+                    Text("My Dots")
+                        .font(.objectivityCallout)
                 }
+                .sectionBackground()
                 
                 ////// PW 변경인 부분이라 아마 안쓸듯 /////
                 if viewModel.authProviders.contains(.email) {
@@ -63,12 +67,42 @@ struct SettingsScreen: View {
                         .sectionBackground()
                 }
                 
-                ///// 여기는 일단 목업처럼 해둔거임 /////
                 Section {
-                    SettingsRow(icon: "info.circle", label: "About Dot")
-                    // 여기 접속하면 앱과 개발자 정보 ex) 앱개발자 소개: 이름, email, 한마디... 예시> “Dot is an indie app made by one person who loves art & tech.” //
+                    ZStack {
+                        NavigationLink(destination: AboutDotView(version: $version).navigationBarBackButtonHidden()) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            SettingsRow(icon: "info.circle", label: "About Dot")
+                            // 여기 접속하면 앱과 개발자 정보 ex) 앱개발자 소개: 이름, email, 한마디... 예시> “Dot is an indie app made by one person who loves art & tech.” //
+                            Spacer()
+                        }
+                        
+                    }
                     if profileVM.user?.isAnonymous == false {
-                        SettingsRow(icon: "bubble.left.and.text.bubble.right", label: "Feedback")
+                        Button {
+                            if MFMailComposeViewController.canSendMail() {
+                                        showMailView = true
+                                    } else {
+                                        showMailErrorAlert = true
+                                    }
+                        } label: {
+                            SettingsRow(icon: "bubble.left.and.text.bubble.right", label: "Feedback")
+                        }
+                        .sheet(isPresented: $showMailView) {
+                                MailView(
+                                    recipient: "dotbymo@gmail.com",
+                                    subject: "Thoughts on DOT",
+                                    body: "DOT isn’t perfect — help us shape it"
+                                )
+                            }
+                            .alert("Can’t open your Mail app", isPresented: $showMailErrorAlert) {
+                                Button("OK", role: .cancel) { }
+                            } message: {
+                                Text("Please check if an email account is set up on your device.")
+                            }
                     }
                 } header: {
                     Text("App Info")

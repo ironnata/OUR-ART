@@ -8,27 +8,108 @@
 import SwiftUI
 
 struct AboutDotView: View {
+    @Binding var version: String
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-        // 간단한 앱 소개 문구 ::::: Made for curious minds and creative souls who believe art belongs to everyone. 이 문구 넣자
-        
-        // 개발자 정보 ::::: 이름, 지역, 이메일 주소 정도?
-        // Developed & designed by Jongmo
-        // Seoul ↔ Düsseldorf
-        // ironnata@gmail.com
-        
-        // Feedback Button
-        // 가능하다면 바로 eamil보내는 화면 뜨도록
-        // +++ 추가로 아마 Rate the app Button?
-        
-        // Version 정보
-        
-        // Copyright © 2025 Jongmo. All rights reserved.
-        
-        // Assembled with coffee, bugs, and lots of love. Special Thanks to CursorAI & ChatGPT
+        ZStack {
+            VStack(spacing: 12) {
+                
+                logoImageAuth()
+                
+                // 간단한 앱 소개 문구 ::::: Made for curious minds and creative souls who believe art belongs to everyone. 이 문구 넣자
+                VStack {
+                    HStack {
+                        Text("🫶")
+                        Text("Made for curious minds and makers who believe art belongs to everyone")
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.redacted)
+                .clipShape(.rect(cornerRadius: 8))
+                
+                
+                // 개발자 정보 ::::: 이름, 지역, 이메일 주소 정도?
+                // Developed & designed by Jongmo
+                // Seoul ↔ Düsseldorf
+                // ironnata@gmail.com
+                VStack(alignment: .leading, spacing: 12) {
+                    AboutDotRowView(title: "Developed by", subtitle: "Jongmo")
+                    Divider()
+                    AboutDotRowView(title: "Designed by", subtitle: "Jongmo")
+                    Divider()
+                    AboutDotRowView(title: "Location", subtitle: "Düsseldorf ↔ Seoul")
+                    Divider()
+                    AboutDotRowView(title: "Contact", subtitle: "dotbymo@gmail.com").textSelection(.enabled)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.redacted)
+                .clipShape(.rect(cornerRadius: 8))
+                
+                
+                // Version 정보
+                VStack(alignment: .leading) {
+                    AboutDotRowView(title: "Version", subtitle: version)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.redacted)
+                .clipShape(.rect(cornerRadius: 8))
+                
+                // Copyright © 2025 Jongmo. All rights reserved.
+                // Thanks to
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("Assembled with coffee, bugs, and lots of love.")
+                    Text("Thanks to CursorAI & ChatGPT")
+                    
+                    Divider()
+                    
+                    Text("If you’re reading this, you’re part of the story.")
+                    
+                    Divider()
+                    
+                    Text("Copyright © 2025 Jongmo. All rights reserved")
+                }
+                .font(.objectivityFootnote)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.redacted)
+                .clipShape(.rect(cornerRadius: 8))
+                
+                Spacer()
+            }
+            .font(.objectivityCallout)
+        }
+        .padding()
+        .viewBackground()
+        .toolbar {
+            ToolbarBackButton()
+            
+            ToolbarItem(placement: .principal) {
+                Text("About Dot")
+                    .font(.objectivityTitle2)
+            }
+        }
     }
 }
 
 #Preview {
-    AboutDotView()
+    AboutDotView(version: .constant("1.0.0"))
+}
+
+struct AboutDotRowView: View {
+    var title: String
+    var subtitle: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .foregroundColor(.secondAccent)
+            
+            Spacer()
+            
+            Text(subtitle)
+        }
+    }
 }

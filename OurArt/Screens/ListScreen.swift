@@ -34,13 +34,9 @@ struct ListScreen: View {
     private func refreshData() async {
         isRefreshing = true
         
-        // 데이터 로드 전에 0.8초 지연
         try? await Task.sleep(for: .seconds(0.8))
-        
-        // 실제 데이터 새로고침
         try? await viewModel.filterSelected(option: viewModel.selectedFilter ?? .noFilter)
         
-        // 작업 완료 후 상태 업데이트
         isRefreshing = false
     }
     

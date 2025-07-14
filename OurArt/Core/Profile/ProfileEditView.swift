@@ -188,18 +188,12 @@ struct ProfileEditView: View {
                 
             }
             .viewBackground()
+            .toolbar {
+                ToolbarBackButton()
+            }
         }
         .task {
             try? await viewModel.loadCurrentUser()
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Image(systemName: "chevron.left")
-                    .imageScale(.large)
-                    .onTapGesture {
-                        dismiss()
-                    }
-            }
         }
         .overlay(
             Group {

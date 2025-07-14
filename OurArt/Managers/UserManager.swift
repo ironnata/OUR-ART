@@ -277,8 +277,7 @@ final class UserManager {
 //        
 //        return publisher.eraseToAnyPublisher()
 //    }
-    
-    // With Combine + Query ////////// 전시 데이터 변경 시 UI즉시적용하는 방법을 못찾아 우선 사용 보류
+
     func addListenerForAllUserMyExhibitions(userId: String) -> AnyPublisher<[UserMyExhibition], Error> {
         let (publisher, listener) = userMyExhibitionCollection(userId: userId)
             .addSnapshotListener(as: UserMyExhibition.self)

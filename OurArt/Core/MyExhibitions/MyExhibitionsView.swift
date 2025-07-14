@@ -82,14 +82,7 @@ struct MyExhibitionsView: View {
                     .font(.objectivityTitle2)
             }
             
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .imageScale(.large)
-                }
-            }
+            ToolbarBackButton()
         }
     }
 }

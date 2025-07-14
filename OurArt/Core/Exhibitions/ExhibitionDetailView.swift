@@ -155,14 +155,7 @@ struct ExhibitionDetailView: View {
                 .navigationBarBackButtonHidden(true)
                 .toolbarBackground(.hidden, for: .navigationBar)
                 .toolbar {
-                    ToolbarItem(placement: .topBarLeading) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "chevron.left")
-                                .imageScale(.large)
-                        }
-                    }
+                    ToolbarBackButton()
                     
                     if isMyExhibition {
                         ToolbarItem(placement: .topBarTrailing) {

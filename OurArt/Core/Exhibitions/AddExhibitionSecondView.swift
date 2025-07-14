@@ -240,7 +240,7 @@ struct AddExhibitionSecondView: View {
                                 }
                                 .alert(isPresented: $showDeleteAlert) {
                                     Alert(
-                                        title: Text("Not saved yet. Leave anyway?"),
+                                        title: Text("Your dot’s still in progress. Leave without saving?"),
                                         primaryButton: .default(Text("OK")) {
                                             Task {
                                                 try? await viewModel.deleteAllPosterImages()

@@ -25,7 +25,8 @@ struct FullScreenPosterView: View {
             image
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 300, maxHeight: 450)
+                .frame(maxWidth: 300)
+                .clipShape(.rect(cornerRadius: 8))
                 .zoomable(isZoomed: $isZoomed)
                 .onTapGesture {
                     withAnimation {
