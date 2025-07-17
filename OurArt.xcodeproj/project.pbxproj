@@ -43,6 +43,8 @@
 		CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */; };
 		CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */; };
 		CD77E80C2C7606F900AC4D26 /* ExhibitionImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD77E80B2C7606F900AC4D26 /* ExhibitionImageEditView.swift */; };
+		CD7A36F92E29726600E32329 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A36F82E29726600E32329 /* Haptic.swift */; };
+		CD7A36FB2E2976A100E32329 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD7A36FA2E2976A100E32329 /* Components.swift */; };
 		CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */; };
 		CD8CD7E32BDFCB3000855E0B /* MyExhibitionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */; };
 		CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */; };
@@ -135,6 +137,8 @@
 		CD6FDBF82B0518EC00586B48 /* ProfileCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCellView.swift; sourceTree = "<group>"; };
 		CD6FDBFA2B05641600586B48 /* ProfileEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditView.swift; sourceTree = "<group>"; };
 		CD77E80B2C7606F900AC4D26 /* ExhibitionImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionImageEditView.swift; sourceTree = "<group>"; };
+		CD7A36F82E29726600E32329 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
+		CD7A36FA2E2976A100E32329 /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		CD848F9E2B30BA1F0015FA57 /* AddExhibitionFirstView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionFirstView.swift; sourceTree = "<group>"; };
 		CD8CD7E22BDFCB3000855E0B /* MyExhibitionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExhibitionsView.swift; sourceTree = "<group>"; };
 		CD92A7622ADACB4000C588E5 /* SignInAppleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInAppleHelper.swift; sourceTree = "<group>"; };
@@ -371,6 +375,7 @@
 			isa = PBXGroup;
 			children = (
 				CD9316992AD974F2004F2868 /* Modifiers.swift */,
+				CD7A36FA2E2976A100E32329 /* Components.swift */,
 			);
 			path = Modifier;
 			sourceTree = "<group>";
@@ -390,6 +395,7 @@
 				CDDED7AB2AE1BF7300150F87 /* UserManager.swift */,
 				CD6954BE2AEFEC5500312907 /* ExhibitionManager.swift */,
 				CD6954BC2AEFE88900312907 /* StorageManager.swift */,
+				CD7A36F82E29726600E32329 /* Haptic.swift */,
 				CDDED7AD2AE1BF7A00150F87 /* Helpers */,
 			);
 			path = Managers;
@@ -621,6 +627,7 @@
 				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
 				CD0741332E252539007D8DDE /* MailView.swift in Sources */,
+				CD7A36F92E29726600E32329 /* Haptic.swift in Sources */,
 				CD54076F2CB5529C00EA1F63 /* AddressSearchViewModel.swift in Sources */,
 				CD9316392AD6C985004F2868 /* ContentView.swift in Sources */,
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
@@ -630,6 +637,7 @@
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
+				CD7A36FB2E2976A100E32329 /* Components.swift in Sources */,
 				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,

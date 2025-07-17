@@ -17,8 +17,9 @@ struct AddressSearchView: View {
     @State private var selectedLongitude: Double?
     @State private var region: MKCoordinateRegion?
     @State private var annotations: [MKPointAnnotation] = []
-    @State private var showList: Bool = false
     @State private var mapRotation: Double = 0
+    @State private var showList = false
+    @State private var showHelpMessage = false
     
     @FocusState private var isTextFieldFocused: Bool
     
@@ -109,6 +110,31 @@ struct AddressSearchView: View {
                 .background(Color.background0)
                 .ignoresSafeArea(.all, edges: .top)
                 
+                if !showList {
+                    HStack {
+                        Spacer()
+                        
+                        if showHelpMessage {
+                            BannerMessage(text: "Can’t find the right spot? Try moving the map and place your dot in the exact location you want")
+                                .offset(x: 20)
+                        }
+                        
+                        Button {
+                            withAnimation {
+                                showHelpMessage.toggle()
+                            }
+                        } label: {
+                            Image(systemName: "questionmark")
+                                .font(.title2)
+                                .foregroundStyle(Color.accent)
+                                .padding(10)
+                                .background(Color.background0)
+                                .clipShape(Circle())
+                        }
+                        .padding()
+                    }
+                }
+                
                 if showList {
                     List {
                         ForEach(viewModel.completions) { completion in
@@ -130,7 +156,7 @@ struct AddressSearchView: View {
                     .scrollContentBackground(.hidden)
                     .cornerRadius(7)
                 }
-
+                
                 Spacer()
                 
                 if !isTextFieldFocused && !showList {
@@ -154,11 +180,13 @@ struct AddressSearchView: View {
                     .ignoresSafeArea(.all, edges: .bottom)
                 }
             }
+            .scrollDismissesKeyboard(.immediately)
+            .keyboardAware(minDistance: 32)
             
             // 나침반 버튼 위치 조정
             VStack {
                 Spacer()
-                    .frame(height: 120)
+                    .frame(height: 150)
                 HStack {
                     Spacer()
                     if abs(mapRotation) > 0.1 { // 회전 각도가 0.1도 이상일 때만 표시
@@ -170,15 +198,15 @@ struct AddressSearchView: View {
                             }
                         } label: {
                             Image(systemName: "location.north.fill")
-                                .font(.title2)
-                                .foregroundColor(.accent)
-                                .padding(12)
+                                .font(.headline)
+                                .foregroundStyle(Color.accent)
+                                .padding(10)
                                 .background(Color.background0)
                                 .clipShape(Circle())
                                 .rotationEffect(.degrees(-mapRotation)) // 나침반이 항상 북쪽을 가리키도록 회전
                                 .animation(.interpolatingSpring(stiffness: 300, damping: 20), value: mapRotation) // 부드러운 회전 애니메이션 추가
                         }
-                        .padding(.trailing, 16)
+                        .padding(.trailing)
                     }
                 }
                 Spacer()

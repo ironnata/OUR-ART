@@ -101,7 +101,7 @@ struct SettingsScreen: View {
                             .alert("Can’t open your Mail app", isPresented: $showMailErrorAlert) {
                                 Button("OK", role: .cancel) { }
                             } message: {
-                                Text("Please check if an email account is set up on your device.")
+                                Text("Looks like your Mail app isn’t set up — you can also find our contact email in ‘About DOT’")
                             }
                     }
                 } header: {

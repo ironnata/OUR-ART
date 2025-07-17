@@ -101,8 +101,7 @@ struct TextFieldDescriptionModifier: ViewModifier {
 struct SmallPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
-            .frame(maxWidth: 50, maxHeight: 75)
+            .frame(maxWidth: 50)
             .clipShape(.rect(cornerRadius: 2))
     }
 }

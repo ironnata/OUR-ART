@@ -14,33 +14,19 @@ struct ProfileEditView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
-    let preferenceOptions: [String] = ["Artist"]
-    
     @State private var nickname: String = ""
     @State private var showInputAlert = false
     @State private var showImageEditView = false
     @State private var wasImageUpdated = false
     @State private var showUpdateMessage = false
     
+    @State private var showEditNameView = false
+    @State private var showEditPreferencesView = false
+    
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
     
     let placeholderImage = Image(systemName: "person.circle.fill")
-    
-    var updateMessageBanner: some View {
-        Text("Profile image successfully updated!")
-            .font(.objectivityCallout)
-            .foregroundColor(.accentButtonText)
-            .padding(.horizontal, 15)
-            .padding(.vertical, 10)
-            .background(Color.accent.opacity(0.9))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-            .transition(.move(edge: .top).combined(with: .opacity))
-    }
-    
-    private func preferenceIsSelected(text: String) -> Bool {
-        viewModel.user?.preferences?.contains(text) == true
-    }
     
     
     // MARK: - BODY
@@ -54,6 +40,8 @@ struct ProfileEditView: View {
                         Spacer()
                         
                         VStack(spacing: 10) {
+                            
+                            Spacer()
                             
                             VStack {
                                 if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
@@ -97,58 +85,81 @@ struct ProfileEditView: View {
                                         showImageEditView.toggle()
                                     }
                                 } label: {
-                                    Text("EDIT")
+                                    if user.profileImagePathUrl != nil {
+                                        Text("EDIT")
+                                    } else {
+                                        Text("+")
+                                            .padding(.horizontal, 10)
+                                    }
                                 }
                                 .modifier(SmallButtonModifier())
                                 .padding(.top, 10)
                             }
                             .padding(.bottom, 20)
                             
+                            Spacer()
+                            
                             VStack {
-                                TextField(user.nickname ?? "Nickname...", text: $nickname)
-                                    .modifier(TextFieldModifier())
-                                    .padding(.bottom, 20)
+                                ProfileRow(title: "Profilename", value: user.nickname ?? "")
+                                    .onTapGesture {
+                                        showEditNameView = true
+                                    }
+                                    .sheet(isPresented: $showEditNameView, onDismiss: {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            Task {
+                                                try? await viewModel.loadCurrentUser()
+                                            }
+                                        }
+                                    }) {
+                                        EditNicknameView(nickname: $nickname)
+                                            .presentationDetents([.height(220)])
+                                            .presentationDragIndicator(.visible)
+                                            .presentationBackground(.thinMaterial)
+                                        
+                                    }
                                 
                                 if user.isAnonymous == false {
-                                    HStack {
-                                        Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                            .foregroundStyle(.secondary)
-                                        
-                                        ForEach(preferenceOptions, id: \.self) { string in
-                                            Button(string) {
-                                                if preferenceIsSelected(text: string) {
-                                                    viewModel.removeUserPreference(text: string)
-                                                } else {
-                                                    viewModel.addUserPreference(text: string)
+                                    ProfileRow(title: "You are...", value: (user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience"))
+                                        .onTapGesture {
+                                            showEditPreferencesView = true
+                                        }
+                                        .sheet(isPresented: $showEditPreferencesView, onDismiss: {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                                Task {
+                                                    try? await viewModel.loadCurrentUser()
                                                 }
                                             }
-                                            .font(.objectivityBody)
-                                            .buttonStyle(.borderedProminent)
-                                            .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary) // secondary 색상고민좀
-                                            .foregroundStyle(Color.accentButtonText)
+                                        }) {
+                                            EditPreferencesView()
+                                                .presentationDetents([.height(160)])
+                                                .presentationDragIndicator(.visible)
+                                                .presentationBackground(.thinMaterial)
                                         }
-                                    }
+//                                    HStack {
+//                                        Text("I'm an \(user.preferences?.isEmpty == false ? user.preferences!.joined(separator: ", ") : "Audience")")
+//                                            .frame(maxWidth: .infinity, alignment: .leading)
+//                                            .foregroundStyle(.secondary)
+//                                        
+//                                        ForEach(preferenceOptions, id: \.self) { string in
+//                                            Button(string) {
+//                                                if preferenceIsSelected(text: string) {
+//                                                    viewModel.removeUserPreference(text: string)
+//                                                } else {
+//                                                    viewModel.addUserPreference(text: string)
+//                                                }
+//                                            }
+//                                            .font(.objectivityBody)
+//                                            .buttonStyle(.borderedProminent)
+//                                            .tint(preferenceIsSelected(text: string) ? .accentColor : .secondary) // secondary 색상고민좀
+//                                            .foregroundStyle(Color.accentButtonText)
+//                                        }
+//                                    }
                                 }
                             }
                             .padding(.horizontal, 10)
-                        }
-                        
-                        Divider()
-                            .padding(.vertical, 10)
-                        
-                        Button {
-                            if nickname.isEmpty {
-                                dismiss()
-                            } else {
-                                viewModel.addNickname(text: nickname)
-                                dismiss()
-                            }
                             
-                        } label: {
-                            Text("Done".uppercased())
+                            Spacer()
                         }
-                        .modifier(CommonButtonModifier())
                     }
                 }
                 .padding(.horizontal, 10)
@@ -180,7 +191,7 @@ struct ProfileEditView: View {
                 
                 if showUpdateMessage {
                     VStack {
-                        updateMessageBanner
+                        BannerMessage(text: "Profile image has successfully updated!")
                         Spacer()
                     }
                     .padding(.top, 100)
@@ -208,4 +219,142 @@ struct ProfileEditView: View {
 
 #Preview {
     ProfileEditView(showSignInView: .constant(true))
+}
+
+struct ProfileRow: View {
+    var title: String
+    var value: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(title)
+                .font(.objectivityFootnote)
+                .foregroundStyle(Color.secondAccent)
+            Text(value)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color.redacted)
+        .clipShape(.rect(cornerRadius: 8))
+    }
+}
+
+
+struct EditNicknameView : View {
+    @Environment(\.dismiss) var dismiss
+    
+    @StateObject private var viewModel = ProfileViewModel()
+    
+    @Binding var nickname: String
+    
+    var body: some View {
+        ZStack {
+            VStack {
+                if let user = viewModel.user {
+                    HStack(alignment: .center) {
+                        Text("Profilename")
+                        
+                        Spacer()
+                        
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                    }
+                    .padding(.vertical, 10)
+                    
+                    TextField(user.nickname ?? "Nickname...", text: $nickname)
+                        .modifier(TextFieldModifier())
+                    
+                    Divider()
+                        .padding(.vertical, 10)
+                    
+                    Button {
+                        if nickname.isEmpty {
+                            dismiss()
+                        } else {
+                            viewModel.addNickname(text: nickname)
+                            dismiss()
+                        }
+                        
+                    } label: {
+                        Text("Save".uppercased())
+                    }
+                    .modifier(CommonButtonModifier())
+                }
+            }
+            .padding()
+        }
+        .viewBackground()
+        .task {
+            try? await viewModel.loadCurrentUser()
+        }
+    }
+}
+
+
+struct EditPreferencesView: View {
+    @Environment(\.dismiss) var dismiss
+        
+    let preferenceOptions = ["Artist", "Audience"]
+    
+    @StateObject private var viewModel = ProfileViewModel()
+    
+    private func preferenceIsSelected(text: String) -> Bool {
+        viewModel.user?.preferences?.contains(text) == true
+    }
+    
+    var body: some View {
+        ZStack {
+            VStack {
+                if let user = viewModel.user {
+                    HStack(alignment: .center) {
+                        Text("Select your preferences")
+                        
+                        Spacer()
+                        
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                    }
+                    .padding(.vertical, 10)
+                    
+                    Divider()
+                        .padding(.vertical, 10)
+                    
+                    HStack {
+                        ForEach(preferenceOptions, id: \.self) { option in
+                            Button {
+                                if preferenceIsSelected(text: option) {
+                                    dismiss()
+                                } else {
+                                    if let currentPrefs = user.preferences {
+                                        for pref in currentPrefs {
+                                            viewModel.removeUserPreference(text: pref)
+                                        }
+                                    }
+                                    viewModel.addUserPreference(text: option)
+                                    dismiss()
+                                }
+                            } label: {
+                                Text(option)
+                                    .frame(maxWidth: .infinity, minHeight: 30)
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(preferenceIsSelected(text: option) ? Color.accentColor : Color.secondary)
+                            .foregroundStyle(Color.accentButtonText)
+                        }
+                    }
+                }
+            }
+            .padding()
+        }
+        .viewBackground()
+        .task {
+            try? await viewModel.loadCurrentUser()
+        }
+    }
 }

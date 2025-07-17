@@ -25,8 +25,17 @@ struct AddExhibitionFirstView: View {
                 VStack {
                     Spacer()
                     
+                    Image("DOT_AddExhibitionFirst")
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxHeight: 280)
+                        .clipShape(.rect(cornerRadius: 8, style: .continuous))
+                        .padding(.bottom, 10)
+                        .opacity(0.7)
+                    
+                    Spacer()
+                    
                     VStack(alignment: .leading) {
-                        Text("Title")
                         TextField("Title...", text: $title)
                             .modifier(TextFieldModifier())
                             .showClearButton($title)
@@ -79,6 +88,8 @@ struct AddExhibitionFirstView: View {
                             .font(.objectivityTitle)
                     }
                 }
+                .scrollDismissesKeyboard(.immediately)
+                .keyboardAware(minDistance: 32)
             }
             .viewBackground()
         }

@@ -32,16 +32,14 @@ struct ExhibitionImageEditView: View {
                             if let selectedImageData, let uiImage = UIImage(data: selectedImageData) {
                                 Image(uiImage: uiImage)
                                     .resizable()
-                                    .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fill)
-                                    .frame(maxHeight: 50)
-                                    .clipShape(.rect(cornerRadius: 2))
+                                    .scaledToFit()
+                                    .modifier(SmallPosterSizeModifier())
                             } else if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
                                 AsyncImage(url: url) { image in
                                     image
                                         .resizable()
-                                        .aspectRatio(CGSize(width: 2, height: 3), contentMode: .fit)
-                                        .frame(maxHeight: 50)
-                                        .clipShape(.rect(cornerRadius: 2))
+                                        .scaledToFit()
+                                        .modifier(SmallPosterSizeModifier())
                                 } placeholder: {
                                     Image(systemName: "photo.on.rectangle.angled")
                                         .resizable()
@@ -84,23 +82,26 @@ struct ExhibitionImageEditView: View {
                         }
                         .padding(.bottom, 30)
                         
-                        Button(role: .destructive) {
-                            showDeleteAlert = true
-                        } label: {
-                            HStack(alignment: .center, spacing: 20) {
-                                Image(systemName: "trash")
-                                Text("Delete Poster Image")
-                            }
-                        }
-                        .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
-                            Button("Delete", role: .destructive) {
-                                //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
-                                Task {
-                                    try await viewModel.deleteAllPosterImages()
-                                    wasImageUpdated = true
-                                    dismiss()
+                        if exhibition.posterImagePathUrl != nil {
+                            Button(role: .destructive) {
+                                showDeleteAlert = true
+                            } label: {
+                                HStack(alignment: .center, spacing: 20) {
+                                    Image(systemName: "trash")
+                                    Text("Delete Poster Image")
                                 }
                             }
+                            .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
+                                Button("Delete", role: .destructive) {
+                                    //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
+                                    Task {
+                                        try await viewModel.deleteAllPosterImages()
+                                        wasImageUpdated = true
+                                        dismiss()
+                                    }
+                                }
+                            }
+                                
                         }
                     }
                     .padding(.top, -20)

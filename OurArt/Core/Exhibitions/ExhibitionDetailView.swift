@@ -18,6 +18,7 @@ struct ExhibitionDetailView: View {
     
     @State private var showDeleteAlert = false
     @State private var showEditView = false
+    @State private var showCopyMessage = false
     
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
@@ -116,7 +117,18 @@ struct ExhibitionDetailView: View {
                         InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
                         
                         InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
-                            .textSelection(.enabled)
+                            .onLongPressGesture {
+                                UIPasteboard.general.string = exhibition.address ?? ""
+                                Haptic.notification()
+                                withAnimation(.spring(response: 0.3)) {
+                                    showCopyMessage = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                    withAnimation(.spring(response: 0.3)) {
+                                        showCopyMessage = false
+                                    }
+                                }
+                            }
                             .onChange(of: exhibition.address) { _, newAddress in
                                 if let address = newAddress {
                                     mapVM.showAddress(for: address)
@@ -203,6 +215,14 @@ struct ExhibitionDetailView: View {
                 }
             } else {
                 Text("전시회 정보를 불러올 수 없습니다.")
+            }
+            
+            if showCopyMessage {
+                VStack {
+                    BannerMessage(text: "Copied to clipboard")
+                    Spacer()
+                }
+                .padding(.top, 200)
             }
         }
         .overlay {

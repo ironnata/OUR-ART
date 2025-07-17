@@ -134,7 +134,6 @@ struct AddExhibitionSecondView: View {
                                 Text("Date")
                                 HStack(alignment: .center) {
 //                                    Spacer()
-                                    Text("From")
                                     DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
                                     Text("to")
                                     DatePicker("", selection: $selectedToDate, in: selectedFromDate... ,displayedComponents: .date)

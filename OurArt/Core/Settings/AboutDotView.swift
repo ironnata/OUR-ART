@@ -10,12 +10,16 @@ import SwiftUI
 struct AboutDotView: View {
     @Binding var version: String
     
+    @State private var showCopyMessage = false
+    
     var body: some View {
         ZStack {
             VStack(spacing: 12) {
+                Spacer()
                 
                 logoImageAuth()
                 
+                Spacer()
                 // 간단한 앱 소개 문구 ::::: Made for curious minds and creative souls who believe art belongs to everyone. 이 문구 넣자
                 VStack {
                     HStack {
@@ -40,7 +44,19 @@ struct AboutDotView: View {
                     Divider()
                     AboutDotRowView(title: "Location", subtitle: "Düsseldorf ↔ Seoul")
                     Divider()
-                    AboutDotRowView(title: "Contact", subtitle: "dotbymo@gmail.com").textSelection(.enabled)
+                    AboutDotRowView(title: "Contact", subtitle: "dotbymo@gmail.com")
+                        .onLongPressGesture {
+                            UIPasteboard.general.string = "dotbymo@gmail.com"
+                            Haptic.notification()
+                            withAnimation(.spring(response: 0.3)) {
+                                showCopyMessage = true
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                withAnimation(.spring(response: 0.3)) {
+                                    showCopyMessage = false
+                                }
+                            }
+                        }
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -60,12 +76,8 @@ struct AboutDotView: View {
                 // Copyright © 2025 Jongmo. All rights reserved.
                 // Thanks to
                 VStack(alignment: .leading, spacing: 12) {
-                    Text("Assembled with coffee, bugs, and lots of love.")
-                    Text("Thanks to CursorAI & ChatGPT")
-                    
-                    Divider()
-                    
-                    Text("If you’re reading this, you’re part of the story.")
+                    Text("Assembled with coffee, bugs and lots of love")
+                    Text("Inspired by Teumssae")
                     
                     Divider()
                     
@@ -76,10 +88,16 @@ struct AboutDotView: View {
                 .padding()
                 .background(Color.redacted)
                 .clipShape(.rect(cornerRadius: 8))
-                
-                Spacer()
             }
             .font(.objectivityCallout)
+            
+            if showCopyMessage {
+                VStack {
+                    BannerMessage(text: "Copied to clipboard")
+                    Spacer()
+                }
+                .padding(.top, 200)
+            }
         }
         .padding()
         .viewBackground()

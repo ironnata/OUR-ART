@@ -83,19 +83,21 @@ struct ProfileImageEditView: View {
                         }
                         .padding(.bottom, 30)
                         
-                        Button(role: .destructive) {
-                            showDeleteAlert = true
-                        } label: {
-                            HStack(alignment: .center, spacing: 20) {
-                                Image(systemName: "trash")
-                                Text("Delete Profile Image")
+                        if user.profileImagePathUrl != nil {
+                            Button(role: .destructive) {
+                                showDeleteAlert = true
+                            } label: {
+                                HStack(alignment: .center, spacing: 20) {
+                                    Image(systemName: "trash")
+                                    Text("Delete Profile Image")
+                                }
                             }
-                        }
-                        .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
-                            Button("Delete", role: .destructive) {
-                                //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
-                                viewModel.deleteAllProfileImages()
-                                dismiss()
+                            .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
+                                Button("Delete", role: .destructive) {
+                                    //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
+                                    viewModel.deleteAllProfileImages()
+                                    dismiss()
+                                }
                             }
                         }
                     }

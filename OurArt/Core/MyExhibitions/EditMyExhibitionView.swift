@@ -33,17 +33,6 @@ struct EditMyExhibitionView: View {
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
     
-    var updateMessageBanner: some View {
-        Text("Poster successfully updated!")
-            .font(.objectivityCallout)
-            .foregroundColor(.accentButtonText)
-            .padding(.horizontal, 15)
-            .padding(.vertical, 10)
-            .background(Color.accent.opacity(0.9))
-            .clipShape(RoundedRectangle(cornerRadius: 7))
-            .transition(.move(edge: .top).combined(with: .opacity))
-    }
-    
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
@@ -54,7 +43,7 @@ struct EditMyExhibitionView: View {
     private func handleDoneButton() {
         let finalTitle = title.isEmpty ? (viewModel.exhibition?.title ?? "") : title
         let finalArtist = artist.isEmpty ? (viewModel.exhibition?.artist ?? "") : artist
-        let finalDescription = description.isEmpty ? (viewModel.exhibition?.description ?? "") : description
+        let finalDescription = description
         let finalAddress = selectedAddress.isEmpty ? (viewModel.exhibition?.address ?? "") : selectedAddress
         let finalCity = selectedCity.isEmpty ? (viewModel.exhibition?.city ?? "") : selectedCity
         
@@ -87,6 +76,7 @@ struct EditMyExhibitionView: View {
                                         AsyncImage(url: url) { image in
                                             image
                                                 .resizable()
+                                                .scaledToFit()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
                                             Image(systemName: "photo.on.rectangle.angled")
@@ -247,10 +237,13 @@ struct EditMyExhibitionView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Description")
-                                TextField(exhibition.description ?? "Describe...", text: $description, axis: .vertical)
+                                TextField("Describe...", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
-                                    .lineLimit(3...7)
                                     .lineSpacing(10)
+                                    .lineLimit(5...15)
+                                    .onAppear {
+                                        self.description = exhibition.description ?? ""
+                                    }
                             } // DESCRIPTION
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 30)
@@ -288,7 +281,7 @@ struct EditMyExhibitionView: View {
                 
                 if showUpdateMessage {
                     VStack {
-                        updateMessageBanner
+                        BannerMessage(text: "Poster image has successfully updated!")
                         Spacer()
                     }
                     .padding(.top, 100)
