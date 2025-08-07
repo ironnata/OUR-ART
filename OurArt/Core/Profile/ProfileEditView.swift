@@ -186,6 +186,7 @@ struct ProfileEditView: View {
                 }) {
                     ProfileImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, showSignInView: $showSignInView)
                         .presentationDetents([.height(200)])
+                        .presentationDragIndicator(.visible)
                         .presentationBackground(.thinMaterial)
                 }
                 

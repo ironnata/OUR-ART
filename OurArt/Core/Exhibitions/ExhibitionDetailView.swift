@@ -83,7 +83,7 @@ struct ExhibitionDetailView: View {
                             }
                     } placeholder: {
                         Text("No Poster")
-                            .frame(width: 240, height: 360, alignment: .center)
+                            .frame(width: 240, height: 240, alignment: .center)
                             .font(.objectivityTitle2)
                     }
                     .padding(.vertical, 30)
@@ -117,6 +117,7 @@ struct ExhibitionDetailView: View {
                         InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
                         
                         InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
+                            .lineSpacing(9)
                             .onLongPressGesture {
                                 UIPasteboard.general.string = exhibition.address ?? ""
                                 Haptic.notification()
@@ -157,8 +158,9 @@ struct ExhibitionDetailView: View {
                         }
                         
                         Text(exhibition.description ?? "")
+                            .textSelection(.enabled)
                             .multilineTextAlignment(.leading)
-                            .lineSpacing(7)
+                            .lineSpacing(9)
                             .font(.objectivityCallout)
                     }
                     .padding(.horizontal)
@@ -171,20 +173,22 @@ struct ExhibitionDetailView: View {
                     
                     if isMyExhibition {
                         ToolbarItem(placement: .topBarTrailing) {
-                            Image(systemName: "square.and.pencil")
-                                .imageScale(.large)
-                                .onTapGesture {
+                            Menu {
+                                Button(action: {
                                     showEditView = true
+                                }) {
+                                    Label("Edit", systemImage: "square.and.pencil")
                                 }
-                                .padding(.trailing, 10)
-                        }
-                        
-                        ToolbarItem(placement: .topBarTrailing) {
-                            Image(systemName: "trash")
-                                .imageScale(.large)
-                                .onTapGesture {
+                                
+                                Button(role: .destructive, action: {
                                     showDeleteAlert = true
+                                }) {
+                                    Label("Delete", systemImage: "trash")
                                 }
+                            } label: {
+                                Image(systemName: "ellipsis")
+                                    .imageScale(.large)
+                            }
                         }
                     }
                 }
@@ -214,7 +218,7 @@ struct ExhibitionDetailView: View {
                         .interactiveDismissDisabled(true)
                 }
             } else {
-                Text("전시회 정보를 불러올 수 없습니다.")
+                Text("Unable to load exhibition information")
             }
             
             if showCopyMessage {

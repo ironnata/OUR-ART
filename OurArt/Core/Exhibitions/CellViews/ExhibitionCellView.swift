@@ -56,6 +56,7 @@ struct ExhibitionCellView: View {
                     
                     CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "no information")
                         .foregroundStyle(exhibition.dateTo != nil && currentDate > exhibition.dateTo! ? Color.secondAccent : Color.accent)
+                        .offset(y: 5)
                 }
                 
                 Spacer()

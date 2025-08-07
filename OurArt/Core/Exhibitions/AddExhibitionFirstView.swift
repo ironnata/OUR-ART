@@ -27,16 +27,16 @@ struct AddExhibitionFirstView: View {
                     
                     Image("DOT_AddExhibitionFirst")
                         .resizable()
-                        .scaledToFill()
-                        .frame(maxHeight: 280)
+                        .scaledToFit()
+                        .frame(maxHeight: 200)
                         .clipShape(.rect(cornerRadius: 8, style: .continuous))
                         .padding(.bottom, 10)
                         .opacity(0.7)
                     
                     Spacer()
                     
-                    VStack(alignment: .leading) {
-                        TextField("Title...", text: $title)
+                    VStack(alignment: .leading, spacing: 10) {
+                        TextField("Title", text: $title)
                             .modifier(TextFieldModifier())
                             .showClearButton($title)
                         Text("If the title is empty, it will be set to 'No title'")

@@ -78,7 +78,7 @@ struct ListScreen: View {
                         .searchable(
                             text: $searchText,
                             placement: .automatic,
-                            prompt: "Search..."
+                            prompt: "Search"
                         )
                     }
                 }

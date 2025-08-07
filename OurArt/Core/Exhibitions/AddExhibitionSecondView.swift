@@ -65,18 +65,19 @@ struct AddExhibitionSecondView: View {
                                         AsyncImage(url: url) { image in
                                             image
                                                 .resizable()
+                                                .scaledToFit()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
-                                            Image(systemName: "photo.on.rectangle.angled")
+                                            Image(systemName: "photo.stack")
                                                 .resizable()
-                                                .frame(width: 150, height: 120)
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxWidth: 120)
                                         }
                                     } else {
-                                        Image(systemName: "photo.on.rectangle.angled")
+                                        Image(systemName: "photo.stack")
                                             .resizable()
-                                            .frame(width: 150, height: 120)
-                                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxWidth: 120)
                                     }
                                     
                                     Button {
@@ -114,6 +115,7 @@ struct AddExhibitionSecondView: View {
                                         }
                                     }) {
                                         ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: currentId)
+                                            .presentationDragIndicator(.visible)
                                             .presentationDetents([.height(200)])
                                     }
                                 }
@@ -124,7 +126,7 @@ struct AddExhibitionSecondView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Artist")
-                                TextField("Artist...", text: $artist)
+                                TextField("Artist", text: $artist)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($artist)
                             } // ARTIST
@@ -147,7 +149,7 @@ struct AddExhibitionSecondView: View {
                             VStack(alignment: .leading) {
                                 Text("Address")
                                 
-                                TextField("Search for places...", text: $selectedAddress)
+                                TextField("Search for places", text: $selectedAddress)
                                     .modifier(TextFieldModifier())
                                     .disabled(true)
                                     .onTapGesture {
@@ -198,7 +200,7 @@ struct AddExhibitionSecondView: View {
                             
                             VStack(alignment: .leading) {
                                 Text("Description")
-                                TextField("Describe...", text: $description, axis: .vertical)
+                                TextField("Describe", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
                                     .lineLimit(3...10)
                                     .lineSpacing(10)
@@ -222,6 +224,8 @@ struct AddExhibitionSecondView: View {
                                 }
                             }
                             .modifier(CommonButtonModifier())
+                            .navigationTitle(title)
+                            .navigationBarTitleDisplayMode(.inline)
                         }
                     }
                     .ignoresSafeArea()
@@ -252,10 +256,6 @@ struct AddExhibitionSecondView: View {
                                 }
                         }
                         
-                        ToolbarItem(placement: .principal) {
-                            Text("New Exhibition")
-                                .font(.objectivityBody)
-                        }
                         ToolbarItem(placement: .topBarLeading) {
                             Button {
                                 Task {

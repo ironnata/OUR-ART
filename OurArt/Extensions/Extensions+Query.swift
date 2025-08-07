@@ -80,7 +80,7 @@ extension Font {
     
     static let objectivityFootnote = Font.custom("Objectivity-Regular", size: 13)
     
-    static let objectivityCaption = Font.custom("Objectivity-Regular", size: 10)
+    static let objectivityCaption = Font.custom("Objectivity-Regular", size: 9)
     
 }
 

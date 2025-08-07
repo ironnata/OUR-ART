@@ -41,16 +41,16 @@ struct ExhibitionImageEditView: View {
                                         .scaledToFit()
                                         .modifier(SmallPosterSizeModifier())
                                 } placeholder: {
-                                    Image(systemName: "photo.on.rectangle.angled")
+                                    Image(systemName: "photo")
                                         .resizable()
-                                        .frame(width: 45, height: 45)
-                                        .clipShape(.rect(cornerRadius: 2))
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(maxWidth: 45)
                                 }
                             } else {
-                                Image(systemName: "photo.on.rectangle.angled")
+                                Image(systemName: "photo")
                                     .resizable()
-                                    .frame(width: 45, height: 45)
-                                    .clipShape(.rect(cornerRadius: 2))
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: 45)
                             }
                         }
                         

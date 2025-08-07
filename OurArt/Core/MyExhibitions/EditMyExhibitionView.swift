@@ -69,8 +69,86 @@ struct EditMyExhibitionView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         if let exhibition = viewModel.exhibition {
-                            VStack(alignment: .leading) {
-                                Text("Poster")
+//                            VStack(alignment: .leading) {
+//                                Text("Poster")
+//                                VStack {
+//                                    if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
+//                                        AsyncImage(url: url) { image in
+//                                            image
+//                                                .resizable()
+//                                                .scaledToFit()
+//                                                .modifier(MidPosterSizeModifier())
+//                                        } placeholder: {
+//                                            Image(systemName: "photo.stack")
+//                                                .resizable()
+//                                                .aspectRatio(contentMode: .fit)
+//                                                .frame(maxWidth: 120)
+//                                        }
+//                                    } else {
+//                                        Image(systemName: "photo.stack")
+//                                            .resizable()
+//                                            .aspectRatio(contentMode: .fit)
+//                                            .frame(maxWidth: 120)
+//                                    }
+//                                    
+//                                    
+//                                    Button {
+//                                        withAnimation {
+//                                            showImageEditView.toggle()
+//                                        }
+//                                    } label: {
+//                                        if exhibition.posterImagePathUrl != nil {
+//                                            Text("EDIT")
+//                                        } else {
+//                                            Text("+")
+//                                                .padding(.horizontal, 10)
+//                                        }
+//                                    }
+//                                    .modifier(SmallButtonModifier())
+//                                    .sheet(isPresented: $showImageEditView, onDismiss: {
+//                                        if wasImageUpdated {
+//                                            withAnimation(.spring(response: 0.3)) {
+//                                                showUpdateMessage = true
+//                                            }
+//                                            
+//                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//                                                withAnimation(.spring(response: 0.3)) {
+//                                                    showUpdateMessage = false
+//                                                    wasImageUpdated = false
+//                                                }
+//                                            }
+//                                            
+//                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                                Task {
+//                                                    try? await viewModel.loadCurrentExhibition(id: exhibitionId)
+//                                                }
+//                                            }
+//                                        }
+//                                    }) {
+//                                        ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: exhibitionId)
+//                                            .presentationDragIndicator(.visible)
+//                                            .presentationDetents([.height(200)])
+//                                    }
+////                                    .onChange(of: selectedImage) { _, newValue in
+////                                        Task {
+////                                            //                                                try await viewModel.deleteExistedPosterImage()
+////                                            
+////                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
+////                                                selectedImageData = data
+////                                            }
+////                                        }
+////                                        
+////                                        if let newValue {
+////                                            viewModel.savePosterImage(item: newValue)
+////                                        }
+////                                    }
+//                                    
+//                                }
+//                                .frame(maxWidth: .infinity, alignment: .center)
+//                            } // POSTER
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            SectionCard(title: "Poster", icon: "photo.stack") {
                                 VStack {
                                     if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
                                         AsyncImage(url: url) { image in
@@ -79,16 +157,16 @@ struct EditMyExhibitionView: View {
                                                 .scaledToFit()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
-                                            Image(systemName: "photo.on.rectangle.angled")
+                                            Image(systemName: "photo.stack")
                                                 .resizable()
-                                                .frame(width: 150, height: 120)
-                                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(maxWidth: 120)
                                         }
                                     } else {
-                                        Image(systemName: "photo.on.rectangle.angled")
+                                        Image(systemName: "photo.stack")
                                             .resizable()
-                                            .frame(width: 150, height: 120)
-                                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(maxWidth: 120)
                                     }
                                     
                                     
@@ -126,17 +204,18 @@ struct EditMyExhibitionView: View {
                                         }
                                     }) {
                                         ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: exhibitionId)
+                                            .presentationDragIndicator(.visible)
                                             .presentationDetents([.height(200)])
                                     }
 //                                    .onChange(of: selectedImage) { _, newValue in
 //                                        Task {
 //                                            //                                                try await viewModel.deleteExistedPosterImage()
-//                                            
+//
 //                                            if let data = try? await newValue?.loadTransferable(type: Data.self) {
 //                                                selectedImageData = data
 //                                            }
 //                                        }
-//                                        
+//
 //                                        if let newValue {
 //                                            viewModel.savePosterImage(item: newValue)
 //                                        }
@@ -144,26 +223,54 @@ struct EditMyExhibitionView: View {
                                     
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
-                            } // POSTER
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                             
-                            VStack(alignment: .leading) {
-                                Text("Title")
+//                            VStack(alignment: .leading) {
+//                                Text("Title")
+//                                TextField(exhibition.title ?? "Title...", text: $title)
+//                                    .modifier(TextFieldModifier())
+//                                    .showClearButton($title)
+//                            } // TITLE
+                            
+                            SectionCard(title: "Title", icon: "sparkles", content: {
                                 TextField(exhibition.title ?? "Title...", text: $title)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($title)
-                            } // TITLE
+                            })
                             
-                            VStack(alignment: .leading) {
-                                Text("Artist")
+//                            VStack(alignment: .leading) {
+//                                Text("Artist")
+//                                TextField(exhibition.artist ?? "Artist...", text: $artist)
+//                                    .modifier(TextFieldModifier())
+//                                    .showClearButton($artist)
+//                            } // ARTIST
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            SectionCard(title: "Artist", icon: "person") {
                                 TextField(exhibition.artist ?? "Artist...", text: $artist)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($artist)
-                            } // ARTIST
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                             
-                            VStack(alignment: .leading) {
-                                Text("Date")
+//                            VStack(alignment: .leading) {
+//                                Text("Date")
+//                                HStack(alignment: .center) {
+//                                    DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
+//                                        .onAppear {
+//                                            self.selectedFromDate = exhibition.dateFrom ?? Date()
+//                                        }
+//                                    Text("to")
+//                                    DatePicker("", selection: $selectedToDate, in: selectedFromDate... , displayedComponents: .date)
+//                                        .onAppear {
+//                                            self.selectedToDate = exhibition.dateTo ?? Date()
+//                                        }
+//                                }
+//                                .datePickerStyle(.compact)
+//                                .labelsHidden()
+//                            } // DATE
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            SectionCard(title: "Date", icon: "calendar") {
                                 HStack(alignment: .center) {
                                     DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
                                         .onAppear {
@@ -177,28 +284,9 @@ struct EditMyExhibitionView: View {
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
-                            } // DATE
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            
-                            VStack(alignment: .leading) {
-                                Text("Address")
-                                TextField(exhibition.address ?? "Search for places...", text: $selectedAddress)
-                                    .modifier(TextFieldModifier())
-                                    .disabled(true)
-                                    .onTapGesture {
-                                        showSearchView = true
-                                    }
-                                    .showClearButton($selectedAddress)
-                            } // ADDRESS
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .sheet(isPresented: $showSearchView) {
-                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
-                                    .presentationDetents([.large])
-                                    .interactiveDismissDisabled(true)
                             }
                             
-                            VStack(alignment: .leading) {
-                                Text("Opening Hours")
+                            SectionCard(title: "Opening Hours", icon: "clock") {
                                 HStack(alignment: .center, spacing: 20) {
                                     DatePicker("", selection: $selectedFromTime, displayedComponents: .hourAndMinute)
                                         .onAppear {
@@ -212,11 +300,9 @@ struct EditMyExhibitionView: View {
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
-                            } // OPENING HOURS
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                             
-                            VStack(alignment: .leading) {
-                                Text("Closed on")
+                            SectionCard(title: "Closed on", icon: "xmark.circle") {
                                 HStack {
                                     ForEach(closingDaysOptions, id: \.self) { day in
                                         Button(day) {
@@ -232,11 +318,86 @@ struct EditMyExhibitionView: View {
                                         .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                     }
                                 }
-                            } // CLOSED ON
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                             
-                            VStack(alignment: .leading) {
-                                Text("Description")
+//                            VStack(alignment: .leading) {
+//                                Text("Address")
+//                                TextField(exhibition.address ?? "Search for places...", text: $selectedAddress)
+//                                    .modifier(TextFieldModifier())
+//                                    .disabled(true)
+//                                    .onTapGesture {
+//                                        showSearchView = true
+//                                    }
+//                                    .showClearButton($selectedAddress)
+//                            } // ADDRESS
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            SectionCard(title: "Address", icon: "location", content: {
+                                TextField(exhibition.address ?? "Search for places...", text: $selectedAddress)
+                                    .modifier(TextFieldModifier())
+                                    .disabled(true)
+                                    .onTapGesture {
+                                        showSearchView = true
+                                    }
+                                    .showClearButton($selectedAddress)
+                            })
+                            .sheet(isPresented: $showSearchView) {
+                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
+                                    .presentationDetents([.large])
+                                    .interactiveDismissDisabled(true)
+                            }
+                            
+//                            VStack(alignment: .leading) {
+//                                Text("Opening Hours")
+//                                HStack(alignment: .center, spacing: 20) {
+//                                    DatePicker("", selection: $selectedFromTime, displayedComponents: .hourAndMinute)
+//                                        .onAppear {
+//                                            self.selectedFromTime = exhibition.openingTimeFrom ?? Date()
+//                                        }
+//                                    Text("-")
+//                                    DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: .hourAndMinute)
+//                                        .onAppear {
+//                                            self.selectedToTime = exhibition.openingTimeTo ?? Date()
+//                                        }
+//                                }
+//                                .datePickerStyle(.compact)
+//                                .labelsHidden()
+//                            } // OPENING HOURS
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+//                            VStack(alignment: .leading) {
+//                                Text("Closed on")
+//                                HStack {
+//                                    ForEach(closingDaysOptions, id: \.self) { day in
+//                                        Button(day) {
+//                                            if selectedClosingDays(text: day) {
+//                                                viewModel.removeClosingDays(text: day)
+//                                            } else {
+//                                                viewModel.addClosingDays(text: day)
+//                                            }
+//                                        }
+//                                        .font(.objectivityCaption)
+//                                        .buttonStyle(.borderedProminent)
+//                                        .foregroundStyle(Color.accentButtonText)
+//                                        .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
+//                                    }
+//                                }
+//                            } // CLOSED ON
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+//                            VStack(alignment: .leading) {
+//                                Text("Description")
+//                                TextField("Describe...", text: $description, axis: .vertical)
+//                                    .modifier(TextFieldDescriptionModifier())
+//                                    .lineSpacing(10)
+//                                    .lineLimit(5...15)
+//                                    .onAppear {
+//                                        self.description = exhibition.description ?? ""
+//                                    }
+//                            } // DESCRIPTION
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            SectionCard(title: "Description", icon: "text.justify.leading", content: {
                                 TextField("Describe...", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
                                     .lineSpacing(10)
@@ -244,8 +405,8 @@ struct EditMyExhibitionView: View {
                                     .onAppear {
                                         self.description = exhibition.description ?? ""
                                     }
-                            } // DESCRIPTION
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            })
+                            
                             .padding(.bottom, 30)
                             
                             Button("Done") {
@@ -295,4 +456,37 @@ struct EditMyExhibitionView: View {
 
 #Preview {
     EditMyExhibitionView(showEditView: .constant(false), exhibitionId: "")
+}
+
+
+struct SectionCard<Content: View>: View {
+    let title: String
+    let icon: String
+    let content: Content
+    
+    init(title: String, icon: String, @ViewBuilder content: () -> Content) {
+        self.title = title
+        self.icon = icon
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .foregroundColor(.secondAccent)
+                
+                Text(title)
+                    .foregroundColor(.secondAccent)
+                
+                Spacer()
+            }
+            
+            content
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .background(Color.redacted)
+        .clipShape(.rect(cornerRadius: 8))
+    }
 }

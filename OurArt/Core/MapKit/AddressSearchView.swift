@@ -88,7 +88,7 @@ struct AddressSearchView: View {
                     }
                     
                     ZStack {
-                        TextField("Search for an address...", text: $viewModel.queryFragment)
+                        TextField("Search for an address", text: $viewModel.queryFragment)
                             .autocorrectionDisabled()
                             .modifier(TextFieldModifier())
                             .showClearButton($viewModel.queryFragment)

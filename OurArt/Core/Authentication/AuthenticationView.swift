@@ -68,18 +68,18 @@ struct AuthenticationView: View {
                 }
                 .modifier(AuthButtonModifier())
                 
-                // MARK: - E-MAIL
-                NavigationLink {
-                    SignInEmailView(showSignInView: $showSignInView)
-                        .navigationBarBackButtonHidden(true)
-                } label: {
-                    HStack {
-                        Image(systemName: "envelope")
-                            .imageScale(.small)
-                        Text("Sign in with E-mail")
-                    }
-                    .modifier(AuthButtonModifier())
-                }
+                // MARK: - E-MAIL ///// 아마도 나중에 다시... /////
+//                NavigationLink {
+//                    SignInEmailView(showSignInView: $showSignInView)
+//                        .navigationBarBackButtonHidden(true)
+//                } label: {
+//                    HStack {
+//                        Image(systemName: "envelope")
+//                            .imageScale(.small)
+//                        Text("Sign in with E-mail")
+//                    }
+//                    .modifier(AuthButtonModifier())
+//                }
                 
                 // MARK: - ANONYMOUS
                 Button {

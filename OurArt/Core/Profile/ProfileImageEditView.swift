@@ -96,6 +96,7 @@ struct ProfileImageEditView: View {
                                 Button("Delete", role: .destructive) {
                                     //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
                                     viewModel.deleteAllProfileImages()
+                                    wasImageUpdated = true
                                     dismiss()
                                 }
                             }

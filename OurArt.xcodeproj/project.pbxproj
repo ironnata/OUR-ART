@@ -431,7 +431,7 @@
 			children = (
 				CDDED7A12AE1B8F200150F87 /* AuthenticationViewModel.swift */,
 				CD9316872AD8191E004F2868 /* AuthenticationView.swift */,
-				CDDED7A72AE1B9FF00150F87 /* SubViews */,
+				CDDED7A72AE1B9FF00150F87 /* EmailViews (추후사용) */,
 			);
 			path = Authentication;
 			sourceTree = "<group>";
@@ -446,13 +446,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		CDDED7A72AE1B9FF00150F87 /* SubViews */ = {
+		CDDED7A72AE1B9FF00150F87 /* EmailViews (추후사용) */ = {
 			isa = PBXGroup;
 			children = (
 				CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */,
 				CD9316892AD81D27004F2868 /* SignInEmailView.swift */,
 			);
-			path = SubViews;
+			name = "EmailViews (추후사용)";
+			path = "EmailViews (추후사용)";
 			sourceTree = "<group>";
 		};
 		CDDED7A82AE1BA7900150F87 /* Profile */ = {

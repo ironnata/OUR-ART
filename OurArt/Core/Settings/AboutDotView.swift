@@ -24,7 +24,9 @@ struct AboutDotView: View {
                 VStack {
                     HStack {
                         Text("🫶")
-                        Text("Made for curious minds and makers who believe art belongs to everyone")
+                            .font(.title3)
+                        Text("Made for curious minds and makers who believe art belongs to everyone — and whose interest and support make Dot matter")
+                            .lineSpacing(8)
                     }
                 }
                 .frame(maxWidth: .infinity)

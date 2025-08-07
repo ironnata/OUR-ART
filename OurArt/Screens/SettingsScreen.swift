@@ -300,23 +300,24 @@ extension SettingsScreen {
                 }
             }
             
-            Button {
-                showEmailSheet = true
-            } label: {
-                HStack(alignment: .center) {
-                    Image(systemName: "envelope")
-                        .frame(width: 18)
-                        .padding(.trailing, 6)
-                    Text("Email")
-                }
-            }
-            // 시트 dismiss 후 익명 섹션 남아있는 부분 추후 업데이트 요망
-            .sheet(isPresented: $showEmailSheet) {
-                NavigationStack {
-                    SignInEmailView(showSignInView: $showSignInView)
-                }
-                .interactiveDismissDisabled(true)
-            }
+            ///// 추후 이메일 로그인 생성 시 사용 /////
+//            Button {
+//                showEmailSheet = true
+//            } label: {
+//                HStack(alignment: .center) {
+//                    Image(systemName: "envelope")
+//                        .frame(width: 18)
+//                        .padding(.trailing, 6)
+//                    Text("Email")
+//                }
+//            }
+//            // 시트 dismiss 후 익명 섹션 남아있는 부분 추후 업데이트 요망
+//            .sheet(isPresented: $showEmailSheet) {
+//                NavigationStack {
+//                    SignInEmailView(showSignInView: $showSignInView)
+//                }
+//                .interactiveDismissDisabled(true)
+//            }
             
         } header: {
             Text("Continue with")

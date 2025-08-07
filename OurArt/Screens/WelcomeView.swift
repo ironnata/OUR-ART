@@ -25,7 +25,7 @@ struct WelcomeView: View {
     @State private var startingAnimation = false
     @State private var onTapAnimation = false
     @State private var hasShownButton = false
-    @State private var duration = 2.0
+    @State private var duration = 1.5
     @State private var currentIndex = 0
     
     var body: some View {
@@ -52,6 +52,7 @@ struct WelcomeView: View {
                                     .foregroundStyle(Color.accent)
                                 
                                 Text(page.subtitle)
+                                    .lineSpacing(7)
                                     .font(.objectivityBody)
                                     .foregroundStyle(Color.accent)
                                     .frame(height: 60)

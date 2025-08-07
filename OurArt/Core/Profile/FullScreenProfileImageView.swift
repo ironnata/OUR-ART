@@ -26,7 +26,7 @@ struct FullScreenProfileImageView: View {
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-                .frame(width: 400, height: 400)
+                .frame(width: 350, height: 350)
                 .zoomable(isZoomed: $isZoomed)
                 .onTapGesture {
                     withAnimation(.smooth) {
