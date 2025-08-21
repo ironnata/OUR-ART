@@ -13,6 +13,7 @@ struct AddExhibitionFirstView: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     
     @Binding var showAddingView: Bool
+    @Binding var isUploaded: Bool
 
     @State private var showSecondView = false
     @State private var title: String = ""
@@ -54,7 +55,8 @@ struct AddExhibitionFirstView: View {
                         let newExhibition = Exhibition(
                             id: currentId,
                             dateCreated: Date(),
-                            title: title
+                            title: title,
+                            uploadStatus: "draft"
                         )
                         
                         Task {
@@ -68,7 +70,7 @@ struct AddExhibitionFirstView: View {
                     }
                     .modifier(CommonButtonModifier())
                     .navigationDestination(isPresented: $showSecondView) {
-                        AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId)
+                        AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId, isUploaded: $isUploaded)
                             .navigationBarBackButtonHidden(true)
                     }
                 }
@@ -97,5 +99,5 @@ struct AddExhibitionFirstView: View {
 }
 
 #Preview {
-    AddExhibitionFirstView(showAddingView: .constant(false))
+    AddExhibitionFirstView(showAddingView: .constant(false), isUploaded: .constant(false))
 }

@@ -35,9 +35,13 @@ struct ListScreen: View {
         isRefreshing = true
         
         try? await Task.sleep(for: .seconds(0.8))
-        try? await viewModel.filterSelected(option: viewModel.selectedFilter ?? .noFilter)
+        try? await viewModel.filterSelected(option: viewModel.selectedFilter ?? .newest)
         
         isRefreshing = false
+    }
+    
+    private var topTargetId: String? {
+        viewModel.ongoingOrUpcoming.first?.id ?? viewModel.past.first?.id
     }
     
     var body: some View {
@@ -46,32 +50,49 @@ struct ListScreen: View {
                 ScrollViewReader { proxy in
                     ZStack {
                         List {
-                            ForEach(filterExhibitions()) { exhibition in
-                                ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
-                                    .environmentObject(viewModel)
+//                            ForEach(filterExhibitions()) { exhibition in
+//                                ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+//                                    .environmentObject(viewModel)
+//                            }
+//                            .sectionBackground()
+//                            .redacted(reason: isLoading ? .placeholder : [])
+//                            .onFirstAppear {
+//                                isLoading = true
+//                                
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                    isLoading = false
+//                                }
+//                            }
+                            
+                            Section {
+                                ForEach(viewModel.ongoingOrUpcoming) { exhibition in
+                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                        .environmentObject(viewModel)
+                                }
+                            } header: {
+                                Text("Ongoing / Upcoming")
+                                    .font(.objectivityCallout)
                             }
                             .sectionBackground()
-                            .redacted(reason: isLoading ? .placeholder : [])
-                            .onFirstAppear {
-                                isLoading = true
-                                
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                    isLoading = false
+                            
+                            Section {
+                                ForEach(viewModel.past) { exhibition in
+                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                        .environmentObject(viewModel)
                                 }
+                            } header: {
+                                Text("Past")
+                                    .font(.objectivityCallout)
                             }
+                            .sectionBackground()
                         }
                         .refreshable {
                             await refreshData()
                         }
-                        .onChange(of: shouldScrollToTop) { oldValue, newValue in
-                            if newValue {
-                                withAnimation {
-                                    if let firstId = filterExhibitions().first?.id {
-                                        proxy.scrollTo(firstId, anchor: .top)
-                                    }
-                                }
-                                shouldScrollToTop = false
-                            }
+                        .onChange(of: shouldScrollToTop) { _, newValue in
+                            guard newValue, let id = topTargetId else { return }
+                            withAnimation { proxy.scrollTo(id, anchor: .top) }
+                            shouldScrollToTop = false
                         }
                         .toolbarBackground()
                         .listStyle(.plain)
@@ -99,7 +120,7 @@ struct ListScreen: View {
             
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
-                    ForEach(ExhibitionViewModel.FilterOption.allCases, id: \.self) { option in
+                    ForEach(ExhibitionViewModel.SortOption.allCases, id: \.self) { option in
                         Button {
                             Task {
                                 try? await viewModel.filterSelected(option: option)
@@ -110,7 +131,7 @@ struct ListScreen: View {
                         }
                     }
                 } label: {
-                    Image(systemName: viewModel.selectedFilter?.icon ?? "line.3.horizontal.decrease.circle")
+                    Image(systemName: viewModel.selectedFilter?.icon ?? "arrow.down.to.line")
                 }
             }
             

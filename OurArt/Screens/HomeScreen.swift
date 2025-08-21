@@ -20,6 +20,9 @@ struct HomeScreen: View {
     @State private var rotation: Double = 0
     @State private var animationAmount: CGFloat = 1
     
+    @State private var isUploaded = false
+    @State private var successUploadBanner = false
+    
     var body: some View {
         ZStack {
             HStack {
@@ -61,9 +64,23 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
                 .font(.objectivityTitle2)
             }
             .padding()
-            .fullScreenCover(isPresented: $showAddingView) {
+            .fullScreenCover(isPresented: $showAddingView, onDismiss: {
+                if isUploaded {
+                    withAnimation(.spring(response: 0.3)) {
+                        successUploadBanner = true
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        withAnimation(.spring(response: 0.3)) {
+                            isUploaded = false
+                            successUploadBanner = false
+                            
+                        }
+                    }
+                }
+            }) {
                 NavigationView {
-                    AddExhibitionFirstView(showAddingView: $showAddingView)
+                    AddExhibitionFirstView(showAddingView: $showAddingView, isUploaded: $isUploaded)
                         .onDisappear {
                             Task {
                                 try? await profileVM.loadCurrentUser()
@@ -116,6 +133,14 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
             }
             .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
                 shuffledExhibitions = newExhibitions.shuffled()
+            }
+            
+            if successUploadBanner {
+                VStack {
+                    BannerMessage(text: "Your dot is live!")
+                    Spacer()
+                }
+                .padding(.top, 100)
             }
         }
         .viewBackground()

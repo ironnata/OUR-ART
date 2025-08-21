@@ -18,6 +18,7 @@ struct AddExhibitionSecondView: View {
     
     @Binding var title: String
     @Binding var currentId: String
+    @Binding var isUploaded: Bool
     
     @State private var artist: String = ""
     @State private var description: String = ""
@@ -31,14 +32,14 @@ struct AddExhibitionSecondView: View {
     
     @State private var showSearchView = false
     @State private var selectedAddress = ""
-    @State private var selectedCity = ""
+    @State private var selectedCity = "Unknown"
     
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
     
     @State private var showDeleteAlert = false
     
-    let closingDaysOptions = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
+    let closingDaysOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
     @State private var selectedClosingDays: Set<String> = []
     
     private func selectedClosingDays(text: String) -> Bool {
@@ -54,12 +55,7 @@ struct AddExhibitionSecondView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         if let exhibition = viewModel.exhibition {
-//                            Text("Exhibition ID: \(exhibition.id)") // TEST용
-//                            
-//                            Text("Title: \(exhibition.title ?? "")") // TEST용
-                            
-                            VStack(alignment: .leading) {
-                                Text("Poster")
+                            SectionCard(title: "Poster", icon: "photo.stack") {
                                 VStack {
                                     if let urlString = exhibition.posterImagePathUrl, let url = URL(string: urlString) {
                                         AsyncImage(url: url) { image in
@@ -85,7 +81,6 @@ struct AddExhibitionSecondView: View {
                                             showImageEditView.toggle()
                                         }
                                     } label: {
-                                        // if 추가해서 사진 선택 상태에선 Edit 레이블 표시
                                         if exhibition.posterImagePathUrl != nil {
                                             Text("EDIT")
                                         } else {
@@ -121,65 +116,38 @@ struct AddExhibitionSecondView: View {
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)
                             } // POSTER
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            
-                            VStack(alignment: .leading) {
-                                Text("Artist")
+                            SectionCard(title: "Artist", icon: "person") {
                                 TextField("Artist", text: $artist)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($artist)
                             } // ARTIST
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            VStack(alignment: .leading) {
-                                Text("Date")
+                            SectionCard(title: "Date", icon: "calendar") {
                                 HStack(alignment: .center) {
-//                                    Spacer()
+                                    Spacer()
                                     DatePicker("", selection: $selectedFromDate, displayedComponents: .date)
                                     Text("to")
                                     DatePicker("", selection: $selectedToDate, in: selectedFromDate... ,displayedComponents: .date)
-//                                    Spacer()
+                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
                             } // DATE
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            VStack(alignment: .leading) {
-                                Text("Address")
-                                
-                                TextField("Search for places", text: $selectedAddress)
-                                    .modifier(TextFieldModifier())
-                                    .disabled(true)
-                                    .onTapGesture {
-                                        showSearchView = true
-                                    }
-                                    .showClearButton($selectedAddress)
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: 500, alignment: .leading)
-                            .sheet(isPresented: $showSearchView) {
-                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
-                                    .presentationDetents([.large])
-                                    .interactiveDismissDisabled(true)
-                            } // ADDRESS
-                            
-                            VStack(alignment: .leading) {
-                                Text("Opening Hours")
+                            SectionCard(title: "Opening Hours", icon: "clock") {
                                 HStack(alignment: .center, spacing: 20) {
-//                                    Spacer()
+                                    Spacer()
                                     DatePicker("", selection: $selectedFromTime, displayedComponents: .hourAndMinute)
                                     Text("-")
                                     DatePicker("", selection: $selectedToTime, in: selectedFromTime... , displayedComponents: .hourAndMinute)
-//                                    Spacer()
+                                    Spacer()
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
                             } // OPENING HOURS
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            VStack(alignment: .leading) {
-                                Text("Closed on")
+                            SectionCard(title: "Closed on", icon: "xmark.circle") {
                                 HStack {
                                     ForEach(closingDaysOptions, id: \.self) { day in
                                         Button(day) {
@@ -196,31 +164,54 @@ struct AddExhibitionSecondView: View {
                                     }
                                 }
                             } // CLOSED ON
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             
-                            VStack(alignment: .leading) {
-                                Text("Description")
-                                TextField("Describe", text: $description, axis: .vertical)
+                            SectionCard(title: "Address", icon: "location") {
+                                TextField("Search location", text: $selectedAddress)
+                                    .modifier(TextFieldModifier())
+                                    .disabled(true)
+                                    .onTapGesture {
+                                        showSearchView = true
+                                    }
+                                    .showClearButton($selectedAddress)
+                            } // ADDRESS
+                            .sheet(isPresented: $showSearchView) {
+                                AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
+                                    .presentationDetents([.large])
+                                    .interactiveDismissDisabled(true)
+                            }
+                            
+                            SectionCard(title: "Description", icon: "text.justify.leading") {
+                                TextField("Description", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
-                                    .lineLimit(3...10)
                                     .lineSpacing(10)
+                                    .lineLimit(5...15)
                             } // DESCRIPTION
-                            .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 30)
                             
                             Button("Done") {
                                 
                                 Task {
-                                    try? await viewModel.addArtist(text: artist)
+                                    if artist.isEmpty {
+                                        try? await viewModel.addArtist(text: "Unknown")
+                                    } else {
+                                        try? await viewModel.addArtist(text: artist)
+                                    }
+                                    try? await viewModel.updateUploadStatus(text: "completed")
                                     try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
-                                    try? await viewModel.addAddress(text: selectedAddress)
-                                    try? await viewModel.addCity(text: selectedCity)
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
+                                    if selectedAddress.isEmpty {
+                                        try? await viewModel.addAddress(text: "Not provided")
+                                    } else {
+                                        try? await viewModel.addAddress(text: selectedAddress)
+                                    }
+                                    try? await viewModel.addCity(text: selectedCity)
                                     try? await viewModel.addDescription(text: description)
                                     
                                     viewModel.addUserMyExhibition(exhibitionId: exhibition.id)
                                     
+                                    isUploaded = true
                                     showAddingView = false
+                                    
                                 }
                             }
                             .modifier(CommonButtonModifier())
@@ -243,7 +234,7 @@ struct AddExhibitionSecondView: View {
                                 }
                                 .alert(isPresented: $showDeleteAlert) {
                                     Alert(
-                                        title: Text("Your dot’s still in progress. Leave without saving?"),
+                                        title: Text("Your dot's still in progress. Leave without saving?"),
                                         primaryButton: .default(Text("OK")) {
                                             Task {
                                                 try? await viewModel.deleteAllPosterImages()
@@ -286,5 +277,5 @@ struct AddExhibitionSecondView: View {
 }
 
 #Preview {
-    AddExhibitionSecondView(showAddingView: .constant(false), title: .constant(""), currentId: .constant(""))
+    AddExhibitionSecondView(showAddingView: .constant(false), title: .constant(""), currentId: .constant(""), isUploaded: .constant(false))
 }

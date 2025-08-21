@@ -39,6 +39,7 @@ struct MainScreen: View {
             
             CustomTabBar()
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
     
     @ViewBuilder

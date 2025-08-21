@@ -37,26 +37,48 @@ struct MyExhibitionsView: View {
     var body: some View {
         ZStack {
             List {
-                ForEach(myExhibitionVM.userMyExhibitions, id: \.id.self) { item in
-                    ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
-                        .environmentObject(exhibitionVM)
-//                        .contextMenu(menuItems: {
-//                            Button("Add to Favorites") {
-                                // Favorite func 만들어서 변경
-                                // viewModel.addFavoriteExhitions
-//                                print("Added to Favorites")
-//                            }
-//                        })
-                }
-                .id("exhibitions-\(refreshCount)")
-                .sectionBackground()
-                .redacted(reason: isLoading ? .placeholder : [])
-                .onFirstAppear {
-                    isLoading = true
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        isLoading = false
+                
+//                ForEach(myExhibitionVM.userMyExhibitions, id: \.id.self) { item in
+//                    ExhibitionCellViewBuilder(exhibitionId: item.exhibitionId, myExhibitionId: item.id)
+//                        .environmentObject(exhibitionVM)
+////                        .contextMenu(menuItems: {
+////                            Button("Add to Favorites") {
+//                                // Favorite func 만들어서 변경
+//                                // viewModel.addFavoriteExhitions
+////                                print("Added to Favorites")
+////                            }
+////                        })
+//                }
+                Section {
+                    ForEach(myExhibitionVM.myOngoingOrUpcoming) { exhibition in
+                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: myExhibitionVM.userMyExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
+                            .environmentObject(exhibitionVM)
                     }
+                } header: {
+                    Text("Ongoing / Upcoming")
+                        .font(.objectivityCallout)
+                }
+                .sectionBackground()
+                
+                Section {
+                    ForEach(myExhibitionVM.myPast) { exhibition in
+                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: myExhibitionVM.userMyExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
+                            .environmentObject(exhibitionVM)
+                    }
+                } header: {
+                    Text("Past")
+                        .font(.objectivityCallout)
+                }
+                .sectionBackground()
+                
+            }
+            .id("exhibitions-\(refreshCount)")
+            .redacted(reason: isLoading ? .placeholder : [])
+            .onFirstAppear {
+                isLoading = true
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    isLoading = false
                 }
             }
             .refreshable {
@@ -70,6 +92,10 @@ struct MyExhibitionsView: View {
         .onAppear {
             myExhibitionVM.addListenerForMyExhibitions()
             exhibitionVM.addListenerForAllExhibitions()
+            myExhibitionVM.updateSections(with: exhibitionVM.exhibitions)
+        }
+        .onChange(of: exhibitionVM.exhibitions) { _, newValue in
+            myExhibitionVM.updateSections(with: newValue)
         }
         .onDisappear {
             myExhibitionVM.removeListenerForMyExhibitions()

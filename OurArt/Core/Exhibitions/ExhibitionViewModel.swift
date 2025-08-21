@@ -16,20 +16,23 @@ final class ExhibitionViewModel: ObservableObject {
     
     @Published private(set) var exhibitions: [Exhibition] = []
     @Published private(set) var exhibition: Exhibition?
-    @Published var selectedFilter: FilterOption? = nil
+    @Published private(set) var ongoingOrUpcoming: [Exhibition] = []
+    @Published private(set) var past: [Exhibition] = []
+    
+    @Published var selectedFilter: SortOption? = nil
+    
     private var lastDocument: DocumentSnapshot? = nil
+    
 //    @Published var selectedCategory: CategoryOption? = nil // CATEGORY 추가 시 사용
     
     private var cancellables = Set<AnyCancellable>()
     
-    enum FilterOption: String, CaseIterable {
-        case noFilter = "Default"
+    enum SortOption: String, CaseIterable {
         case newest = "Newest"
         case oldest = "Oldest"
         
         var dateDescending: Bool? {
             switch self {
-            case .noFilter: return nil
             case .newest: return true
             case .oldest: return false
             }
@@ -37,14 +40,13 @@ final class ExhibitionViewModel: ObservableObject {
         
         var icon: String? {
             switch self {
-            case .noFilter: return "line.3.horizontal.decrease.circle"
             case .newest: return "arrow.down.to.line"
             case .oldest: return "arrow.up.to.line"
             }
         }
     }
     
-    func filterSelected(option: FilterOption) async throws {
+    func filterSelected(option: SortOption) async throws {
         self.selectedFilter = option
         self.exhibitions = []
         self.lastDocument = nil
@@ -58,6 +60,32 @@ final class ExhibitionViewModel: ObservableObject {
 //        case .oldest:
 //            self.exhibitions = try await ExhibitionManager.shared.getAllExhibitionsSortedByDate(descending: false)
 //        }
+    }
+    
+    private func applyPartitionAndSort() {
+        let today = Calendar.current.startOfDay(for: Date())
+        let descending = selectedFilter?.dateDescending ?? true // newest=true, oldest=false, noFilter=nil
+
+        // 파티션
+        let ongoing = exhibitions.filter { exhibition in
+            guard let to = exhibition.dateTo else { return true } // dateTo 없으면 진행/예정
+            return to >= today
+        }
+        let pastOnes = exhibitions.filter { exhibition in
+            guard let to = exhibition.dateTo else { return false }
+            return to < today
+        }
+
+        ongoingOrUpcoming = ongoing.sorted {
+            let l = $0.dateFrom ?? .distantFuture
+            let r = $1.dateFrom ?? .distantFuture
+            return descending ? l > r : l < r
+        }
+        past = pastOnes.sorted {
+            let l = $0.dateTo ?? .distantPast
+            let r = $1.dateTo ?? .distantPast
+            return descending ? l > r : l < r
+        }
     }
     
     // CATEGORY 추가 시 사용
@@ -95,12 +123,13 @@ final class ExhibitionViewModel: ObservableObject {
     // With Pagination
     func getExhibitions() {
         Task {
-            let (newExhibitions, lastDocument) = try await ExhibitionManager.shared.getExhibitions(dateDescending: selectedFilter?.dateDescending, count: 5, lastDocument: lastDocument)
+            let (newExhibitions, lastDocument) = try await ExhibitionManager.shared.getExhibitions(dateDescending: selectedFilter?.dateDescending ?? true, count: 5, lastDocument: lastDocument)
             
             self.exhibitions.append(contentsOf: newExhibitions)
             if let lastDocument {
                 self.lastDocument = lastDocument
             }
+            self.applyPartitionAndSort()
         }
     }
     
@@ -133,14 +162,12 @@ final class ExhibitionViewModel: ObservableObject {
 //    }
     
     func addListenerForAllExhibitions() {
-//        cancellables.removeAll()
-        
         ExhibitionManager.shared.addListenerForAllExhibitions()
-//            .receive(on: DispatchQueue.main)  
             .sink { completion in
                 
             } receiveValue: { [weak self] exhibitions in
                 self?.exhibitions = exhibitions
+                self?.applyPartitionAndSort()
             }
             .store(in: &cancellables)
     }
@@ -171,6 +198,15 @@ final class ExhibitionViewModel: ObservableObject {
         
         Task {
             try await ExhibitionManager.shared.addTitle(exhibitionId: exhibition.id, title: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
+    func updateUploadStatus(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.updateUploadStatus(exhibitionId: exhibition.id, uploadStatus: text)
             self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
         }
     }

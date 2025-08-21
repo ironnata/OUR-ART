@@ -71,9 +71,10 @@ struct AddressSearchView: View {
             if !isTextFieldFocused && !showList {
                 VStack {
                     Spacer()
-                    Image(systemName: "mappin.and.ellipse.circle.fill")
+                    Image(systemName: "smallcircle.filled.circle")
                         .font(.title2)
                         .foregroundColor(.accent)
+                        .symbolEffect(.pulse)
                     Spacer()
                 }
             }
@@ -88,7 +89,7 @@ struct AddressSearchView: View {
                     }
                     
                     ZStack {
-                        TextField("Search for an address", text: $viewModel.queryFragment)
+                        TextField("Search location", text: $viewModel.queryFragment)
                             .autocorrectionDisabled()
                             .modifier(TextFieldModifier())
                             .showClearButton($viewModel.queryFragment)
@@ -189,7 +190,7 @@ struct AddressSearchView: View {
                     .frame(height: 150)
                 HStack {
                     Spacer()
-                    if abs(mapRotation) > 0.1 { // 회전 각도가 0.1도 이상일 때만 표시
+                    if abs(mapRotation) > 0.1 {
                         Button {
                             if let latitude = selectedLatitude, let longitude = selectedLongitude {
                                 let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)

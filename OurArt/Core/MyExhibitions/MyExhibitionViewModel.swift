@@ -13,9 +13,43 @@ final class MyExhibitionViewModel: ObservableObject {
     
     @Published private(set) var userMyExhibitions: [UserMyExhibition] = []
     @Published private(set) var myExhibition: UserMyExhibition?
+    @Published private(set) var myOngoingOrUpcoming: [Exhibition] = []
+    @Published private(set) var myPast: [Exhibition] = []
+    
     @Published var exhibition: Exhibition?
     
     private var cancellables = Set<AnyCancellable>()
+    
+    func updateSections(with exhibitions: [Exhibition]) {
+        // 내 my_exhibition → exhibitionId 집합
+        let myIds = Set(userMyExhibitions.map { $0.exhibitionId })
+
+        // 내가 가진 전시만 추출
+        let mine = exhibitions.filter { myIds.contains($0.id) }
+
+        let today = Calendar.current.startOfDay(for: Date())
+
+        // 파티션
+        let ongoing = mine.filter { exhibition in
+            guard let to = exhibition.dateTo else { return true }
+            return to >= today
+        }
+        let pastOnes = mine.filter { exhibition in
+            guard let to = exhibition.dateTo else { return false }
+            return to < today
+        }
+
+        // 정렬: Newest 고정
+        let ongoingSorted = ongoing.sorted {
+            ($0.dateFrom ?? .distantFuture) > ($1.dateFrom ?? .distantFuture)
+        }
+        let pastSorted = pastOnes.sorted {
+            ($0.dateTo ?? .distantPast) > ($1.dateTo ?? .distantPast)
+        }
+
+        self.myOngoingOrUpcoming = ongoingSorted
+        self.myPast = pastSorted
+    }
     
     func addListenerForMyExhibitions() {
         guard let authDataResult = try? AuthenticationManager.shared.getAuthenticatedUser() else { return }
@@ -70,7 +104,7 @@ final class MyExhibitionViewModel: ObservableObject {
 //        }
 //    }
     
-    func deleteMyExhibition(myExhibitionId: String) {
+    func deleteMyExhibition(myExhibitionId: String) async throws {
         guard let myExhibition else { return }
         
         Task {

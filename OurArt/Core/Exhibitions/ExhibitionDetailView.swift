@@ -35,13 +35,11 @@ struct ExhibitionDetailView: View {
             }
         }
         
-        // 모든 경우에 전시회 데이터 로드
         Task {
             do {
                 try await exhibitionVM.loadCurrentExhibition(id: exhibitionId)
                 isLoading = false
                 
-                // 주소가 있으면 지도 표시
                 if let address = exhibitionVM.exhibition?.address {
                     mapVM.showAddress(for: address)
                 }
@@ -52,9 +50,9 @@ struct ExhibitionDetailView: View {
         }
     }
     
-    private func handleDelete() {
+    private func handleDelete() async throws {
         if let myExhibitionId = myExhibitionId {
-            myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
+            try await myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
             dismiss()
         }
     }
@@ -66,9 +64,6 @@ struct ExhibitionDetailView: View {
                     .navigationBarBackButtonHidden()
             } else if let exhibition = exhibitionVM.exhibition {
                 ScrollView {
-                    // TEST용
-                    // Text(exhibitionId)
-                    
                     AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                         image
                             .resizable()
@@ -82,18 +77,18 @@ struct ExhibitionDetailView: View {
                                 }
                             }
                     } placeholder: {
-                        Text("No Poster")
+                        Text("No Poster") // 뭔가 플레이스홀더를 만들어볼까? 흠........ //
                             .frame(width: 240, height: 240, alignment: .center)
                             .font(.objectivityTitle2)
                     }
                     .padding(.vertical, 30)
                     
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(exhibition.title ?? "n/a")
+                        Text(exhibition.title ?? "")
                             .font(.objectivityTitle)
                             .padding(.bottom, 20)
                         
-                        InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "No information")
+                        InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "Unknown")
                         
                         if let dateFrom = exhibition.dateFrom,
                            let dateTo = exhibition.dateTo {
@@ -114,9 +109,9 @@ struct ExhibitionDetailView: View {
                             InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
                         }
                         
-                        InfoDetailView(icon: "eye.slash.circle", text: exhibition.closingDays ?? ["No information"])
+                        InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Not provided"])
                         
-                        InfoDetailView(icon: "mappin.and.ellipse.circle", text: exhibition.address ?? "No information")
+                        InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Not provided")
                             .lineSpacing(9)
                             .onLongPressGesture {
                                 UIPasteboard.general.string = exhibition.address ?? ""
@@ -144,7 +139,7 @@ struct ExhibitionDetailView: View {
                             
                             Map(position: .constant(.region(region))) {
                                 Annotation("", coordinate: coordinate, anchor: .bottom) {
-                                    Image(systemName: "mappin.and.ellipse.circle.fill")
+                                    Image(systemName: "smallcircle.filled.circle")
                                         .font(.title2)
                                         .foregroundStyle(Color.accent)
                                         .symbolEffect(.pulse)
@@ -197,7 +192,9 @@ struct ExhibitionDetailView: View {
                 }
                 .alert("", isPresented: $showDeleteAlert) {
                     Button("Delete", role: .destructive) {
-                        handleDelete()
+                        Task {
+                            try await handleDelete()
+                        }
                     }
                 } message: {
                     Text("Deleting this dot is permanent. Wanna go ahead?")
@@ -207,8 +204,7 @@ struct ExhibitionDetailView: View {
                         if let myExhibitionId {
                             myExhibitionVM.loadMyExhibition(myExhibitionId: myExhibitionId)
                         }
-                        
-                        // 편집 후 데이터 다시 로드
+
                         Task {
                             try await exhibitionVM.loadCurrentExhibition(id: exhibitionId)
                         }

@@ -15,6 +15,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
     var id: String
     let dateCreated: Date?
     let title: String?
+    let uploadStatus: String?
     let artist: String?
     let description: String?
     let dateFrom: Date?
@@ -32,6 +33,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         id: String,
         dateCreated: Date? = nil,
         title: String? = nil,
+        uploadStatus: String? = nil,
         artist: String? = nil,
         description: String? = nil,
         dateFrom: Date? = nil,
@@ -48,6 +50,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.id = id
         self.dateCreated = dateCreated
         self.title = title
+        self.uploadStatus = uploadStatus
         self.artist = artist
         self.description = description
         self.dateFrom = dateFrom
@@ -66,6 +69,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         case id = "id"
         case dateCreated = "date_created"
         case title = "title"
+        case uploadStatus = "upload_status"
         case artist = "artist"
         case description = "description"
         case dateFrom = "date_from"
@@ -89,6 +93,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.id = try container.decode(String.self, forKey: .id)
         self.dateCreated = try container.decodeIfPresent(Date.self, forKey: .dateCreated)
         self.title = try container.decodeIfPresent(String.self, forKey: .title)
+        self.uploadStatus = try container.decodeIfPresent(String.self, forKey: .uploadStatus)
         self.artist = try container.decodeIfPresent(String.self, forKey: .artist)
         self.description = try container.decodeIfPresent(String.self, forKey: .description)
         self.dateFrom = try container.decodeIfPresent(Date.self, forKey: .dateFrom)
@@ -108,6 +113,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         try container.encode(self.id, forKey: .id)
         try container.encodeIfPresent(self.dateCreated, forKey: .dateCreated)
         try container.encodeIfPresent(self.title, forKey: .title)
+        try container.encodeIfPresent(self.uploadStatus, forKey: .uploadStatus)
         try container.encodeIfPresent(self.artist, forKey: .artist)
         try container.encodeIfPresent(self.description, forKey: .description)
         try container.encodeIfPresent(self.dateFrom, forKey: .dateFrom)
@@ -172,6 +178,7 @@ final class ExhibitionManager {
     
     func getExhibitions(dateDescending descending: Bool?, count: Int, lastDocument: DocumentSnapshot?) async throws -> (exhibitions: [Exhibition], lastDocument: DocumentSnapshot?) {
         var query: Query = getAllExhibitionsQuery()
+            .whereField("uploadStatus", isEqualTo: "completed")
         
         if let descending {
             query = getAllExhibitionsSortedByDateQuery(descending: descending)
@@ -295,6 +302,15 @@ final class ExhibitionManager {
     }
     
     
+    func updateUploadStatus(exhibitionId: String, uploadStatus: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.uploadStatus.rawValue : uploadStatus
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+    }
+    
+    
     func updateUserPosterImagePath(exhibitionId: String, path: String?, url: String?) async throws {
         let data: [String:Any] = [
             Exhibition.CodingKeys.posterImagePath.rawValue : path as Any,
@@ -318,7 +334,10 @@ final class ExhibitionManager {
     }
     
     func addListenerForAllExhibitions() -> AnyPublisher<[Exhibition], Error> {
-        let (publisher, listener) = exhibitionsCollection
+        let q: Query = exhibitionsCollection
+            .whereField(Exhibition.CodingKeys.uploadStatus.rawValue, isEqualTo: "completed")
+        
+        let (publisher, listener) = q
             .addSnapshotListener(as: Exhibition.self)
         
         self.exhibitionsListener = listener
