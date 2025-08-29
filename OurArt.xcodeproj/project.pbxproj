@@ -100,6 +100,8 @@
 		CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */; };
 		CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7A92AE1BA9200150F87 /* ProfileView.swift */; };
 		CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDED7AB2AE1BF7300150F87 /* UserManager.swift */; };
+		CDE4A6632E61BE60005B8699 /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE4A6622E61BE60005B8699 /* PrivacyPolicyView.swift */; };
+		CDE4A6652E61D582005B8699 /* TermsofUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDE4A6642E61D582005B8699 /* TermsofUseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,6 +171,8 @@
 		CDDED7A32AE1B93C00150F87 /* SignInEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInEmailViewModel.swift; sourceTree = "<group>"; };
 		CDDED7A92AE1BA9200150F87 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		CDDED7AB2AE1BF7300150F87 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		CDE4A6622E61BE60005B8699 /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		CDE4A6642E61D582005B8699 /* TermsofUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsofUseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -442,6 +446,8 @@
 				CD0741322E252533007D8DDE /* MailView.swift */,
 				CDDED79F2AE1B8A100150F87 /* SettignsViewModel.swift */,
 				CD65D6472E099B3900C512F2 /* AboutDotView.swift */,
+				CDE4A6622E61BE60005B8699 /* PrivacyPolicyView.swift */,
+				CDE4A6642E61D582005B8699 /* TermsofUseView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -657,11 +663,13 @@
 				CD9316882AD8191E004F2868 /* AuthenticationView.swift in Sources */,
 				CDDED7AA2AE1BA9200150F87 /* ProfileView.swift in Sources */,
 				CD93169A2AD974F2004F2868 /* Modifiers.swift in Sources */,
+				CDE4A6632E61BE60005B8699 /* PrivacyPolicyView.swift in Sources */,
 				CD9316802AD812AC004F2868 /* HomeScreen.swift in Sources */,
 				CD77E80C2C7606F900AC4D26 /* ExhibitionImageEditView.swift in Sources */,
 				CD93168E2AD8300F004F2868 /* RootView.swift in Sources */,
 				CD54076B2CB4351500EA1F63 /* AddressSearchView.swift in Sources */,
 				CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */,
+				CDE4A6652E61D582005B8699 /* TermsofUseView.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */,
 				CD0D63D62C7A148D0003374E /* Tab.swift in Sources */,

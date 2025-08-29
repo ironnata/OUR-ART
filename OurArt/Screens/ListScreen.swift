@@ -15,6 +15,8 @@ struct ListScreen: View {
     @State var isLoading: Bool = false
     @State private var isRefreshing = false
     
+    @State private var showPastSection = false
+    
     @Binding var shouldScrollToTop: Bool
     
     func filterExhibitions() -> [Exhibition] {
@@ -71,20 +73,24 @@ struct ListScreen: View {
                                 }
                             } header: {
                                 Text("Ongoing / Upcoming")
-                                    .font(.objectivityCallout)
+                                    .sectionHeaderBackground()
                             }
                             .sectionBackground()
                             
-                            Section {
-                                ForEach(viewModel.past) { exhibition in
-                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
-                                        .environmentObject(viewModel)
+                            
+                            if showPastSection {
+                                Section {
+                                    ForEach(viewModel.past) { exhibition in
+                                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                            .environmentObject(viewModel)
+                                    }
+                                } header: {
+                                    Text("Past")
+                                        .sectionHeaderBackground()
                                 }
-                            } header: {
-                                Text("Past")
-                                    .font(.objectivityCallout)
+                                .sectionBackground()
+                                
                             }
-                            .sectionBackground()
                         }
                         .refreshable {
                             await refreshData()
@@ -119,6 +125,18 @@ struct ListScreen: View {
             }
             
             ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    showPastSection.toggle()
+                } label: {
+                    if showPastSection {
+                        Image(systemName: "archivebox.circle.fill")
+                    } else {
+                        Image(systemName: "archivebox.circle")
+                    }
+                }
+            }
+            
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     ForEach(ExhibitionViewModel.SortOption.allCases, id: \.self) { option in
                         Button {
@@ -131,7 +149,7 @@ struct ListScreen: View {
                         }
                     }
                 } label: {
-                    Image(systemName: viewModel.selectedFilter?.icon ?? "arrow.down.to.line")
+                    Image(systemName: viewModel.selectedFilter?.icon ?? "arrow.down.to.line.circle")
                 }
             }
             

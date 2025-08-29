@@ -40,8 +40,8 @@ final class ExhibitionViewModel: ObservableObject {
         
         var icon: String? {
             switch self {
-            case .newest: return "arrow.down.to.line"
-            case .oldest: return "arrow.up.to.line"
+            case .newest: return "arrow.down.to.line.circle"
+            case .oldest: return "arrow.up.to.line.circle"
             }
         }
     }

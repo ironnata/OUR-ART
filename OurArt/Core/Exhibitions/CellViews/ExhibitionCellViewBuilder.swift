@@ -18,11 +18,16 @@ struct ExhibitionCellViewBuilder: View {
     var body: some View {
         ZStack {
             if let exhibition = exhibition {
-                NavigationLink(destination: ExhibitionDetailView(
-                    myExhibitionId: myExhibitionId, 
-                    exhibitionId: exhibitionId, 
-                    isMyExhibition: myExhibitionId != nil
-                )) {
+                ZStack {
+                    NavigationLink(destination: ExhibitionDetailView(
+                        myExhibitionId: myExhibitionId,
+                        exhibitionId: exhibitionId,
+                        isMyExhibition: myExhibitionId != nil
+                    )) {
+                        EmptyView()
+                    }
+                    .opacity(0)
+                    
                     ExhibitionCellView(exhibition: exhibition)
                 }
             } else {

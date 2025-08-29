@@ -80,7 +80,6 @@ struct ExhibitionImageEditView: View {
                                 Text("Select Poster Image")
                             }
                         }
-                        .padding(.bottom, 30)
                         
                         if exhibition.posterImagePathUrl != nil {
                             Button(role: .destructive) {
@@ -91,6 +90,7 @@ struct ExhibitionImageEditView: View {
                                     Text("Delete Poster Image")
                                 }
                             }
+                            .padding(.top, 30)
                             .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
                                 Button("Delete", role: .destructive) {
                                     //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제

@@ -56,7 +56,7 @@ struct MyExhibitionsView: View {
                     }
                 } header: {
                     Text("Ongoing / Upcoming")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 .sectionBackground()
                 
@@ -67,7 +67,7 @@ struct MyExhibitionsView: View {
                     }
                 } header: {
                     Text("Past")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 .sectionBackground()
                 

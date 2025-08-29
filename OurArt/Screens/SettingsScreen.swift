@@ -52,15 +52,15 @@ struct SettingsScreen: View {
                     }
                 } header: {
                     Text("My Dots")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 .sectionBackground()
                 
                 ////// PW 변경인 부분이라 아마 안쓸듯 /////
-                if viewModel.authProviders.contains(.email) {
-                    emailSection
-                        .sectionBackground()
-                }
+//                if viewModel.authProviders.contains(.email) {
+//                    emailSection
+//                        .sectionBackground()
+//                }
                 
                 if viewModel.authUser?.isAnonymous == true {
                     anonymousSection
@@ -106,16 +106,38 @@ struct SettingsScreen: View {
                     }
                 } header: {
                     Text("App Info")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 .sectionBackground()
                 
                 Section {
-                    SettingsRow(icon: "lock.shield", label: "Privacy Policy")
-                    SettingsRow(icon: "text.page", label: "Terms of Use")
+                    ZStack {
+                        NavigationLink(destination: PrivacyPolicyView().navigationBarBackButtonHidden()) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            SettingsRow(icon: "lock.shield", label: "Privacy Policy")
+                            Spacer()
+                        }
+                    }
+                    
+                    ZStack {
+                        NavigationLink(destination: TermsofUseView().navigationBarBackButtonHidden()) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            SettingsRow(icon: "text.page", label: "Terms of Use")
+                            Spacer()
+                        }
+                    }
+                    
                 } header: {
                     Text("Legal")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 .sectionBackground()
                 
@@ -173,7 +195,7 @@ struct SettingsScreen: View {
                     .sectionBackground()
                 } header: {
                     Text("Exit & Erase")
-                        .font(.objectivityCallout)
+                        .sectionHeaderBackground()
                 }
                 
             }
@@ -321,7 +343,7 @@ extension SettingsScreen {
             
         } header: {
             Text("Continue with")
-                .font(.objectivityCallout)
+                .sectionHeaderBackground()
         }
     }
 }

@@ -109,9 +109,11 @@ struct AddExhibitionSecondView: View {
                                             }
                                         }
                                     }) {
+                                        let detents: Set<PresentationDetent> = (exhibition.posterImagePathUrl == nil) ? [.height(150)] : [.height(200)]
+                                        
                                         ExhibitionImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, exhibitionId: currentId)
                                             .presentationDragIndicator(.visible)
-                                            .presentationDetents([.height(200)])
+                                            .presentationDetents(detents)
                                     }
                                 }
                                 .frame(maxWidth: .infinity, alignment: .center)

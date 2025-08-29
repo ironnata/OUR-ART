@@ -119,6 +119,10 @@ extension View {
 
     }
     
+    func sectionHeaderBackground() -> some View {
+        modifier(SectionHeaderBackgroundColormodifier())
+    }
+    
     func onFirstAppear(perform: (() -> Void)?) -> some View {
         modifier(OnFirstAppearViewModifier(perform: perform))
     }

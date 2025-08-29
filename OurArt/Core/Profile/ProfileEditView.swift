@@ -96,6 +96,33 @@ struct ProfileEditView: View {
                                 .padding(.top, 10)
                             }
                             .padding(.bottom, 20)
+                            .sheet(isPresented: $showImageEditView, onDismiss: {
+                                if wasImageUpdated {
+                                    withAnimation(.spring(response: 0.3)) {
+                                        showUpdateMessage = true
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            showUpdateMessage = false
+                                            wasImageUpdated = false
+                                        }
+                                    }
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        Task {
+                                            try? await viewModel.loadCurrentUser()
+                                        }
+                                    }
+                                }
+                            }) {
+                                let detents: Set<PresentationDetent> = (user.profileImagePathUrl == nil) ? [.height(150)] : [.height(200)]
+                                
+                                ProfileImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, showSignInView: $showSignInView)
+                                    .presentationDetents(detents)
+                                    .presentationDragIndicator(.visible)
+                                    .presentationBackground(.thinMaterial)
+                            }
                             
                             Spacer()
                             
@@ -164,31 +191,6 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
-                .sheet(isPresented: $showImageEditView, onDismiss: {
-                    if wasImageUpdated {
-                        withAnimation(.spring(response: 0.3)) {
-                            showUpdateMessage = true
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                            withAnimation(.spring(response: 0.3)) {
-                                showUpdateMessage = false
-                                wasImageUpdated = false
-                            }
-                        }
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            Task {
-                                try? await viewModel.loadCurrentUser()
-                            }
-                        }
-                    }
-                }) {
-                    ProfileImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, showSignInView: $showSignInView)
-                        .presentationDetents([.height(200)])
-                        .presentationDragIndicator(.visible)
-                        .presentationBackground(.thinMaterial)
-                }
                 
                 if showUpdateMessage {
                     VStack {

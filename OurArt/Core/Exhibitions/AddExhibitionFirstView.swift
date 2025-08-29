@@ -18,7 +18,8 @@ struct AddExhibitionFirstView: View {
     @State private var showSecondView = false
     @State private var title: String = ""
     @State private var currentId: String = UUID().uuidString
-
+    
+    @FocusState private var isTitleFocused: Bool
     
     var body: some View {
         NavigationStack {
@@ -26,19 +27,23 @@ struct AddExhibitionFirstView: View {
                 VStack {
                     Spacer()
                     
-                    Image("DOT_AddExhibitionFirst")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 200)
-                        .clipShape(.rect(cornerRadius: 8, style: .continuous))
-                        .padding(.bottom, 10)
-                        .opacity(0.7)
+//                    Image("DOT_AddExhibitionFirst")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(maxHeight: 200)
+//                        .clipShape(.rect(cornerRadius: 8, style: .continuous))
+//                        .padding(.bottom, 10)
+//                        .opacity(0.7)
                     
-                    Spacer()
+//                    Text("SHOW US THE LOVE YOU’VE GOT")
+//                        
+//                    
+//                    Spacer()
                     
                     VStack(alignment: .leading, spacing: 10) {
                         TextField("Title", text: $title)
                             .modifier(TextFieldModifier())
+                            .focused($isTitleFocused)
                             .showClearButton($title)
                         Text("If the title is empty, it will be set to 'No title'")
                             .font(.objectivityFootnote)
@@ -90,10 +95,14 @@ struct AddExhibitionFirstView: View {
                             .font(.objectivityTitle)
                     }
                 }
-                .scrollDismissesKeyboard(.immediately)
                 .keyboardAware(minDistance: 32)
             }
             .viewBackground()
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                    isTitleFocused = true
+                }
+            }
         }
     }
 }

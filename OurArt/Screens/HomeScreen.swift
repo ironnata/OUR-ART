@@ -103,17 +103,26 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
                             .opacity(isRotating ? 0 : 1)
                         
                         Button {
-                            withAnimation(.easeInOut(duration: 0.8)) {
+                            withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
                                 isRotating = true
                                 rotation = 90
-                                self.animationAmount -= 0.3
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
-                                showAddingView.toggle()
-                                isRotating = false
-                                rotation = 0
-                                self.animationAmount = 1
+                                animationAmount -= 0.3
+                            } completion: {
+                                // 1) 시트를 먼저 띄움 (버튼이 아직 돌아오기 전)
+                                var tx = Transaction()
+                                tx.disablesAnimations = true
+                                withTransaction(tx) { showAddingView = true }
+
+                                // 2) 아주 짧게 텀을 두고 복귀 애니메이션 시작
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
+                                        isRotating = false
+                                        rotation = 0
+                                        animationAmount = 1
+                                    } completion: {
+                                        
+                                    }
+                                }
                             }
                         } label: {
                             Image(systemName: "plus.circle")

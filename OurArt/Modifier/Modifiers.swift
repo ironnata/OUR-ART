@@ -146,6 +146,17 @@ struct SmallProfileImageModifer: ViewModifier {
 
 // MARK: - ETC
 
+struct SectionHeaderBackgroundColormodifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.objectivityCallout)
+            .frame(maxWidth: .infinity, maxHeight: .infinity ,alignment: .leading)
+            .padding(.leading, 20)
+            .background(Color.background0)
+            .listRowInsets(EdgeInsets())
+    }
+}
+
 struct ToolbarBackButton: ToolbarContent {
     @Environment(\.dismiss) var dismiss
     
