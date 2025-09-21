@@ -194,7 +194,8 @@ struct SettingsScreen: View {
                     }
                     .sectionBackground()
                 } header: {
-                    Text("Exit & Erase")
+//                    Text("Exit & Erase")
+                    Color.clear
                         .sectionHeaderBackground()
                 }
                 
@@ -212,12 +213,13 @@ struct SettingsScreen: View {
             .viewBackground()
         }
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
+            CompatibleToolbarItem(placement: .topBarLeading) {
                 Text("Settings")
                     .font(.objectivityTitle)
+                    .frame(width: 150, alignment: .leading)
             }
             
-            ToolbarItem(placement: .topBarTrailing) {
+            CompatibleToolbarItem(placement: .topBarTrailing) {
                 HStack {
                     Text(version)
                         .font(.objectivityCaption)

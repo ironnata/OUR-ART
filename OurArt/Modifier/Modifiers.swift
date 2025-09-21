@@ -161,12 +161,35 @@ struct ToolbarBackButton: ToolbarContent {
     @Environment(\.dismiss) var dismiss
     
     var body: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
+        CompatibleToolbarItem(placement: .topBarLeading) {
             Button {
                 dismiss()
             } label: {
                 Image(systemName: "chevron.left")
                     .imageScale(.large)
+            }
+        }
+    }
+}
+
+struct CompatibleToolbarItem<Content: View>: ToolbarContent {
+    let placement: ToolbarItemPlacement
+    let content: Content
+    
+    init(placement: ToolbarItemPlacement, @ViewBuilder content: () -> Content) {
+        self.placement = placement
+        self.content = content()
+    }
+    
+    var body: some ToolbarContent {
+        ToolbarItem(placement: placement) {
+            content
+        }
+        .apply { item in
+            if #available(iOS 26.0, *) {
+                item.sharedBackgroundVisibility(.hidden)
+            } else {
+                item
             }
         }
     }

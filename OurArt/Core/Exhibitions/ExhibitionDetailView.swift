@@ -167,7 +167,7 @@ struct ExhibitionDetailView: View {
                     ToolbarBackButton()
                     
                     if isMyExhibition {
-                        ToolbarItem(placement: .topBarTrailing) {
+                        CompatibleToolbarItem(placement: .topBarTrailing) {
                             Menu {
                                 Button(action: {
                                     showEditView = true

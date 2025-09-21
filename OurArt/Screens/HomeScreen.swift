@@ -89,7 +89,7 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
                 }
             }
             .toolbar(content: {
-                ToolbarItem(placement: .topBarLeading) {
+                CompatibleToolbarItem(placement: .topBarLeading) {
                     self.logoImageHome()
                 }
             })

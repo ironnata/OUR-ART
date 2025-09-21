@@ -18,6 +18,7 @@ class MapViewModel: ObservableObject {
             if let coordinate = placemarks?.first?.location?.coordinate {
                 DispatchQueue.main.async {
                     self?.coordinate = coordinate
+                    print(coordinate)
                 }
             } else if let error = error {
                 print("Geocoding error: \(error)")

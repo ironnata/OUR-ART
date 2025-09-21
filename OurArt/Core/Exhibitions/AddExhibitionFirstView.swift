@@ -81,7 +81,7 @@ struct AddExhibitionFirstView: View {
                 }
                 .padding()
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
+                    CompatibleToolbarItem(placement: .topBarTrailing) {
                         Button {
                             dismiss()   
                         } label: {
@@ -90,7 +90,7 @@ struct AddExhibitionFirstView: View {
                         }
                     }
                     
-                    ToolbarItem(placement: .topBarLeading) {
+                    CompatibleToolbarItem(placement: .topBarLeading) {
                         Text("New Exhibition")
                             .font(.objectivityTitle)
                     }

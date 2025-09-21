@@ -39,7 +39,7 @@ struct AddExhibitionSecondView: View {
     
     @State private var showDeleteAlert = false
     
-    let closingDaysOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    let closingDaysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
     private func selectedClosingDays(text: String) -> Bool {
@@ -224,7 +224,7 @@ struct AddExhibitionSecondView: View {
                     .ignoresSafeArea()
                     .padding()
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
+                        CompatibleToolbarItem(placement: .topBarTrailing) {
                             Image(systemName: "xmark")
                                 .imageScale(.large)
                                 .onTapGesture {
@@ -249,7 +249,7 @@ struct AddExhibitionSecondView: View {
                                 }
                         }
                         
-                        ToolbarItem(placement: .topBarLeading) {
+                        CompatibleToolbarItem(placement: .topBarLeading) {
                             Button {
                                 Task {
                                     try? await viewModel.deleteAllPosterImages()

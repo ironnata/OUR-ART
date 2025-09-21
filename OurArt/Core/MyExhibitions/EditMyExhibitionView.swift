@@ -33,7 +33,7 @@ struct EditMyExhibitionView: View {
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
     
-    let closingDaysOptions = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    let closingDaysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
     private func selectedClosingDays(text: String) -> Bool {

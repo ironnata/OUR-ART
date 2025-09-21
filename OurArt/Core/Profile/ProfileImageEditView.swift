@@ -66,6 +66,7 @@ struct ProfileImageEditView: View {
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
+                                .font(.title3)
                         }
                     }
                     

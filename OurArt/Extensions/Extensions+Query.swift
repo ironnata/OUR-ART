@@ -80,7 +80,7 @@ extension Font {
     
     static let objectivityFootnote = Font.custom("Objectivity-Regular", size: 13)
     
-    static let objectivityCaption = Font.custom("Objectivity-Bold", size: 7)
+    static let objectivityCaption = Font.custom("Objectivity-Bold", size: 8)
     
 }
 
@@ -116,7 +116,6 @@ extension View {
     
     func toolbarBackground() -> some View {
         self.toolbarBackground(.background0, for: .tabBar, .automatic)
-
     }
     
     func sectionHeaderBackground() -> some View {
@@ -183,5 +182,11 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return viewControllers.count > 1
+    }
+}
+
+extension ToolbarItem {
+    func apply<Content: ToolbarContent>(@ToolbarContentBuilder _ transform: (Self) -> Content) -> Content {
+        transform(self)
     }
 }

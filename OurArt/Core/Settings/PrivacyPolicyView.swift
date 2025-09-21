@@ -88,7 +88,6 @@ struct PrivacyPolicyView: View {
                     Text(text)
                         .font(.objectivityFootnote)
                         .padding()
-                        .padding(.top, -50)
                         .textSelection(.enabled)
                         .lineSpacing(10)
                 }

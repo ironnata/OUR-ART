@@ -21,10 +21,10 @@ struct ListScreen: View {
     
     func filterExhibitions() -> [Exhibition] {
         guard !searchText.isEmpty else {
-            return viewModel.exhibitions
+            return viewModel.ongoingOrUpcoming + viewModel.past
         }
         
-        return viewModel.exhibitions.filter { exhibition in
+        return (viewModel.ongoingOrUpcoming + viewModel.past).filter { exhibition in
             if let title = exhibition.title {
                 return title.localizedCaseInsensitiveContains(searchText)
             }
@@ -66,30 +66,37 @@ struct ListScreen: View {
 //                                }
 //                            }
                             
-                            Section {
-                                ForEach(viewModel.ongoingOrUpcoming) { exhibition in
+                            if !searchText.isEmpty {
+                                ForEach(filterExhibitions()) { exhibition in
                                     ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
                                         .environmentObject(viewModel)
                                 }
-                            } header: {
-                                Text("Ongoing / Upcoming")
-                                    .sectionHeaderBackground()
-                            }
-                            .sectionBackground()
-                            
-                            
-                            if showPastSection {
+                                .sectionBackground()
+                            } else {
                                 Section {
-                                    ForEach(viewModel.past) { exhibition in
+                                    ForEach(viewModel.ongoingOrUpcoming) { exhibition in
                                         ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
                                             .environmentObject(viewModel)
                                     }
                                 } header: {
-                                    Text("Past")
+                                    Text("Ongoing / Upcoming")
                                         .sectionHeaderBackground()
                                 }
                                 .sectionBackground()
                                 
+                                
+                                if showPastSection {
+                                    Section {
+                                        ForEach(viewModel.past) { exhibition in
+                                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                                .environmentObject(viewModel)
+                                        }
+                                    } header: {
+                                        Text("Past")
+                                            .sectionHeaderBackground()
+                                    }
+                                    .sectionBackground()
+                                }
                             }
                         }
                         .refreshable {
@@ -119,12 +126,18 @@ struct ListScreen: View {
         }
         .viewBackground()
         .toolbar(content: {
-            ToolbarItem(placement: .topBarLeading) {
+//            ToolbarItem(placement: .topBarLeading) {
+//                Text("Exhibitions")
+//                    .font(.objectivityTitle2)
+//            }
+            CompatibleToolbarItem(placement: .topBarLeading) {
                 Text("Exhibitions")
-                    .font(.objectivityTitle)
+                    .font(.objectivityTitle2)
+                    .frame(width: 150, alignment: .leading)
             }
             
-            ToolbarItem(placement: .topBarTrailing) {
+            
+            CompatibleToolbarItem(placement: .topBarTrailing) {
                 Button {
                     showPastSection.toggle()
                 } label: {
@@ -136,7 +149,7 @@ struct ListScreen: View {
                 }
             }
             
-            ToolbarItem(placement: .topBarTrailing) {
+            CompatibleToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     ForEach(ExhibitionViewModel.SortOption.allCases, id: \.self) { option in
                         Button {
