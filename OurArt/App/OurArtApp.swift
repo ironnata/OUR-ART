@@ -33,10 +33,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         FirebaseApp.configure()
         print("Configured Firebase!")
         
-//        GMSServices.provideAPIKey("AIzaSyB0diZef53W5Q1SVsy6MNw8N9v18OPN_ww")
-//        GMSPlacesClient.provideAPIKey("AIzaSyB0diZef53W5Q1SVsy6MNw8N9v18OPN_ww")
-//        print("Configured Google Maps!")
-        
         MobileAds.shared.start(completionHandler: nil)
         
         // 다크 모드에 따라 tintColor 설정
