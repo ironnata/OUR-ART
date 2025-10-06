@@ -11,13 +11,19 @@ import MapKit
 class MapViewModel: ObservableObject {
     @Published var coordinate: CLLocationCoordinate2D?
     
+    private let geocoder = CLGeocoder()
+    
     func showAddress(for address: String?) {
         guard let address else { return }
         
-        CLGeocoder().geocodeAddressString(address) { [weak self] placemarks, error in
+        geocoder.cancelGeocode()
+        
+        geocoder.geocodeAddressString(address) { [weak self] placemarks, error in
+            guard let self else { return }
+            
             if let coordinate = placemarks?.first?.location?.coordinate {
                 DispatchQueue.main.async {
-                    self?.coordinate = coordinate
+                    self.coordinate = coordinate
                     print(coordinate)
                 }
             } else if let error = error {

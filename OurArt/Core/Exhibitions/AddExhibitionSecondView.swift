@@ -13,6 +13,7 @@ struct AddExhibitionSecondView: View {
     @Environment(\.dismiss) var dismiss
     
     @StateObject private var viewModel = ExhibitionViewModel()
+    @StateObject private var adModel = InterstitialViewModel()
     
     @Binding var showAddingView: Bool
     
@@ -190,9 +191,16 @@ struct AddExhibitionSecondView: View {
                             } // DESCRIPTION
                             .padding(.bottom, 30)
                             
+                            Text("Tap DONE - watch an ad, then your dot's out there")
+                                .font(.objectivityFootnote)
+                                .foregroundStyle(.secondAccent)
+                            
                             Button("Done") {
                                 
                                 Task {
+                                    
+                                    await adModel.presentAndWait()
+                                    
                                     if artist.isEmpty {
                                         try? await viewModel.addArtist(text: "Unknown")
                                     } else {

@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import GoogleMaps
 import GooglePlaces
+import GoogleMobileAds
 
 @main
 struct OurArtApp: App {
@@ -35,6 +36,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //        GMSServices.provideAPIKey("AIzaSyB0diZef53W5Q1SVsy6MNw8N9v18OPN_ww")
 //        GMSPlacesClient.provideAPIKey("AIzaSyB0diZef53W5Q1SVsy6MNw8N9v18OPN_ww")
 //        print("Configured Google Maps!")
+        
+        MobileAds.shared.start(completionHandler: nil)
         
         // 다크 모드에 따라 tintColor 설정
         let appearance = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])

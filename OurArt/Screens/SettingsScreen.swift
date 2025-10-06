@@ -215,7 +215,7 @@ struct SettingsScreen: View {
         .toolbar {
             CompatibleToolbarItem(placement: .topBarLeading) {
                 Text("Settings")
-                    .font(.objectivityTitle)
+                    .font(.objectivityTitle2)
                     .frame(width: 150, alignment: .leading)
             }
             

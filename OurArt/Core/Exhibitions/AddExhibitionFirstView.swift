@@ -92,16 +92,21 @@ struct AddExhibitionFirstView: View {
                     
                     CompatibleToolbarItem(placement: .topBarLeading) {
                         Text("New Exhibition")
-                            .font(.objectivityTitle)
+                            .font(.objectivityTitle2)
+                            .frame(width: 200, alignment: .leading)
                     }
                 }
-                .keyboardAware(minDistance: 32)
             }
             .viewBackground()
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     isTitleFocused = true
                 }
+            }
+        }
+        .onTapGesture {
+            if isTitleFocused {
+                isTitleFocused = false
             }
         }
     }

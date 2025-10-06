@@ -293,6 +293,9 @@ struct EditNicknameView : View {
         .task {
             try? await viewModel.loadCurrentUser()
         }
+        .onDisappear {
+            nickname = ""
+        }
     }
 }
 

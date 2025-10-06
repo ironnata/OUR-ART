@@ -79,8 +79,12 @@ struct ListScreen: View {
                                             .environmentObject(viewModel)
                                     }
                                 } header: {
-                                    Text("Ongoing / Upcoming")
-                                        .sectionHeaderBackground()
+                                    if viewModel.ongoingOrUpcoming.isEmpty {
+                                        EmptyView()
+                                    } else {
+                                        Text("Ongoing / Upcoming")
+                                            .sectionHeaderBackground()                                        
+                                    }
                                 }
                                 .sectionBackground()
                                 

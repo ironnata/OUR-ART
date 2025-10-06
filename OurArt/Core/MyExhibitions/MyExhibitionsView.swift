@@ -55,8 +55,12 @@ struct MyExhibitionsView: View {
                             .environmentObject(exhibitionVM)
                     }
                 } header: {
-                    Text("Ongoing / Upcoming")
-                        .sectionHeaderBackground()
+                    if myExhibitionVM.myOngoingOrUpcoming.isEmpty {
+                        EmptyView()
+                    } else {
+                        Text("Ongoing / Upcoming")
+                            .sectionHeaderBackground()
+                    }
                 }
                 .sectionBackground()
                 

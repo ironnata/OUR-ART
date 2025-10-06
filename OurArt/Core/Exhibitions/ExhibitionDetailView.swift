@@ -87,6 +87,7 @@ struct ExhibitionDetailView: View {
                         Text(exhibition.title ?? "")
                             .font(.objectivityTitle)
                             .padding(.bottom, 20)
+                            .lineSpacing(8)
                         
                         InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "Unknown")
                         

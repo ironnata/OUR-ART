@@ -140,6 +140,9 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
             .onAppear {
                 exhibitionVM.addListenerForAllExhibitions()
             }
+            .onDisappear {
+                exhibitionVM.removeListenerForAllExhibitions()
+            }
             .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
                 shuffledExhibitions = newExhibitions.shuffled()
             }

@@ -92,6 +92,8 @@
 		CD9316A52AD99342004F2868 /* SignInGoogleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */; };
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
 		CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB01A472C7A1C0000C3320E /* MainScreen.swift */; };
+		CDC4D79F2E93EC030031A234 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CDC4D79E2E93EC030031A234 /* GoogleMobileAds */; };
+		CDC4D7A12E93ED7F0031A234 /* InterstitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */; };
 		CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */; };
 		CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */; };
 		CDDE57CB2C80941F0034A271 /* FullScreenPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */; };
@@ -163,6 +165,7 @@
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
 		CDB01A472C7A1C0000C3320E /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
+		CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewModel.swift; sourceTree = "<group>"; };
 		CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProfileImageView.swift; sourceTree = "<group>"; };
 		CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditView.swift; sourceTree = "<group>"; };
 		CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPosterView.swift; sourceTree = "<group>"; };
@@ -208,6 +211,7 @@
 				CD93166D2AD6D081004F2868 /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
 				CD93167B2AD6D081004F2868 /* FirebaseStorage in Frameworks */,
 				CD93165F2AD6D081004F2868 /* FirebaseDynamicLinks in Frameworks */,
+				CDC4D79F2E93EC030031A234 /* GoogleMobileAds in Frameworks */,
 				CD9316632AD6D081004F2868 /* FirebaseFirestoreCombine-Community in Frameworks */,
 				CD9316732AD6D081004F2868 /* FirebaseMessaging in Frameworks */,
 				CD93166F2AD6D081004F2868 /* FirebaseInstallations in Frameworks */,
@@ -388,6 +392,7 @@
 			isa = PBXGroup;
 			children = (
 				CD9316A12AD989E1004F2868 /* Utilities.swift */,
+				CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -532,6 +537,7 @@
 				CD9316932AD970B1004F2868 /* GoogleSignInSwift */,
 				CD1DC1BA2C3D7174004D8617 /* GoogleMaps */,
 				CD43EB1D2C3DA02C006DA03A /* GooglePlaces */,
+				CDC4D79E2E93EC030031A234 /* GoogleMobileAds */,
 			);
 			productName = OurArt;
 			productReference = CD9316332AD6C985004F2868 /* OurArt.app */;
@@ -567,6 +573,7 @@
 				CD9316902AD970B1004F2868 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				CD1DC1B92C3D7174004D8617 /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
 				CD4495502C3D8B6D00466873 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+				CDC4D79D2E93EC030031A234 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = CD9316342AD6C985004F2868 /* Products */;
 			projectDirPath = "";
@@ -646,6 +653,7 @@
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
 				CD7A36FB2E2976A100E32329 /* Components.swift in Sources */,
 				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
+				CDC4D7A12E93ED7F0031A234 /* InterstitialViewModel.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
@@ -950,6 +958,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		CDC4D79D2E93EC030031A234 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.12.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1102,6 +1118,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CD9316902AD970B1004F2868 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		CDC4D79E2E93EC030031A234 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDC4D79D2E93EC030031A234 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
