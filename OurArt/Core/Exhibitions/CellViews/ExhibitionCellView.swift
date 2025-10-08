@@ -55,7 +55,7 @@ struct ExhibitionCellView: View {
                     }
                     
                     CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "unknown", textColor: isExpired ? Color.secondAccent : nil)
-                        .offset(y: 5)
+                        .offset(y: 7)
                 }
                 
                 Spacer()

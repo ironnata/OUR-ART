@@ -79,8 +79,8 @@ struct SettingsScreen: View {
                             // 여기 접속하면 앱과 개발자 정보 ex) 앱개발자 소개: 이름, email, 한마디... 예시> “Dot is an indie app made by one person who loves art & tech.” //
                             Spacer()
                         }
-                        
                     }
+                    
                     if profileVM.user?.isAnonymous == false {
                         Button {
                             if MFMailComposeViewController.canSendMail() {
@@ -103,6 +103,18 @@ struct SettingsScreen: View {
                             } message: {
                                 Text("Looks like your Mail app isn’t set up — you can also find our contact email in ‘About DOT’")
                             }
+                    }
+                    
+                    ZStack {
+                        NavigationLink(destination: SupportDotView().navigationBarBackButtonHidden()) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            SettingsRow(icon: "leaf", label: "Support Dot")
+                            Spacer()
+                        }
                     }
                 } header: {
                     Text("App Info")

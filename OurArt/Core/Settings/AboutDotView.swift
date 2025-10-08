@@ -42,8 +42,6 @@ struct AboutDotView: View {
                 VStack(alignment: .leading, spacing: 12) {
                     AboutDotRowView(title: "Developed by", subtitle: "Jongmo")
                     Divider()
-                    AboutDotRowView(title: "Designed by", subtitle: "Jongmo")
-                    Divider()
                     AboutDotRowView(title: "Location", subtitle: "Düsseldorf ↔ Seoul")
                     Divider()
                     AboutDotRowView(title: "Contact", subtitle: "dotbymo@gmail.com")

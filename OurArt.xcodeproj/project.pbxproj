@@ -10,6 +10,8 @@
 		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
 		CD0741332E252539007D8DDE /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0741322E252533007D8DDE /* MailView.swift */; };
 		CD0D63D62C7A148D0003374E /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D63D52C7A148D0003374E /* Tab.swift */; };
+		CD0DD5612E968DA900802870 /* SupportDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0DD5602E968DA900802870 /* SupportDotView.swift */; };
+		CD0DD5642E96ACDA00802870 /* RewardedInterstitialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
 		CD133FEF2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */; };
 		CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */; };
@@ -110,6 +112,8 @@
 		CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPosterView.swift; sourceTree = "<group>"; };
 		CD0741322E252533007D8DDE /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		CD0D63D52C7A148D0003374E /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		CD0DD5602E968DA900802870 /* SupportDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDotView.swift; sourceTree = "<group>"; };
+		CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedInterstitialService.swift; sourceTree = "<group>"; };
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CD133FEE2BE12BC100E6BDB6 /* ExhibitionCellViewBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionCellViewBuilder.swift; sourceTree = "<group>"; };
 		CD16028F2B0E389B00E20783 /* AddExhibitionSecondView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExhibitionSecondView.swift; sourceTree = "<group>"; };
@@ -227,6 +231,15 @@
 				CD0D63D52C7A148D0003374E /* Tab.swift */,
 			);
 			name = Animation;
+			sourceTree = "<group>";
+		};
+		CD0DD55F2E968D2600802870 /* Ads */ = {
+			isa = PBXGroup;
+			children = (
+				CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */,
+				CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */,
+			);
+			path = Ads;
 			sourceTree = "<group>";
 		};
 		CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */ = {
@@ -392,7 +405,6 @@
 			isa = PBXGroup;
 			children = (
 				CD9316A12AD989E1004F2868 /* Utilities.swift */,
-				CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -424,6 +436,7 @@
 		CDDED79E2AE1B86700150F87 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				CD0DD55F2E968D2600802870 /* Ads */,
 				CDD90B6C2C551F3300320330 /* MapKit */,
 				CD1DC1BC2C3D774C004D8617 /* GoogleMaps (not use yet) */,
 				CDDED7A52AE1B9A600150F87 /* Authentication */,
@@ -453,6 +466,7 @@
 				CD65D6472E099B3900C512F2 /* AboutDotView.swift */,
 				CDE4A6622E61BE60005B8699 /* PrivacyPolicyView.swift */,
 				CDE4A6642E61D582005B8699 /* TermsofUseView.swift */,
+				CD0DD5602E968DA900802870 /* SupportDotView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -638,6 +652,7 @@
 				CD5407692CB434A000EA1F63 /* MapViewModel.swift in Sources */,
 				CD60DBA52C4555250018BE95 /* GooglePlacesManager.swift in Sources */,
 				CDDED7AC2AE1BF7300150F87 /* UserManager.swift in Sources */,
+				CD0DD5612E968DA900802870 /* SupportDotView.swift in Sources */,
 				CD1602902B0E389B00E20783 /* AddExhibitionSecondView.swift in Sources */,
 				CD6FDBF92B0518EC00586B48 /* ProfileCellView.swift in Sources */,
 				CD0741332E252539007D8DDE /* MailView.swift in Sources */,
@@ -647,6 +662,7 @@
 				CDDED7A42AE1B93D00150F87 /* SignInEmailViewModel.swift in Sources */,
 				CD848F9F2B30BA1F0015FA57 /* AddExhibitionFirstView.swift in Sources */,
 				CD5407712CCA706100EA1F63 /* MapView.swift in Sources */,
+				CD0DD5642E96ACDA00802870 /* RewardedInterstitialService.swift in Sources */,
 				CD6954BF2AEFEC5500312907 /* ExhibitionManager.swift in Sources */,
 				CD6954C52AF3CE8000312907 /* ExhibitionDetailView.swift in Sources */,
 				CD6954C72AF3E26600312907 /* ExhibitionCellView.swift in Sources */,
