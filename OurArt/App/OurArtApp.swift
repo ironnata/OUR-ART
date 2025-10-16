@@ -7,8 +7,6 @@
 
 import SwiftUI
 import Firebase
-import GoogleMaps
-import GooglePlaces
 import GoogleMobileAds
 
 @main

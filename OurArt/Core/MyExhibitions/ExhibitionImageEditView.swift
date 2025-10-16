@@ -68,6 +68,7 @@ struct ExhibitionImageEditView: View {
                         }
                         
                     }
+                    .padding(.top, 20)
                     
                     Divider()
                         .padding(.top, -10)
@@ -81,7 +82,6 @@ struct ExhibitionImageEditView: View {
                                 Text("Select Poster Image")
                             }
                         }
-                        .padding(.bottom, 30)
                         
                         if exhibition.posterImagePathUrl != nil {
                             Button(role: .destructive) {
@@ -92,6 +92,7 @@ struct ExhibitionImageEditView: View {
                                     Text("Delete Poster Image")
                                 }
                             }
+                            .padding(.top, 30)
                             .confirmationDialog("", isPresented: $showDeleteAlert, titleVisibility: .hidden) {
                                 Button("Delete", role: .destructive) {
                                     //                                    viewModel.deleteProfileImage() // 단일 이미지 삭제
@@ -126,7 +127,7 @@ struct ExhibitionImageEditView: View {
                     }
                 }
             }
-            .padding(.top, 0)
+//            .padding(.top, 0)
         }
         .frame(maxHeight: 300)
         .padding()

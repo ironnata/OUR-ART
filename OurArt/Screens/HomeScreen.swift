@@ -30,7 +30,7 @@ struct HomeScreen: View {
                     Text("""
 Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
 """)
-                        .lineSpacing(7)
+                        .lineSpacing(10)
                         .frame(height: 100)
                     
                     NavigationView {

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SupportDotView: View {
     @State private var adCount: Int = 0
-    @State private var thanksMessages = ["Feel free to share your kindness with us🫶", "DOT feels your kindness", "Your support shines brighter", "DOT’s heart is glowing!", "Your kindness is deeply felt", "Your kindness today was more than enough — thank you"]
+    @State private var thanksMessages = ["Feel free to share your kindness with us", "DOT feels your kindness", "Your support shines brighter", "DOT’s heart is glowing!", "Your kindness is deeply felt", "Your kindness today was more than enough — thank you"]
     let hearts = ["🤍", "💛", "🧡", "❤️", "💖"]
     
     var body: some View {
@@ -73,16 +73,17 @@ struct SupportDotView: View {
                             if adCount >= 5 {
                                 Text("🙇‍♂️")
                                     .font(.system(size: 45))
-                                    .frame(width: 170, height: 100)
+                                    .frame(width: 150, height: 90)
                                     .background(Color.accent)
                                     .clipShape(.rect(cornerRadius: 15))
                             } else {
-                                Image(systemName: "play")
+                                Image(systemName: "play.fill")
                                     .font(.system(size: 45))
-                                    .foregroundStyle(Color.accentButtonText)
-                                    .frame(width: 170, height: 100)
+                                    .foregroundStyle(Color.redacted)
+                                    .frame(width: 150, height: 90)
                                     .background(Color.accent)
                                     .clipShape(.rect(cornerRadius: 15))
+                                    .shadow(radius: 10)
                             }
                         }
                         .disabled(adCount >= 5)

@@ -263,6 +263,7 @@ struct EditNicknameView : View {
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
+                                .font(.title3)
                         }
                     }
                     .padding(.vertical, 10)
@@ -324,6 +325,7 @@ struct EditPreferencesView: View {
                             dismiss()
                         } label: {
                             Image(systemName: "xmark")
+                                .font(.title3)
                         }
                     }
                     .padding(.vertical, 10)

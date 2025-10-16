@@ -95,7 +95,7 @@ struct SettingsScreen: View {
                                 MailView(
                                     recipient: "dotbymo@gmail.com",
                                     subject: "Thoughts on DOT",
-                                    body: "DOT isn’t perfect — help us shape it"
+                                    body: makeFeedbackBody("DOT isn’t perfect — help us shape it")
                                 )
                             }
                             .alert("Can’t open your Mail app", isPresented: $showMailErrorAlert) {
@@ -295,6 +295,7 @@ extension SettingsScreen {
                 Text("Liking what you see? Connect your account to share your own work")
                     .font(.objectivityFootnote)
                     .foregroundStyle(.secondary)
+                    .lineSpacing(5)
             }
             .padding(6)
             

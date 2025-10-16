@@ -45,3 +45,22 @@ struct MailView: UIViewControllerRepresentable {
     
     func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: Context) {}
 }
+
+func makeFeedbackBody(_ base: String) -> String {
+    let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+    let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "unknown"
+    let system = "\(UIDevice.current.systemName) \(UIDevice.current.systemVersion)"
+    let device = UIDevice.current.modelName // 새 아이폰 나올 때마다 switch문 수동 업데이트
+
+    return """
+    \(base)
+
+    
+    -------------------------
+    Device Name: \(device)
+    OS Version: \(system)
+    App Version: \(appVersion) (\(buildNumber))
+    \(ISO8601DateFormatter().string(from: Date()))
+    -------------------------
+    """
+}

@@ -2,10 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GADIsAdManagerApp</key>
-	<true/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>Google Sign In</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.101052007027-fphsm5gv4hm60620bemi4gjukvacsdit</string>
+			</array>
+		</dict>
+	</array>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3940256099942544~3347511713</string>
+	<key>GADIsAdManagerApp</key>
+	<true/>
+	<key>GIDClientID</key>
+	<string>101052007027-fphsm5gv4hm60620bemi4gjukvacsdit.apps.googleusercontent.com</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -205,21 +220,6 @@
 			<string>3qcr597p9d.skadnetwork</string>
 		</dict>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>Google Sign In</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.101052007027-fphsm5gv4hm60620bemi4gjukvacsdit</string>
-			</array>
-		</dict>
-	</array>
-	<key>GIDClientID</key>
-	<string>101052007027-fphsm5gv4hm60620bemi4gjukvacsdit.apps.googleusercontent.com</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Objectivity-Black.otf</string>
