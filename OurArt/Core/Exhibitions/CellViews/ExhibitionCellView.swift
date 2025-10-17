@@ -42,6 +42,7 @@ struct ExhibitionCellView: View {
                     Text(exhibition.title ?? "")
                         .lineLimit(1)
                         .padding(.bottom, 8)
+                        .font(.objectivityBoldBody)
                         .foregroundStyle(isExpired ? Color.secondAccent : Color.accent)
                     
                     if let dateFrom = exhibition.dateFrom,

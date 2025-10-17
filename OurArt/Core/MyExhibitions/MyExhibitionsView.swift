@@ -109,7 +109,7 @@ struct MyExhibitionsView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 Text("My Exhibitions")
-                    .font(.objectivityTitle2)
+                    .font(.objectivityTitle3)
             }
             
             ToolbarBackButton()

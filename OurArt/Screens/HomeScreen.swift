@@ -23,45 +23,90 @@ struct HomeScreen: View {
     @State private var isUploaded = false
     @State private var successUploadBanner = false
     
+    @State private var dragOffset: CGSize = .zero
+    @State private var topPosterIndex: Int = 0
+    
+    var width: CGFloat = 280
+    
+    private func handleDragEnded(_ value: DragGesture.Value) {
+        let threshold: CGFloat = 50
+        let direction: CGFloat = value.translation.width > 0 ? 1 : -1
+        let delay = direction < 0 ? 0.18 : 0.20
+        
+        if abs(value.translation.width) > threshold {
+            withAnimation(.smooth(duration: 0.2)) {
+                dragOffset.width = direction < 0 ? -width * 1.5 : width * 1.5
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+                withAnimation(.smooth(duration: 0.5)) {
+                    topPosterIndex = (topPosterIndex + 1) % shuffledExhibitions.count
+                    dragOffset = .zero
+                }
+            }
+        } else {
+            withAnimation {
+                dragOffset = .zero
+            }
+        }
+    }
+    
     var body: some View {
         ZStack {
             HStack {
-                VStack(alignment: .leading) {
-                    Text("""
-Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
-""")
-                        .lineSpacing(10)
-                        .frame(height: 100)
-                    
-                    NavigationView {
-                        ZStack {
-                            Color.background0
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                LazyHStack(spacing: 10) {
-                                    ForEach(shuffledExhibitions) { exhibition in
-                                        NavigationLink(destination: ExhibitionDetailView(exhibitionId: exhibition.id)) {
-                                            ExhibitionPosterView(exhibition: exhibition)
-                                        }
-                                    }
-                                    .padding(.horizontal, 25)
-                                    .padding(.bottom, 20)
-                                    .redacted(reason: isLoading ? .placeholder : [])
-                                    .onFirstAppear {
-                                        isLoading = true
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            isLoading = false
-                                        }
-                                    }
-                                }
-                                .scrollTargetLayout()
-                            }
-                            .frame(height: 440)
-                        }
-                        .scrollTargetBehavior(.viewAligned)
+                VStack(alignment: .center) {
+                    //                    Text("""
+                    //Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
+                    //""")
+                    //                        .lineSpacing(10)
+                    //                        .frame(height: 100)
+                    ZStack(alignment: .center) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .foregroundStyle(Color.redacted)
+                        
+                        Text("Hello \(profileVM.user?.nickname ?? "")")
                     }
+                    .padding(.horizontal)
+                    .frame(maxHeight: 100)
+                    
+                    Spacer()
+                    
+                    ZStack {
+                        ForEach(shuffledExhibitions.prefix(10).indices, id: \.self) { index in
+                            
+                            let visualIndex = (index - topPosterIndex + shuffledExhibitions.count) % shuffledExhibitions.count
+                            
+                            CardView(
+                                exhibition: shuffledExhibitions[index],
+                                visualIndex: visualIndex,
+                                dragOffset: dragOffset,
+                                width: width,
+                                count: shuffledExhibitions.count,
+                                onDragChanged: { value in
+                                    dragOffset = value.translation
+                                },
+                                onDragEnded: { value in
+                                    handleDragEnded(value)
+                                }
+                            )
+                            .zIndex(Double(shuffledExhibitions.count - visualIndex))
+                            .id(shuffledExhibitions[index].id)
+                        }
+                        .padding(.horizontal, 25)
+                        .padding(.bottom, 20)
+                        .redacted(reason: isLoading ? .placeholder : [])
+                        .onFirstAppear {
+                            isLoading = true
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                isLoading = false
+                            }
+                        }
+                        .frame(maxHeight: 440)
+                    }
+                    Spacer()
                 }
-                .font(.objectivityTitle2)
+                .font(.objectivityTitle3)
             }
             .padding()
             .fullScreenCover(isPresented: $showAddingView, onDismiss: {
@@ -144,7 +189,9 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
                 exhibitionVM.removeListenerForAllExhibitions()
             }
             .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
-                shuffledExhibitions = newExhibitions.shuffled()
+                let shuffled = newExhibitions.shuffled()
+                    shuffledExhibitions = Array(shuffled.prefix(10))
+                // 이거 셔플버튼으로 만들어서 쓰자
             }
             
             if successUploadBanner {
@@ -161,4 +208,44 @@ Welcome to DOT. \n\(profileVM.user?.nickname ?? "")👋
 
 #Preview {
     HomeScreen()
+}
+
+
+struct CardView: View {
+    let exhibition: Exhibition
+    let visualIndex: Int
+    let dragOffset: CGSize
+    let width: CGFloat
+    let count: Int
+    
+    @GestureState private var isDragging: Bool = false
+    
+    var onDragChanged: (DragGesture.Value) -> Void
+    var onDragEnded: (DragGesture.Value) -> Void
+    
+    var body: some View {
+        let progress = min(abs(dragOffset.width) / 150, 1)
+        let signedProgress = (dragOffset.width >= 0 ? 1 : -1) * progress
+        
+        NavigationLink(destination: ExhibitionDetailView(exhibitionId: exhibition.id)) {
+            ExhibitionPosterView(exhibition: exhibition)
+                .frame(width: width, height: 420)
+                .offset(x: visualIndex == 0 ? dragOffset.width : Double(visualIndex) * 10,
+                        y: visualIndex == 0 ? 0 : Double(visualIndex) * -4)
+            
+                .rotationEffect(.degrees(visualIndex == 0 ? 0 : Double(visualIndex) * 3 - progress * 3), anchor: .bottom)
+                .scaleEffect(visualIndex == 0 ? 1.0 : visualIndex == 1 ? (1.0 - Double(visualIndex) * 0.06 + progress * 0.06) : (1.0 - Double(visualIndex) * 0.06))
+                .offset(x: visualIndex == 0 ? 0 : Double(visualIndex) * -1)
+                .rotation3DEffect(.degrees((visualIndex == 0 || visualIndex == 1) ? 10 * signedProgress : 0), axis: (0, 1, 0))
+        }
+        .disabled(isDragging)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 10)
+                .updating($isDragging) { value, gestureState, _ in
+                    gestureState = true // 드래그 중일 때 gestureState를 true로 설정
+                }
+                .onChanged(onDragChanged)
+                .onEnded(onDragEnded)
+        )
+    }
 }

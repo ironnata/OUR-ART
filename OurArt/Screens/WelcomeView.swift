@@ -40,15 +40,15 @@ struct WelcomeView: View {
                             VStack {
                                 Spacer()
                                 
-                                Image(page.imageName)
-                                    .resizable()
-                                    .scaledToFill()
-                                    .frame(maxHeight: 380)
-                                    .clipShape(.rect(cornerRadius: 12, style: .continuous))
-                                    .padding(.bottom, 30)
+//                                Image(page.imageName)
+//                                    .resizable()
+//                                    .scaledToFill()
+//                                    .frame(maxHeight: 380)
+//                                    .clipShape(.rect(cornerRadius: 12, style: .continuous))
+//                                    .padding(.bottom, 30)
                                 
                                 Text(page.title)
-                                    .font(.objectivityTitle2)
+                                    .font(.objectivityTitle3)
                                     .foregroundStyle(Color.accent)
                                 
                                 Text(page.subtitle)

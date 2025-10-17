@@ -106,7 +106,7 @@ struct AboutDotView: View {
             
             ToolbarItem(placement: .principal) {
                 Text("About Dot")
-                    .font(.objectivityTitle2)
+                    .font(.objectivityTitle3)
             }
         }
     }

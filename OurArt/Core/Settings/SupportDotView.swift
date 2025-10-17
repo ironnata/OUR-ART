@@ -122,7 +122,7 @@ struct SupportDotView: View {
             
             ToolbarItem(placement: .principal) {
                 Text("Support Dot")
-                    .font(.objectivityTitle2)
+                    .font(.objectivityTitle3)
             }
         }
         .onAppear {

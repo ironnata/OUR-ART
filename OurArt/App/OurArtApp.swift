@@ -22,7 +22,7 @@ struct OurArtApp: App {
         WindowGroup {
             RootView()
         }
-        .environment(\.font, Font.custom("Objectivity-Medium", size: 17))
+        .environment(\.font, Font.custom("Objectivity-Regular", size: 17))
     }
 }
 

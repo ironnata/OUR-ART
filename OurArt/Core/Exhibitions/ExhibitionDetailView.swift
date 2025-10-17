@@ -19,6 +19,8 @@ struct ExhibitionDetailView: View {
     @State private var showDeleteAlert = false
     @State private var showEditView = false
     @State private var showCopyMessage = false
+    @State private var showMap = false
+    @State private var mapHeight: CGFloat = 0
     
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
@@ -27,6 +29,12 @@ struct ExhibitionDetailView: View {
     var myExhibitionId: String?
     var exhibitionId: String // exhibition 객체 대신 ID만 받음
     var isMyExhibition: Bool = false
+    
+    func animateMapAppearance() {
+        withAnimation(.spring(response: 0.8, dampingFraction: 1.5)) {
+            mapHeight = 140 // 원하는 높이
+        }
+    }
     
     private func loadData() {
         if isMyExhibition {
@@ -79,13 +87,13 @@ struct ExhibitionDetailView: View {
                     } placeholder: {
                         Text("No Poster") // 뭔가 플레이스홀더를 만들어볼까? 흠........ //
                             .frame(width: 240, height: 240, alignment: .center)
-                            .font(.objectivityTitle2)
+                            .font(.objectivityTitle3)
                     }
                     .padding(.vertical, 30)
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text(exhibition.title ?? "")
-                            .font(.objectivityTitle)
+                            .font(.objectivityTitle3)
                             .padding(.bottom, 20)
                             .lineSpacing(8)
                         
@@ -137,18 +145,30 @@ struct ExhibitionDetailView: View {
                                 center: coordinate,
                                 span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
                             )
-                            
-                            Map(position: .constant(.region(region))) {
-                                Annotation("", coordinate: coordinate, anchor: .bottom) {
-                                    Image(systemName: "smallcircle.filled.circle")
-                                        .font(.title2)
-                                        .foregroundStyle(Color.accent)
-                                        .symbolEffect(.pulse)
+                            if showMap {
+                                Map(position: .constant(.region(region))) {
+                                    Annotation("", coordinate: coordinate, anchor: .bottom) {
+                                        Image(systemName: "smallcircle.filled.circle")
+                                            .font(.title3)
+                                            .foregroundStyle(Color.accent)
+                                            .symbolEffect(.pulse)
+                                    }
                                 }
+                                .frame(height: mapHeight)
+                                .clipShape(RoundedRectangle(cornerRadius: 5))
+                                .disabled(true)
+                                .onTapGesture {
+                                    mapVM.openMapAtCoordinate(coordinate)
+                                }
+                                .onAppear {
+                                    animateMapAppearance()
+                                }
+                            } else {
+                                InfoDetailView(icon: "map.circle", text: "View Maps")
+                                    .onTapGesture {
+                                        showMap = true
+                                    }
                             }
-                            .frame(height: 140)
-                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                            .disabled(true)
                             
                             Divider()
                         }
@@ -260,12 +280,14 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                 if let arrayText = text as? [String] {
                     // 배열일 경우 문자열로 조인
                     Text(arrayText.joined(separator: ", "))
+                        .foregroundStyle(Color.secondAccent)
                 } else {
                     // 아닐 경우 문자열 그대로 출력
                     Text(String(describing: text))
+                        .foregroundStyle(Color.secondAccent)
                 }
             }
-            .font(.objectivityThinBody)
+            .font(.objectivityCallout)
             
             Divider()
         }

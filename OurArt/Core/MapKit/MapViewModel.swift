@@ -31,5 +31,14 @@ class MapViewModel: ObservableObject {
             }
         }
     }
+    
+    func openMapAtCoordinate(_ coordinate: CLLocationCoordinate2D, name: String? = nil) {
+        let placemark = MKPlacemark(coordinate: coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = name
+        mapItem.openInMaps(launchOptions: [
+            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
+        ])
+    }
 }
 

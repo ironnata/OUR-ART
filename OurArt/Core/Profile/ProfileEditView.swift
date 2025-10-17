@@ -116,7 +116,7 @@ struct ProfileEditView: View {
                                     }
                                 }
                             }) {
-                                let detents: Set<PresentationDetent> = (user.profileImagePathUrl == nil) ? [.height(150)] : [.height(200)]
+                                let detents: Set<PresentationDetent> = (user.profileImagePathUrl == nil) ? [.height(170)] : [.height(200)]
                                 
                                 ProfileImageEditView(showImageEditview: $showImageEditView, wasImageUpdated: $wasImageUpdated, showSignInView: $showSignInView)
                                     .presentationDetents(detents)

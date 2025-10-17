@@ -71,9 +71,13 @@ extension Font {
     
     static let objectivityTitle = Font.custom("Objectivity-Bold", size: 26)
     
-    static let objectivityTitle2 = Font.custom("Objectivity-Bold", size: 23)
+    static let objectivityTitle2 = Font.custom("Objectivity-Bold", size: 21)
+    
+    static let objectivityTitle3 = Font.custom("Objectivity-Bold", size: 19)
     
     static let objectivityBody = Font.custom("Objectivity-Medium", size: 17)
+    
+    static let objectivityBoldBody = Font.custom("Objectivity-Bold", size: 17)
     
     static let objectivityThinBody = Font.custom("Objectivity-Regular", size: 17)
     
