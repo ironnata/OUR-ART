@@ -193,7 +193,7 @@ struct ExhibitionDetailView: View {
                         
                         SimpleExpandableTextView(text: exhibition.description ?? "")
                     }
-                    .padding(.horizontal)
+                    .padding()
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationBarBackButtonHidden(true)

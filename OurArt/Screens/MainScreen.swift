@@ -21,7 +21,7 @@ struct MainScreen: View {
         VStack(spacing: 0) {
             TabView(selection: $activeTab) {
                 NavigationView {
-                    HomeScreen()
+                    HomeScreen(showSignInView: $showSignInView)
                 }
                 .setUpTab(.home)
                 

@@ -213,6 +213,7 @@ struct AddExhibitionSecondView: View {
                                     TextField("online link", text: $onlineLink)
                                         .modifier(TextFieldDescriptionModifier())
                                         .keyboardType(.URL)
+                                        .showClearButton($onlineLink)
                                 }
                             }
                             
@@ -248,6 +249,7 @@ struct AddExhibitionSecondView: View {
                                         try? await viewModel.addAddress(text: selectedAddress)
                                     }
                                     try? await viewModel.addCity(text: selectedCity)
+                                    try? await viewModel.addOnlineLink(text: onlineLink)
                                     try? await viewModel.addDescription(text: description)
                                     
                                     viewModel.addUserMyExhibition(exhibitionId: exhibition.id)

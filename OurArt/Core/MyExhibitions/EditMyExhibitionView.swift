@@ -53,6 +53,7 @@ struct EditMyExhibitionView: View {
         let finalDescription = description
         let finalAddress = selectedAddress.isEmpty ? (viewModel.exhibition?.address ?? "") : selectedAddress
         let finalCity = selectedCity.isEmpty ? (viewModel.exhibition?.city ?? "") : selectedCity
+        let finalOnlineLink = onlineLink.isEmpty ? (viewModel.exhibition?.onlineLink ?? "") : onlineLink
         
         Task {
             try? await viewModel.addTitle(text: finalTitle)
@@ -61,7 +62,7 @@ struct EditMyExhibitionView: View {
             try? await viewModel.addAddress(text: finalAddress)
             try? await viewModel.addCity(text: finalCity)
             try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
-            try? await viewModel.addOnlineLink(text: onlineLink)
+            try? await viewModel.addOnlineLink(text: finalOnlineLink)
             try? await viewModel.addDescription(text: finalDescription)
             
             showEditView = false
@@ -254,9 +255,10 @@ struct EditMyExhibitionView: View {
                             
                             if showOnlineLinkSection {
                                 SectionCard(title: "Online Link", icon: "link") {
-                                    TextField("online link", text: $onlineLink)
+                                    TextField(exhibition.onlineLink ?? "online link", text: $onlineLink)
                                         .modifier(TextFieldDescriptionModifier())
                                         .keyboardType(.URL)
+                                        .showClearButton($onlineLink)
                                 }
                             }
                             

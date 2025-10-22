@@ -35,6 +35,17 @@ struct CommonButtonModifier: ViewModifier {
     }
 }
 
+struct MediumSmallButtonModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.objectivityCallout)
+            .foregroundStyle(Color.accent)
+            .frame(width: 72, height: 30)
+            .background(Color.redacted)
+            .clipShape(.rect(cornerRadius: 5))
+    }
+}
+
 struct SmallButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
