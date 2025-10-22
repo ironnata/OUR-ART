@@ -188,7 +188,7 @@ struct SettingsScreen: View {
                             Text("Delete Account")
                         }
                     }
-                    .confirmationDialog("Final Step", isPresented: $showDeleteAlert, titleVisibility: .visible) {
+                    .alert("Final Step", isPresented: $showDeleteAlert) {
                         Button("Delete", role: .destructive) {
                             Task {
                                 do {
@@ -202,8 +202,9 @@ struct SettingsScreen: View {
                             }
                         }
                     } message: {
-                        Text("Heads up! Deleting your account will wipe all your data and can’t be undone. Still want to go ahead?")
+                        Text("Heads up! Deleting your account will wipe all your data and can’t be undone. Still wanna go ahead?")
                     }
+                    
                     .sectionBackground()
                 } header: {
 //                    Text("Exit & Erase")

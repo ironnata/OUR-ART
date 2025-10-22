@@ -24,15 +24,22 @@ struct BannerMessage: View {
     }
 }
 
-struct SectionCard<Content: View>: View {
+struct SectionCard<Content: View, ButtonContent: View>: View {
     let title: String
     let icon: String
     let content: Content
+    let button: ButtonContent
     
-    init(title: String, icon: String, @ViewBuilder content: () -> Content) {
+    init(
+        title: String,
+        icon: String,
+        @ViewBuilder content: () -> Content,
+        @ViewBuilder button: () -> ButtonContent = { EmptyView() }
+    ) {
         self.title = title
         self.icon = icon
         self.content = content()
+        self.button = button()
     }
     
     var body: some View {
@@ -43,8 +50,11 @@ struct SectionCard<Content: View>: View {
                 
                 Text(title)
                     .foregroundColor(.secondAccent)
+                    .font(.objectivityCallout)
                 
                 Spacer()
+                
+                button
             }
             
             content
@@ -53,5 +63,33 @@ struct SectionCard<Content: View>: View {
         .padding()
         .background(Color.redacted)
         .clipShape(.rect(cornerRadius: 8))
+    }
+}
+
+struct SimpleExpandableTextView: View {
+    let text: String
+    @State private var isExpanded = false
+    private let threshold: Int = 120 // 적당한 글자 수 임계값
+
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(text)
+                .lineLimit(isExpanded ? nil : 3)
+                .multilineTextAlignment(.leading)
+                .lineSpacing(9)
+                .font(.objectivityCallout)
+                .padding(.top, 10)
+
+            if text.count > threshold && !isExpanded {
+                Button("... more") {
+                    withAnimation {
+                        isExpanded = true
+                    }
+                }
+                .font(.objectivityCallout.weight(.semibold))
+                .foregroundStyle(Color.secondAccent)
+                .padding(.top, 2)
+            }
+        }
     }
 }

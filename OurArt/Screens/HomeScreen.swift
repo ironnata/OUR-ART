@@ -12,6 +12,8 @@ struct HomeScreen: View {
     @StateObject private var profileVM = ProfileViewModel()
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     
+    let placeholderImage = Image(systemName: "person.circle.fill")
+    
     @State var showAddingView = false
     @State var isLoading: Bool = false
     @State private var shuffledExhibitions: [Exhibition] = []
@@ -64,7 +66,32 @@ struct HomeScreen: View {
                         RoundedRectangle(cornerRadius: 10)
                             .foregroundStyle(Color.redacted)
                         
-                        Text("Hello \(profileVM.user?.nickname ?? "")")
+                        HStack {
+                            Text("Hello \(profileVM.user?.nickname ?? "")")
+                            
+                            Spacer()
+                            
+                            if let urlString = profileVM.user?.profileImagePathUrl, let url = URL(string: urlString) {
+                                AsyncImage(url: url) { image in
+                                    image
+                                        .resizable()
+                                        .modifier(SmallProfileImageModifer())
+                                } placeholder: {
+                                    placeholderImage
+                                        .resizable()
+                                        .modifier(SmallProfileImageModifer())
+                                        .foregroundStyle(Color.secondAccent)
+                                }
+                                .padding(.trailing, 30)
+                            } else {
+                                placeholderImage
+                                    .resizable()
+                                    .modifier(SmallProfileImageModifer())
+                                    .foregroundStyle(Color.secondAccent)
+                                    .padding(.trailing, 30)
+                            }
+                        }
+                        .padding()
                     }
                     .padding(.horizontal)
                     .frame(maxHeight: 100)
@@ -137,48 +164,43 @@ struct HomeScreen: View {
                 CompatibleToolbarItem(placement: .topBarLeading) {
                     self.logoImageHome()
                 }
-            })
-            .overlay(alignment: .bottomTrailing) {
-                if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
-                    HStack(spacing: -10) {
-                        Text("Drop your dot on the world")
-                            .font(.objectivityCallout)
-                            .animation(.easeInOut(duration: 0.5))
-                            .scaleEffect(animationAmount)
-                            .opacity(isRotating ? 0 : 1)
-                        
-                        Button {
-                            withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
-                                isRotating = true
-                                rotation = 90
-                                animationAmount -= 0.3
-                            } completion: {
-                                // 1) 시트를 먼저 띄움 (버튼이 아직 돌아오기 전)
-                                var tx = Transaction()
-                                tx.disablesAnimations = true
-                                withTransaction(tx) { showAddingView = true }
+                
+                CompatibleToolbarItem(placement: .topBarTrailing) {
+                    if let preferences = profileVM.user?.preferences, preferences.contains("Artist") {
+                        HStack(spacing: -10) {
+//                            Text("Drop your dot on the world")
+//                                .font(.objectivityCallout)
+//                                .animation(.easeInOut(duration: 0.5))
+//                                .scaleEffect(animationAmount)
+//                                .opacity(isRotating ? 0 : 1)
+                            
+                            Button {
+                                withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
+                                    isRotating = true
+                                    rotation = 90
+                                    animationAmount -= 0.3
+                                } completion: {
+                                    showAddingView = true
 
-                                // 2) 아주 짧게 텀을 두고 복귀 애니메이션 시작
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                                    withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
-                                        isRotating = false
-                                        rotation = 0
-                                        animationAmount = 1
-                                    } completion: {
-                                        
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        withAnimation(.easeInOut(duration: 0.25), completionCriteria: .logicallyComplete) {
+                                            isRotating = false
+                                            rotation = 0
+                                            animationAmount = 1
+                                        } completion: {
+                                            
+                                        }
                                     }
                                 }
+                            } label: {
+                                Image(systemName: "plus")
+                                    .font(.title3)
+                                    .rotationEffect(.degrees(rotation))
                             }
-                        } label: {
-                            Image(systemName: "plus.circle")
-                                .font(.title)
-                                .rotationEffect(.degrees(rotation))
                         }
-                        .padding()
-                        .padding(.trailing, 20)
                     }
                 }
-            }
+            })
             .task {
                 try? await profileVM.loadCurrentUser()
             }

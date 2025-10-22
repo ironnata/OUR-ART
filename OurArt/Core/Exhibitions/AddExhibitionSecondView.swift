@@ -35,8 +35,14 @@ struct AddExhibitionSecondView: View {
     @State private var selectedAddress = ""
     @State private var selectedCity = "Unknown"
     
+    @State private var onlineLink = ""
+    @State private var showOnlineLinkSection = false
+    
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
+    private var noSelectedTime: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
     
     @State private var showDeleteAlert = false
     
@@ -121,7 +127,7 @@ struct AddExhibitionSecondView: View {
                             } // POSTER
                             
                             SectionCard(title: "Artist", icon: "person") {
-                                TextField("Artist", text: $artist)
+                                TextField("artist", text: $artist)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($artist)
                             } // ARTIST
@@ -148,6 +154,14 @@ struct AddExhibitionSecondView: View {
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
+                            } button: {
+                                Button {
+                                    selectedFromTime = noSelectedTime
+                                    selectedToTime = noSelectedTime
+                                } label: {
+                                    Text("No hours")
+                                        .modifier(SmallButtonModifier())
+                                }
                             } // OPENING HOURS
                             
                             SectionCard(title: "Closed on", icon: "xmark.circle") {
@@ -169,13 +183,24 @@ struct AddExhibitionSecondView: View {
                             } // CLOSED ON
                             
                             SectionCard(title: "Address", icon: "location") {
-                                TextField("Search location", text: $selectedAddress)
+                                TextField("search location", text: $selectedAddress)
                                     .modifier(TextFieldModifier())
                                     .disabled(true)
                                     .onTapGesture {
                                         showSearchView = true
                                     }
                                     .showClearButton($selectedAddress)
+                            } button: {
+                                Button {
+                                    selectedCity = "Online"
+                                    selectedAddress = "Online"
+                                    withAnimation(.smooth(duration: 0.7)) {
+                                        showOnlineLinkSection = true
+                                    }
+                                } label: {
+                                    Text("Online")
+                                        .modifier(SmallButtonModifier())
+                                }
                             } // ADDRESS
                             .sheet(isPresented: $showSearchView) {
                                 AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
@@ -183,8 +208,16 @@ struct AddExhibitionSecondView: View {
                                     .interactiveDismissDisabled(true)
                             }
                             
+                            if showOnlineLinkSection {
+                                SectionCard(title: "Online Link", icon: "link") {
+                                    TextField("online link", text: $onlineLink)
+                                        .modifier(TextFieldDescriptionModifier())
+                                        .keyboardType(.URL)
+                                }
+                            }
+                            
                             SectionCard(title: "Description", icon: "text.justify.leading") {
-                                TextField("Description", text: $description, axis: .vertical)
+                                TextField("description", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
                                     .lineSpacing(10)
                                     .lineLimit(5...15)
@@ -225,8 +258,6 @@ struct AddExhibitionSecondView: View {
                                 }
                             }
                             .modifier(CommonButtonModifier())
-                            .navigationTitle(title)
-                            .navigationBarTitleDisplayMode(.inline)
                         }
                     }
                     .ignoresSafeArea()
@@ -255,6 +286,12 @@ struct AddExhibitionSecondView: View {
                                         secondaryButton: .cancel()
                                     )
                                 }
+                        }
+                        
+                        CompatibleToolbarItem(placement: .title) {
+                            Text(title)
+                                .font(.objectivityTitle3)
+                                .frame(maxWidth: 200)
                         }
                         
                         CompatibleToolbarItem(placement: .topBarLeading) {

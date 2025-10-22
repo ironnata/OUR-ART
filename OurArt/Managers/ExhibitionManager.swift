@@ -28,6 +28,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
     let images: [String]? // 필요유무 추후 확인
     let posterImagePath: String?
     let posterImagePathUrl: String?
+    let onlineLink: String?
     
     init(
         id: String,
@@ -45,7 +46,8 @@ struct Exhibition: Identifiable, Codable, Equatable {
         closingDays: [String]? = nil,
         images: [String]? = nil,
         posterImagePath: String? = nil,
-        posterImagePathUrl: String? = nil
+        posterImagePathUrl: String? = nil,
+        onlineLink: String? = nil
     ) {
         self.id = id
         self.dateCreated = dateCreated
@@ -63,6 +65,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.images = images
         self.posterImagePath = posterImagePath
         self.posterImagePathUrl = posterImagePathUrl
+        self.onlineLink = onlineLink
     }
     
     enum CodingKeys: String, CodingKey {
@@ -82,6 +85,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         case images = "images"
         case posterImagePath = "poster_image_path"
         case posterImagePathUrl = "poster_image_path_url"
+        case onlineLink = "online_link"
     }
     
     static func ==(lhs: Exhibition, rhs: Exhibition) -> Bool {
@@ -106,6 +110,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         self.images = try container.decodeIfPresent([String].self, forKey: .images)
         self.posterImagePath = try container.decodeIfPresent(String.self, forKey: .posterImagePath)
         self.posterImagePathUrl = try container.decodeIfPresent(String.self, forKey: .posterImagePathUrl)
+        self.onlineLink = try container.decodeIfPresent(String.self, forKey: .onlineLink)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -126,6 +131,7 @@ struct Exhibition: Identifiable, Codable, Equatable {
         try container.encodeIfPresent(self.images, forKey: .images)
         try container.encodeIfPresent(self.posterImagePath, forKey: .posterImagePath)
         try container.encodeIfPresent(self.posterImagePathUrl, forKey: .posterImagePathUrl)
+        try container.encodeIfPresent(self.onlineLink, forKey: .onlineLink)
     }
 }
 
@@ -270,6 +276,24 @@ final class ExhibitionManager {
         let data: [String:Any] = [
             Exhibition.CodingKeys.openingTimeFrom.rawValue : openingHoursFrom,
             Exhibition.CodingKeys.openingTimeTo.rawValue : openingHoursTo
+        ]
+        
+        try await exhibitionDocument(id: exhibitionId).updateData(data)
+        
+        let snapshot = try await getExhibition(id: exhibitionId)
+        
+        if let closingDays = snapshot.closingDays,
+               closingDays.isEmpty {
+                try await exhibitionDocument(id: exhibitionId).updateData([
+                    Exhibition.CodingKeys.closingDays.rawValue: FieldValue.delete()
+                ])
+            }
+    }
+    
+    // addOnlineLink func
+    func addOnlineLink(exhibitionId: String, onlineLink: String) async throws {
+        let data: [String:Any] = [
+            Exhibition.CodingKeys.onlineLink.rawValue : onlineLink
         ]
         
         try await exhibitionDocument(id: exhibitionId).updateData(data)

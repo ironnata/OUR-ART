@@ -11,6 +11,7 @@ import MapKit
 struct ExhibitionDetailView: View {
     
     @Environment(\.dismiss) var dismiss
+    @Environment(\.openURL) private var openURL
     
     @StateObject private var myExhibitionVM = MyExhibitionViewModel()
     @StateObject private var exhibitionVM = ExhibitionViewModel()
@@ -25,6 +26,9 @@ struct ExhibitionDetailView: View {
     @State private var isZoomed = false
     @State private var currentImage: Image? = nil
     @State private var isLoading = true
+    
+    @State private var isExpanded = false
+    @State private var truncated = false
     
     var myExhibitionId: String?
     var exhibitionId: String // exhibition 객체 대신 ID만 받음
@@ -89,95 +93,105 @@ struct ExhibitionDetailView: View {
                             .frame(width: 240, height: 240, alignment: .center)
                             .font(.objectivityTitle3)
                     }
-                    .padding(.vertical, 30)
+                    .padding(.bottom, 30)
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text(exhibition.title ?? "")
                             .font(.objectivityTitle3)
-                            .padding(.bottom, 20)
+                            .padding(.bottom, 15)
+                            .padding(.horizontal, 10)
                             .lineSpacing(8)
                         
-                        InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "Unknown")
-                        
-                        if let dateFrom = exhibition.dateFrom,
-                           let dateTo = exhibition.dateTo {
-                            let dateFormatter = DateFormatter.localizedDateFormatter()
-                            let formattedDateFrom = dateFormatter.string(from: dateFrom)
-                            let formattedDateTo = dateFormatter.string(from: dateTo)
+                        VStack(spacing: 10) {
+                            InfoDetailView(icon: "person.crop.rectangle.fill", text: exhibition.artist ?? "Unknown")
                             
-                            InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
-                        }
-                        
-                        if let openingTimeFrom = exhibition.openingTimeFrom,
-                           let openingTimeTo = exhibition.openingTimeTo {
-                            let dateFormatter = DateFormatter.timeOnlyFormatter()
+                            if let dateFrom = exhibition.dateFrom,
+                               let dateTo = exhibition.dateTo {
+                                let dateFormatter = DateFormatter.localizedDateFormatter()
+                                let formattedDateFrom = dateFormatter.string(from: dateFrom)
+                                let formattedDateTo = dateFormatter.string(from: dateTo)
+                                
+                                InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
+                            }
                             
-                            let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
-                            let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                            if let openingTimeFrom = exhibition.openingTimeFrom,
+                               let openingTimeTo = exhibition.openingTimeTo {
+                                let dateFormatter = DateFormatter.timeOnlyFormatter()
+                                
+                                let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
+                                let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
+                                
+                                InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
+                            }
                             
-                            InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
-                        }
-                        
-                        InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Not provided"])
-                        
-                        InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Not provided")
-                            .lineSpacing(9)
-                            .onLongPressGesture {
-                                UIPasteboard.general.string = exhibition.address ?? ""
-                                Haptic.notification()
-                                withAnimation(.spring(response: 0.3)) {
-                                    showCopyMessage = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Always open"])
+                            
+                            InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Unknown")
+                                .lineSpacing(9)
+                                .onLongPressGesture {
+                                    UIPasteboard.general.string = exhibition.address ?? ""
+                                    Haptic.notification()
                                     withAnimation(.spring(response: 0.3)) {
-                                        showCopyMessage = false
+                                        showCopyMessage = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                                        withAnimation(.spring(response: 0.3)) {
+                                            showCopyMessage = false
+                                        }
                                     }
                                 }
-                            }
-                            .onChange(of: exhibition.address) { _, newAddress in
-                                if let address = newAddress {
-                                    mapVM.showAddress(for: address)
-                                }
-                            }
-                        
-                        if let coordinate = mapVM.coordinate {
-                            let region = MKCoordinateRegion(
-                                center: coordinate,
-                                span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
-                            )
-                            if showMap {
-                                Map(position: .constant(.region(region))) {
-                                    Annotation("", coordinate: coordinate, anchor: .bottom) {
-                                        Image(systemName: "smallcircle.filled.circle")
-                                            .font(.title3)
-                                            .foregroundStyle(Color.accent)
-                                            .symbolEffect(.pulse)
+                                .onChange(of: exhibition.address) { _, newAddress in
+                                    if let address = newAddress {
+                                        mapVM.showAddress(for: address)
                                     }
                                 }
-                                .frame(height: mapHeight)
-                                .clipShape(RoundedRectangle(cornerRadius: 5))
-                                .disabled(true)
-                                .onTapGesture {
-                                    mapVM.openMapAtCoordinate(coordinate)
-                                }
-                                .onAppear {
-                                    animateMapAppearance()
+                            
+                            if let coordinate = mapVM.coordinate {
+                                let region = MKCoordinateRegion(
+                                    center: coordinate,
+                                    span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+                                )
+                                
+                                if showMap {
+                                    Map(position: .constant(.region(region))) {
+                                        Annotation("", coordinate: coordinate, anchor: .bottom) {
+                                            Image(systemName: "smallcircle.filled.circle")
+                                                .font(.title3)
+                                                .foregroundStyle(Color.accent)
+                                                .symbolEffect(.pulse)
+                                        }
+                                    }
+                                    .frame(height: mapHeight)
+                                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                                    .disabled(true)
+                                    .onTapGesture {
+                                        mapVM.openMapAtCoordinate(coordinate)
+                                    }
+                                    .onAppear {
+                                        animateMapAppearance()
+                                    }
+                                    
+                                    Divider()
+                                } else {
+                                    InfoDetailView(icon: "map.circle", text: "View Map")
+                                        .onTapGesture {
+                                            showMap = true
+                                        }
                                 }
                             } else {
-                                InfoDetailView(icon: "map.circle", text: "View Maps")
-                                    .onTapGesture {
-                                        showMap = true
-                                    }
+                                if let urlString = exhibition.onlineLink, let url = URL(string: urlString) {
+                                    Link(destination: url) {
+                                            InfoDetailView(icon: "link.circle", text: "Visit Site")
+                                        }
+                                }
                             }
-                            
-                            Divider()
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.redacted)
+                        .clipShape(.rect(cornerRadius: 8))
                         
-                        Text(exhibition.description ?? "")
-                            .textSelection(.enabled)
-                            .multilineTextAlignment(.leading)
-                            .lineSpacing(9)
-                            .font(.objectivityCallout)
+                        SimpleExpandableTextView(text: exhibition.description ?? "")
                     }
                     .padding(.horizontal)
                 }
@@ -280,11 +294,9 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                 if let arrayText = text as? [String] {
                     // 배열일 경우 문자열로 조인
                     Text(arrayText.joined(separator: ", "))
-                        .foregroundStyle(Color.secondAccent)
                 } else {
                     // 아닐 경우 문자열 그대로 출력
                     Text(String(describing: text))
-                        .foregroundStyle(Color.secondAccent)
                 }
             }
             .font(.objectivityCallout)

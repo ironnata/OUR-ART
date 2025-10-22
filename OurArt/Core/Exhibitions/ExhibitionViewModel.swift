@@ -261,6 +261,16 @@ final class ExhibitionViewModel: ObservableObject {
         }
     }
     
+    // addOnlineLink func
+    func addOnlineLink(text: String) async throws {
+        guard let exhibition else { return }
+        
+        Task {
+            try await ExhibitionManager.shared.addOnlineLink(exhibitionId: exhibition.id, onlineLink: text)
+            self.exhibition = try await ExhibitionManager.shared.getExhibition(id: exhibition.id)
+        }
+    }
+    
     // addClosingDays func
     func addClosingDays(text: String) {
         guard let exhibition else { return }

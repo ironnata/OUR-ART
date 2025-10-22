@@ -28,10 +28,17 @@ struct EditMyExhibitionView: View {
     @State private var wasImageUpdated = false
     @State private var showUpdateMessage = false
     
+    @State private var onlineLink = ""
+    @State private var showOnlineLinkSection = false
+    
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
+    
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
+    private var noSelectedTime: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
     
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
@@ -54,6 +61,7 @@ struct EditMyExhibitionView: View {
             try? await viewModel.addAddress(text: finalAddress)
             try? await viewModel.addCity(text: finalCity)
             try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
+            try? await viewModel.addOnlineLink(text: onlineLink)
             try? await viewModel.addDescription(text: finalDescription)
             
             showEditView = false
@@ -135,13 +143,13 @@ struct EditMyExhibitionView: View {
                             } // POSTER
                             
                             SectionCard(title: "Title", icon: "sparkles") {
-                                TextField(exhibition.title ?? "Title", text: $title)
+                                TextField(exhibition.title ?? "title", text: $title)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($title)
                             } // TITLE
                             
                             SectionCard(title: "Artist", icon: "person") {
-                                TextField(exhibition.artist ?? "Artist", text: $artist)
+                                TextField(exhibition.artist ?? "artist", text: $artist)
                                     .modifier(TextFieldModifier())
                                     .showClearButton($artist)
                             } // ARTIST
@@ -180,6 +188,14 @@ struct EditMyExhibitionView: View {
                                 }
                                 .datePickerStyle(.compact)
                                 .labelsHidden()
+                            } button: {
+                                Button {
+                                    selectedFromTime = noSelectedTime
+                                    selectedToTime = noSelectedTime
+                                } label: {
+                                    Text("No hours")
+                                        .modifier(SmallButtonModifier())
+                                }
                             } // OPENING HOURS
                             
                             SectionCard(title: "Closed on", icon: "xmark.circle") {
@@ -208,15 +224,44 @@ struct EditMyExhibitionView: View {
                                         showSearchView = true
                                     }
                                     .showClearButton($selectedAddress)
+                            } button: {
+                                Button {
+                                    selectedCity = "Online"
+                                    selectedAddress = "Online"
+                                    withAnimation(.smooth(duration: 0.7)) {
+                                        showOnlineLinkSection = true
+                                    }
+                                } label: {
+                                    Text("Online")
+                                        .modifier(SmallButtonModifier())
+                                }
                             } // ADDRESS
                             .sheet(isPresented: $showSearchView) {
                                 AddressSearchView(selectedAddress: $selectedAddress, selectedCity: $selectedCity, isPresented: $showSearchView)
                                     .presentationDetents([.large])
                                     .interactiveDismissDisabled(true)
                             }
+                            .onAppear {
+                                if exhibition.address == "Online" {
+                                    showOnlineLinkSection = true
+                                }
+                            }
+                            .onChange(of: selectedAddress) { oldValue, newValue in
+                                if selectedAddress != "Online" {
+                                    showOnlineLinkSection = false
+                                }
+                            }
+                            
+                            if showOnlineLinkSection {
+                                SectionCard(title: "Online Link", icon: "link") {
+                                    TextField("online link", text: $onlineLink)
+                                        .modifier(TextFieldDescriptionModifier())
+                                        .keyboardType(.URL)
+                                }
+                            }
                             
                             SectionCard(title: "Description", icon: "text.justify.leading") {
-                                TextField("Description", text: $description, axis: .vertical)
+                                TextField("description", text: $description, axis: .vertical)
                                     .modifier(TextFieldDescriptionModifier())
                                     .lineSpacing(10)
                                     .lineLimit(5...15)
@@ -230,22 +275,20 @@ struct EditMyExhibitionView: View {
                                 handleDoneButton()
                             }
                             .modifier(CommonButtonModifier())
-                            .navigationTitle(exhibition.title ?? "")
-                            .navigationBarTitleDisplayMode(.inline)
+                            .toolbar {
+                                ToolbarBackButton()
+                                
+                                CompatibleToolbarItem(placement: .title) {
+                                    Text(exhibition.title ?? "")
+                                        .font(.objectivityTitle3)
+                                        .frame(maxWidth: 200)
+                                }
+                                
+                            }
                         }
                     }
                     .ignoresSafeArea()
                     .padding()
-                    .toolbar {
-                        ToolbarItem(placement: .topBarLeading) {
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image(systemName: "chevron.left")
-                                    .imageScale(.large)
-                            }
-                        }
-                    }
                     .onAppear {
                         UIDatePicker.appearance().minuteInterval = 5
                     }

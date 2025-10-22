@@ -90,6 +90,7 @@ struct SupportDotView: View {
                         
                         Text(adCount >= 5 ? "" : "Watch Ad to support Dot")
                             .font(.objectivityCallout)
+                            .foregroundStyle(Color.secondAccent)
                             .padding(.bottom, 20)
                         
                         HStack(spacing: 3) {
