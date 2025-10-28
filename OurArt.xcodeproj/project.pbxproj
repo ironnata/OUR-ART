@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */; };
 		CD0741332E252539007D8DDE /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0741322E252533007D8DDE /* MailView.swift */; };
-		CD0D63D62C7A148D0003374E /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D63D52C7A148D0003374E /* Tab.swift */; };
+		CD0D63D62C7A148D0003374E /* Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0D63D52C7A148D0003374E /* Animation.swift */; };
 		CD0DD5612E968DA900802870 /* SupportDotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0DD5602E968DA900802870 /* SupportDotView.swift */; };
 		CD0DD5642E96ACDA00802870 /* RewardedInterstitialService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */; };
 		CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */; };
@@ -79,7 +79,7 @@
 		CD9350B82BF3979A003BF760 /* EditMyExhibitionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */; };
 		CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB01A472C7A1C0000C3320E /* MainScreen.swift */; };
 		CDC4D79F2E93EC030031A234 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = CDC4D79E2E93EC030031A234 /* GoogleMobileAds */; };
-		CDC4D7A12E93ED7F0031A234 /* InterstitialViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */; };
+		CDC4D7A12E93ED7F0031A234 /* InterstitialAdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC4D7A02E93ED7F0031A234 /* InterstitialAdService.swift */; };
 		CDC6F6B02C6E40150000EC70 /* FullScreenProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */; };
 		CDD4889B2C6A4C8D009BE71E /* ProfileImageEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */; };
 		CDDE57CB2C80941F0034A271 /* FullScreenPosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */; };
@@ -95,7 +95,7 @@
 /* Begin PBXFileReference section */
 		CD0532D82BB1A39600275D73 /* ExhibitionPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExhibitionPosterView.swift; sourceTree = "<group>"; };
 		CD0741322E252533007D8DDE /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
-		CD0D63D52C7A148D0003374E /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		CD0D63D52C7A148D0003374E /* Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animation.swift; sourceTree = "<group>"; };
 		CD0DD5602E968DA900802870 /* SupportDotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportDotView.swift; sourceTree = "<group>"; };
 		CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardedInterstitialService.swift; sourceTree = "<group>"; };
 		CD12FBF22AFE463300251E86 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -153,7 +153,7 @@
 		CD9316A42AD99342004F2868 /* SignInGoogleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInGoogleHelper.swift; sourceTree = "<group>"; };
 		CD9350B72BF3979A003BF760 /* EditMyExhibitionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditMyExhibitionView.swift; sourceTree = "<group>"; };
 		CDB01A472C7A1C0000C3320E /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
-		CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialViewModel.swift; sourceTree = "<group>"; };
+		CDC4D7A02E93ED7F0031A234 /* InterstitialAdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdService.swift; sourceTree = "<group>"; };
 		CDC6F6AF2C6E40150000EC70 /* FullScreenProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenProfileImageView.swift; sourceTree = "<group>"; };
 		CDD4889A2C6A4C8D009BE71E /* ProfileImageEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageEditView.swift; sourceTree = "<group>"; };
 		CDDE57CA2C80941F0034A271 /* FullScreenPosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenPosterView.swift; sourceTree = "<group>"; };
@@ -193,18 +193,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CD0D63D42C7A146C0003374E /* Animation */ = {
-			isa = PBXGroup;
-			children = (
-				CD0D63D52C7A148D0003374E /* Tab.swift */,
-			);
-			name = Animation;
-			sourceTree = "<group>";
-		};
 		CD0DD55F2E968D2600802870 /* Ads */ = {
 			isa = PBXGroup;
 			children = (
-				CDC4D7A02E93ED7F0031A234 /* InterstitialViewModel.swift */,
+				CDC4D7A02E93ED7F0031A234 /* InterstitialAdService.swift */,
 				CD0DD5632E96ACDA00802870 /* RewardedInterstitialService.swift */,
 			);
 			path = Ads;
@@ -312,7 +304,6 @@
 		CD9316352AD6C985004F2868 /* OurArt */ = {
 			isa = PBXGroup;
 			children = (
-				CD0D63D42C7A146C0003374E /* Animation */,
 				CD6954C82AF41F9F00312907 /* Fonts */,
 				CD9316952AD97127004F2868 /* Info.plist */,
 				CD9316812AD812B4004F2868 /* App */,
@@ -372,6 +363,7 @@
 		CD9316A02AD989C0004F2868 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CD0D63D52C7A148D0003374E /* Animation.swift */,
 				CD9316A12AD989E1004F2868 /* Utilities.swift */,
 			);
 			path = Utilities;
@@ -619,7 +611,7 @@
 				CD12FBF32AFE463300251E86 /* ProfileViewModel.swift in Sources */,
 				CD7A36FB2E2976A100E32329 /* Components.swift in Sources */,
 				CD0532D92BB1A39600275D73 /* ExhibitionPosterView.swift in Sources */,
-				CDC4D7A12E93ED7F0031A234 /* InterstitialViewModel.swift in Sources */,
+				CDC4D7A12E93ED7F0031A234 /* InterstitialAdService.swift in Sources */,
 				CD6FDBFB2B05641600586B48 /* ProfileEditView.swift in Sources */,
 				CDDED7A02AE1B8A100150F87 /* SettignsViewModel.swift in Sources */,
 				CD93168C2AD8225E004F2868 /* AuthenticationManager.swift in Sources */,
@@ -646,7 +638,7 @@
 				CDE4A6652E61D582005B8699 /* TermsofUseView.swift in Sources */,
 				CD9316852AD812E7004F2868 /* SettingsScreen.swift in Sources */,
 				CDB01A482C7A1C0000C3320E /* MainScreen.swift in Sources */,
-				CD0D63D62C7A148D0003374E /* Tab.swift in Sources */,
+				CD0D63D62C7A148D0003374E /* Animation.swift in Sources */,
 				CD9316832AD812D2004F2868 /* ListScreen.swift in Sources */,
 				CD92A7632ADACB4000C588E5 /* SignInAppleHelper.swift in Sources */,
 				CD65D6482E099B3900C512F2 /* AboutDotView.swift in Sources */,

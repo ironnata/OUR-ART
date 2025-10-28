@@ -232,67 +232,198 @@ struct KeyboardAware: ViewModifier {
     }
 }
 
+struct SwipeDownToDismissModifier: ViewModifier {
+    @Binding var isActive: Bool
+    var minStartX: CGFloat = 30
+    var distanceThreshold: CGFloat = 50
+    var velocityThreshold: CGFloat = 50
 
+    @State private var draggedOffset: CGSize = .zero
+    
+    func body(content: Content) -> some View {
+        content
+            .offset(draggedOffset)
+            .gesture(
+                DragGesture()
+                    .onChanged { g in
+                        guard g.location.x > minStartX, g.translation.height > 0 else { return }
+                        draggedOffset = g.translation
+                    }
+                    .onEnded { g in
+                        if isDismissable(g) { isActive = false }
+                        draggedOffset = .zero
+                    }
+            )
+    }
+
+    private func isDismissable(_ g: DragGesture.Value) -> Bool {
+        let enoughDistance = g.translation.height > distanceThreshold
+        let predictedDelta = g.predictedEndLocation - g.location
+        let enoughVelocity = predictedDelta.y > velocityThreshold
+        return enoughDistance || enoughVelocity
+    }
+}
+
+
+// Zoomable Modifier
 struct ZoomableModifier: ViewModifier {
-    @Binding var isZoomed: Bool
+    let minZoomScale: CGFloat
+    let maxZoomScale: CGFloat?
+    let doubleTapZoomScale: CGFloat?
 
-    @State private var scale: CGFloat = 1.0
-    @State private var lastScale: CGFloat = 1.0
-    @State private var offset: CGSize = .zero
-    @State private var lastOffset: CGSize = .zero
+    @State private var lastTransform: CGAffineTransform = .identity
+    @State private var transform: CGAffineTransform = .identity
+    @State private var contentSize: CGSize = .zero
 
     func body(content: Content) -> some View {
-        GeometryReader { proxy in
-            let size = proxy.size
-            content
-                .scaleEffect(scale)
-                .offset(offset)
-                .frame(width: size.width, height: size.height, alignment: .center)
-                .gesture(
-                    SimultaneousGesture(
-                        MagnificationGesture()
-                            .onChanged { value in
-                                let newScale = lastScale * value
-                                scale = max(1.0, min(newScale, 3.0))
-                            }
-                            .onEnded { _ in
-                                lastScale = scale
-                                // 확대/축소 후 offset clamp
-                                offset = clampOffset(offset, scale: scale, size: size)
-                                lastOffset = offset
-                            },
-                        DragGesture()
-                            .onChanged { value in
-                                let newOffset = CGSize(
-                                    width: lastOffset.width + value.translation.width,
-                                    height: lastOffset.height + value.translation.height
-                                )
-                                offset = clampOffset(newOffset, scale: scale, size: size)
-                            }
-                            .onEnded { _ in
-                                lastOffset = offset
-                            }
-                    )
-                )
-                .onChange(of: isZoomed) { _, newValue in
-                    if !newValue {
-                        withAnimation(.smooth) {
-                            scale = 1.0
-                            lastScale = 1.0
-                            offset = .zero
-                            lastOffset = .zero
+        content
+            .background(alignment: .topLeading) {
+                GeometryReader { proxy in
+                    Color.clear
+                        .onAppear {
+                            contentSize = proxy.size
                         }
-                    }
                 }
+            }
+            .animatableTransformEffect(transform)
+            .gesture(
+                dragGesture,
+                including: transform == .identity ? .none : .all
+            )
+            .modify { view in
+                if #available(iOS 17.0, *) {
+                    view.gesture(magnificationGesture)
+                } else {
+                    view.gesture(oldMagnificationGesture)
+                }
+            }
+            .modify { view in
+                if let doubleTapZoomScale {
+                    view.gesture(doubleTapGesture(doubleTapZoomScale))
+                } else {
+                    view
+                }
+            }
+    }
+
+    @available(iOS, introduced: 16.0, deprecated: 17.0)
+    private var oldMagnificationGesture: some Gesture {
+        MagnificationGesture()
+            .onChanged { value in
+                let zoomFactor = 0.5
+                let scale = value * zoomFactor
+                transform = lastTransform.scaledBy(x: scale, y: scale)
+            }
+            .onEnded { _ in
+                onEndGesture()
+            }
+    }
+
+    @available(iOS 17.0, *)
+    private var magnificationGesture: some Gesture {
+        MagnifyGesture(minimumScaleDelta: 0)
+            .onChanged { value in
+                let newTransform = CGAffineTransform.anchoredScale(
+                    scale: value.magnification,
+                    anchor: value.startAnchor.scaledBy(contentSize)
+                )
+
+                withAnimation(.interactiveSpring) {
+                    transform = lastTransform.concatenating(newTransform)
+                }
+            }
+            .onEnded { _ in
+                onEndGesture()
+            }
+    }
+
+    private func doubleTapGesture(_ zoomScale: CGFloat) -> some Gesture {
+        SpatialTapGesture(count: 2)
+            .onEnded { value in
+                let newTransform: CGAffineTransform =
+                    if transform.isIdentity {
+                        .anchoredScale(scale: zoomScale, anchor: value.location)
+                    } else {
+                        .identity
+                    }
+
+                withAnimation(.linear(duration: 0.15)) {
+                    transform = newTransform
+                    lastTransform = newTransform
+                }
+
+                onEndGesture()
+            }
+    }
+
+    private var dragGesture: some Gesture {
+        DragGesture()
+            .onChanged { value in
+                withAnimation(.interactiveSpring) {
+                    transform = lastTransform.translatedBy(
+                        x: value.translation.width
+                            / max(transform.scaleX, .leastNonzeroMagnitude),
+                        y: value.translation.height
+                            / max(transform.scaleY, .leastNonzeroMagnitude)
+                    )
+                }
+            }
+            .onEnded { _ in
+                onEndGesture()
+            }
+    }
+
+    private func onEndGesture() {
+        let newTransform = limitTransform(transform)
+
+        withAnimation(.snappy(duration: 0.1)) {
+            transform = newTransform
+            lastTransform = newTransform
         }
     }
 
-    private func clampOffset(_ offset: CGSize, scale: CGFloat, size: CGSize) -> CGSize {
-        let maxX = (size.width * (scale - 1)) / 2
-        let maxY = (size.height * (scale - 1)) / 2
-        return CGSize(
-            width: min(max(offset.width, -maxX), maxX),
-            height: min(max(offset.height, -maxY), maxY)
-        )
+    private func limitTransform(
+        _ transform: CGAffineTransform
+    ) -> CGAffineTransform {
+        let scaleX = transform.scaleX
+        let scaleY = transform.scaleY
+
+        if scaleX < minZoomScale || scaleY < minZoomScale {
+            return .identity
+        }
+
+        var capped = transform
+
+        if let maxZoomScale {
+            let currentScale = max(scaleX, scaleY)
+            if currentScale > maxZoomScale {
+                let factor = maxZoomScale / currentScale
+                let contentCenter = CGPoint(
+                    x: contentSize.width / 2,
+                    y: contentSize.height / 2
+                )
+                let capTransform = CGAffineTransform.anchoredScale(
+                    scale: factor,
+                    anchor: contentCenter
+                )
+                capped = capped.concatenating(capTransform)
+            }
+        }
+
+        let maxX = contentSize.width * (capped.scaleX - 1)
+        let maxY = contentSize.height * (capped.scaleY - 1)
+
+        if capped.tx > 0
+            || capped.tx < -maxX
+            || capped.ty > 0
+            || capped.ty < -maxY
+        {
+            let tx = min(max(capped.tx, -maxX), 0)
+            let ty = min(max(capped.ty, -maxY), 0)
+            capped.tx = tx
+            capped.ty = ty
+        }
+
+        return capped
     }
 }

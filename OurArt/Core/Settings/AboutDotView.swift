@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct AboutDotView: View {
-    @Binding var version: String
+    @Binding var appVersion: String
     
     @State private var showCopyMessage = false
+    @State private var animationAmount = 0.0
     
     var body: some View {
         ZStack {
@@ -18,6 +19,15 @@ struct AboutDotView: View {
                 Spacer()
                 
                 logoImageAuth()
+                    .onTapGesture {
+                        withAnimation {
+                            self.animationAmount += 360
+                            Haptic.impact(style: .rigid)
+                        }
+                    }
+                    .rotation3DEffect(
+                        .degrees(animationAmount),
+                        axis: (x: 0.0, y: 1.0, z: 0.0))
                 
                 Spacer()
                 // 간단한 앱 소개 문구 ::::: Made for curious minds and creative souls who believe art belongs to everyone. 이 문구 넣자
@@ -30,15 +40,11 @@ struct AboutDotView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
+                .foregroundStyle(Color.accent2)
                 .padding()
                 .background(Color.redacted)
                 .clipShape(.rect(cornerRadius: 8))
                 
-                
-                // 개발자 정보 ::::: 이름, 지역, 이메일 주소 정도?
-                // Developed & designed by Jongmo
-                // Seoul ↔ Düsseldorf
-                // ironnata@gmail.com
                 VStack(alignment: .leading, spacing: 12) {
                     AboutDotRowView(title: "Developed by", subtitle: "Jongmo")
                     Divider()
@@ -62,11 +68,19 @@ struct AboutDotView: View {
                 .padding()
                 .background(Color.redacted)
                 .clipShape(.rect(cornerRadius: 8))
-                
-                
+
                 // Version 정보
                 VStack(alignment: .leading) {
-                    AboutDotRowView(title: "Version", subtitle: version)
+                    AboutDotRowView(title: "Version", subtitle: appVersion)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.redacted)
+                .clipShape(.rect(cornerRadius: 8))
+                
+                // Illustration Credits
+                VStack(alignment: .leading) {
+                    AboutDotRowView(title: "Illustrations by", subtitle: "getillustrations", url: URL(string: "https://getillustrations.com/"))
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
@@ -84,6 +98,7 @@ struct AboutDotView: View {
                     Text("Copyright © 2025 Jongmo. All rights reserved")
                 }
                 .font(.objectivityFootnote)
+                .foregroundStyle(Color.accent2)
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(Color.redacted)
@@ -113,12 +128,13 @@ struct AboutDotView: View {
 }
 
 #Preview {
-    AboutDotView(version: .constant("1.0.0"))
+    AboutDotView(appVersion: .constant("1.0"))
 }
 
 struct AboutDotRowView: View {
     var title: String
     var subtitle: String
+    var url: URL? = nil
     
     var body: some View {
         HStack {
@@ -127,7 +143,13 @@ struct AboutDotRowView: View {
             
             Spacer()
             
-            Text(subtitle)
+            if let url = url {
+                Link(subtitle, destination: url)
+                    .foregroundColor(.blue)
+                    .underline()
+            } else {
+                Text(subtitle)
+            }
         }
     }
 }

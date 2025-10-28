@@ -29,14 +29,14 @@ struct ExhibitionCellView: View {
                         .modifier(SmallPosterSizeModifier())
                 }
                 .padding(.trailing, 10)
-                .overlay {
-                    if isExpired {
-                        Image(systemName: "calendar.badge.minus")
-                            .font(.title3)
-                            .symbolRenderingMode(.hierarchical)
-                            .offset(x: -5)
-                    }
-                }
+//                .overlay {
+//                    if isExpired {
+//                        Image(systemName: "calendar.badge.minus")
+//                            .font(.title3)
+//                            .symbolRenderingMode(.hierarchical)
+//                            .offset(x: -5)
+//                    }
+//                }
                 
                 VStack(alignment: .leading) {
                     Text(exhibition.title ?? "")
@@ -51,11 +51,11 @@ struct ExhibitionCellView: View {
                         let formattedDateFrom = dateFormatter.string(from: dateFrom)
                         let formattedDateTo = dateFormatter.string(from: dateTo)
                         
-                        CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)", textColor: isExpired ? Color.secondAccent : nil)
+                        CellDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)", textColor: isExpired ? Color.accent2 : nil)
                             .offset(y: 7)
                     }
                     
-                    CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "unknown", textColor: isExpired ? Color.secondAccent : nil)
+                    CellDetailView(icon: "mappin.and.ellipse", text: exhibition.city ?? "unknown", textColor: isExpired ? Color.accent2 : nil)
                         .offset(y: 7)
                 }
                 

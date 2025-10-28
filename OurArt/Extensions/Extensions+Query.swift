@@ -161,8 +161,68 @@ extension View {
             .clipShape(.rect(cornerRadius: 4))
     }
     
-    func zoomable(isZoomed: Binding<Bool>) -> some View {
-        modifier(ZoomableModifier(isZoomed: isZoomed))
+    // Zoomable
+    @ViewBuilder
+    public func zoomable(
+        minZoomScale: CGFloat = 1,
+        maxZoomScale: CGFloat? = nil,
+        doubleTapZoomScale: CGFloat? = 3
+    ) -> some View {
+        modifier(
+            ZoomableModifier(
+                minZoomScale: minZoomScale,
+                maxZoomScale: maxZoomScale,
+                doubleTapZoomScale: doubleTapZoomScale
+            )
+        )
+    }
+    
+    @ViewBuilder
+    public func zoomable(
+        minZoomScale: CGFloat = 1,
+        maxZoomScale: CGFloat? = nil,
+        doubleTapZoomScale: CGFloat? = 3,
+        outOfBoundsColor: Color = .clear
+    ) -> some View {
+        GeometryReader { _ in
+            ZStack {
+                outOfBoundsColor
+                self.zoomable(
+                    minZoomScale: minZoomScale,
+                    maxZoomScale: maxZoomScale,
+                    doubleTapZoomScale: doubleTapZoomScale
+                )
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func modify(
+        @ViewBuilder _ fn: (Self) -> some View
+    ) -> some View {
+        fn(self)
+    }
+    
+    @ViewBuilder
+    func animatableTransformEffect(
+        _ transform: CGAffineTransform
+    ) -> some View {
+        scaleEffect(
+            x: transform.scaleX,
+            y: transform.scaleY,
+            anchor: .zero
+        )
+        .offset(x: transform.tx, y: transform.ty)
+    }
+    
+    func swipeDownToDismiss(isActive: Binding<Bool>,
+                            minStartX: CGFloat = 30,
+                            distanceThreshold: CGFloat = 50,
+                            velocityThreshold: CGFloat = 50) -> some View {
+        modifier(SwipeDownToDismissModifier(isActive: isActive,
+                                          minStartX: minStartX,
+                                          distanceThreshold: distanceThreshold,
+                                          velocityThreshold: velocityThreshold))
     }
     
     func keyboardAware(minDistance: CGFloat = 32) -> some View {
@@ -175,6 +235,15 @@ extension View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .tag(tab)
             .toolbar(.hidden, for: .tabBar)
+    }
+    
+    @ViewBuilder
+    func `if`<Transform: View>(_ condition: Bool, transform: (Self) -> Transform) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
 
@@ -193,6 +262,42 @@ extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
 extension ToolbarItem {
     func apply<Content: ToolbarContent>(@ToolbarContentBuilder _ transform: (Self) -> Content) -> Content {
         transform(self)
+    }
+}
+
+extension CGPoint {
+  static func - (lhs: Self, rhs: Self) -> Self {
+    CGPoint(x: lhs.x - rhs.x, y: lhs.y - rhs.y)
+  }
+}
+
+// Zoomable
+extension UnitPoint {
+    func scaledBy(_ size: CGSize) -> CGPoint {
+        .init(
+            x: x * size.width,
+            y: y * size.height
+        )
+    }
+}
+
+// Zoomable
+extension CGAffineTransform {
+    static func anchoredScale(
+        scale: CGFloat,
+        anchor: CGPoint
+    ) -> CGAffineTransform {
+        CGAffineTransform(translationX: anchor.x, y: anchor.y)
+            .scaledBy(x: scale, y: scale)
+            .translatedBy(x: -anchor.x, y: -anchor.y)
+    }
+
+    var scaleX: CGFloat {
+        sqrt(a * a + c * c)
+    }
+
+    var scaleY: CGFloat {
+        sqrt(b * b + d * d)
     }
 }
 

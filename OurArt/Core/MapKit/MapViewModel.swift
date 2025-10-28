@@ -36,9 +36,7 @@ class MapViewModel: ObservableObject {
         let placemark = MKPlacemark(coordinate: coordinate)
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = name
-        mapItem.openInMaps(launchOptions: [
-            MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving
-        ])
+        mapItem.openInMaps()
     }
 }
 

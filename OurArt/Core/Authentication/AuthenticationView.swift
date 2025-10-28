@@ -22,7 +22,7 @@ struct AuthenticationView: View {
                 
                 self.logoImageAuth()
                 
-                Text("Dot's where art connects".uppercased())
+                Text("Dot's where art meets".uppercased())
                 
                 Spacer()
                 

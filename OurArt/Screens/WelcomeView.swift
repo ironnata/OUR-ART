@@ -14,9 +14,9 @@ struct WelcomePage {
 }
 
 let welcomePages: [WelcomePage] = [
-    WelcomePage(imageName: "DOT_WelcomeImage_1", title: "Dot's where art connects", subtitle: "Art spaces made by people like you"),
-    WelcomePage(imageName: "DOT_WelcomeImage_2", title: "A world behind every dot", subtitle: "Find exhibitions, curated by all kinds of creators"),
-    WelcomePage(imageName: "DOT_WelcomeImage_3", title: "Tiny dots, big worlds inside", subtitle: "Start your journey — create, explore, connect")
+    WelcomePage(imageName: "Health and Wellness _ counseling, mental health, therapy, stress relief, support, Vector illustration", title: "Dot's where art connects", subtitle: "Art spaces made by people like you"),
+    WelcomePage(imageName: "Avatars and Characters _ celebrity, pop art, actress, faces, icons", title: "A world behind every dot", subtitle: "Find exhibitions, curated by all kinds of creators"),
+    WelcomePage(imageName: "Health and Wellness _ body, pain, massage, treatment, Vector illustration", title: "Tiny dots, big worlds inside", subtitle: "Start your journey — create, explore, connect")
 ]
 
 struct WelcomeView: View {
@@ -25,7 +25,6 @@ struct WelcomeView: View {
     @State private var startingAnimation = false
     @State private var onTapAnimation = false
     @State private var hasShownButton = false
-    @State private var duration = 1.5
     @State private var currentIndex = 0
     
     var body: some View {
@@ -40,12 +39,12 @@ struct WelcomeView: View {
                             VStack {
                                 Spacer()
                                 
-//                                Image(page.imageName)
-//                                    .resizable()
-//                                    .scaledToFill()
-//                                    .frame(maxHeight: 380)
-//                                    .clipShape(.rect(cornerRadius: 12, style: .continuous))
-//                                    .padding(.bottom, 30)
+                                Image(page.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(maxWidth: UIScreen.main.bounds.width * 0.7)
+                                    .clipShape(.rect(cornerRadius: 12, style: .continuous))
+                                    .padding(.bottom, 30)
                                 
                                 Text(page.title)
                                     .font(.objectivityTitle3)
@@ -78,7 +77,7 @@ struct WelcomeView: View {
                     .modifier(CommonButtonModifier())
                     .padding()
                     .opacity(hasShownButton ? 1 : 0)
-                    .animation(.easeInOut(duration: duration), value: hasShownButton)
+                    .animation(.easeInOut(duration: 0.7), value: hasShownButton)
                 }
             }
             .viewBackground()
@@ -86,11 +85,6 @@ struct WelcomeView: View {
                 if newValue == 2 {
                     hasShownButton = true
                 }
-            }
-        }
-        .onAppear {
-            withAnimation(.linear(duration: duration)) {
-                startingAnimation = true
             }
         }
     }

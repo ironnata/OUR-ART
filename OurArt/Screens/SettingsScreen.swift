@@ -10,7 +10,7 @@ import MessageUI
 
 struct SettingsScreen: View {
     
-    @State var version: String = "1.0.0"
+    @State var appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
     @State var showEmailSheet = false
     @State private var showDeleteAlert = false
     @State private var showLogoutAlert = false
@@ -69,7 +69,7 @@ struct SettingsScreen: View {
                 
                 Section {
                     ZStack {
-                        NavigationLink(destination: AboutDotView(version: $version).navigationBarBackButtonHidden()) {
+                        NavigationLink(destination: AboutDotView(appVersion: $appVersion).navigationBarBackButtonHidden()) {
                             EmptyView()
                         }
                         .opacity(0)
@@ -234,7 +234,7 @@ struct SettingsScreen: View {
             
             CompatibleToolbarItem(placement: .topBarTrailing) {
                 HStack {
-                    Text(version)
+                    Text(appVersion)
                         .font(.objectivityCaption)
                         .foregroundStyle(.secondAccent)
                     self.logoImageSettings()

@@ -26,8 +26,8 @@ struct FullScreenProfileImageView: View {
                 .resizable()
                 .scaledToFit()
                 .clipShape(Circle())
-                .frame(width: 350, height: 350)
-                .zoomable(isZoomed: $isZoomed)
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.7)
+                .zoomable()
                 .onTapGesture {
                     withAnimation(.smooth) {
                         isZoomed.toggle()

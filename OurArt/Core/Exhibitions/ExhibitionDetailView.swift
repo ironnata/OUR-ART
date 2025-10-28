@@ -27,12 +27,17 @@ struct ExhibitionDetailView: View {
     @State private var currentImage: Image? = nil
     @State private var isLoading = true
     
+    @State private var showLinkAlert = false
+    @State private var pendingURL: URL?
+    
     @State private var isExpanded = false
     @State private var truncated = false
     
     var myExhibitionId: String?
     var exhibitionId: String // exhibition 객체 대신 ID만 받음
     var isMyExhibition: Bool = false
+    
+    @Namespace private var fullPosterNS
     
     func animateMapAppearance() {
         withAnimation(.spring(response: 0.8, dampingFraction: 1.5)) {
@@ -76,14 +81,21 @@ struct ExhibitionDetailView: View {
                     .navigationBarBackButtonHidden()
             } else if let exhibition = exhibitionVM.exhibition {
                 ScrollView {
+                    let gid = "poster-\(exhibition.id)"
+                    
                     AsyncImage(url: URL(string: exhibition.posterImagePathUrl ?? "")) { image in
                         image
                             .resizable()
                             .scaledToFit()
                             .frame(maxWidth: 240, alignment: .center)
                             .clipShape(.rect(cornerRadius: 8))
+                            .if(!isZoomed) { view in
+                                view.matchedGeometryEffect(id: gid, in: fullPosterNS)
+                            }
+                            .opacity(isZoomed ? 0 : 1)
+//                            .matchedGeometryEffect(id: gid, in: fullPosterNS)
                             .onTapGesture {
-                                withAnimation {
+                                withAnimation(.smooth) {
                                     currentImage = image
                                     isZoomed.toggle()
                                 }
@@ -111,7 +123,7 @@ struct ExhibitionDetailView: View {
                                 let formattedDateFrom = dateFormatter.string(from: dateFrom)
                                 let formattedDateTo = dateFormatter.string(from: dateTo)
                                 
-                                InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)")
+                                InfoDetailView(icon: "calendar", text: "\(formattedDateFrom) - \(formattedDateTo)", textColor: .accent2)
                             }
                             
                             if let openingTimeFrom = exhibition.openingTimeFrom,
@@ -121,12 +133,12 @@ struct ExhibitionDetailView: View {
                                 let formattedOpeningTimeFrom = dateFormatter.string(from: openingTimeFrom)
                                 let formattedOpeningTimeTo = dateFormatter.string(from: openingTimeTo)
                                 
-                                InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)")
+                                InfoDetailView(icon: "clock", text: "\(formattedOpeningTimeFrom) - \(formattedOpeningTimeTo)", textColor: .accent2)
                             }
                             
-                            InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Always open"])
+                            InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Always open"], textColor: .accent2)
                             
-                            InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Unknown")
+                            InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Unknown", textColor: .accent2)
                                 .lineSpacing(9)
                                 .onLongPressGesture {
                                     UIPasteboard.general.string = exhibition.address ?? ""
@@ -173,16 +185,28 @@ struct ExhibitionDetailView: View {
                                     
                                     Divider()
                                 } else {
-                                    InfoDetailView(icon: "map.circle", text: "View Map")
+                                    InfoDetailView(icon: "map.circle", text: "View Map", textColor: .accent2)
                                         .onTapGesture {
                                             showMap = true
                                         }
                                 }
                             } else {
-                                if let urlString = exhibition.onlineLink, let url = URL(string: urlString) {
-                                    Link(destination: url) {
-                                            InfoDetailView(icon: "link.circle", text: "Visit Site")
+                                if let address = exhibition.address, address == "Online",
+                                   let urlString = exhibition.onlineLink, let url = URL(string: urlString) {
+                                    Button {
+                                        pendingURL = url
+                                        showLinkAlert = true
+                                    } label: {
+                                        InfoDetailView(icon: "link.circle", text: "Visit Site", textColor: .accent2)
+                                    }
+                                    .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
+                                        Button("Cancel", role: .cancel) {
+                                            pendingURL = nil
                                         }
+                                        Button("Open") {
+                                            openURL(url)
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -248,6 +272,20 @@ struct ExhibitionDetailView: View {
                     EditMyExhibitionView(showEditView: $showEditView, exhibitionId: exhibitionId)
                         .interactiveDismissDisabled(true)
                 }
+                .overlay {
+                    Group {
+                        if isZoomed, let image = currentImage {
+                            FullScreenPosterView(
+                                isZoomed: $isZoomed,
+                                image: image,
+                                posterNamespace: fullPosterNS,
+                                geometryId: "poster-\(exhibition.id)"
+                            )
+                            .transition(.identity) // matchedGeometryEffect와 충돌 방지
+                            .zIndex(1)
+                        }
+                    }
+                }
             } else {
                 Text("Unable to load exhibition information")
             }
@@ -260,13 +298,6 @@ struct ExhibitionDetailView: View {
                 .padding(.top, 200)
             }
         }
-        .overlay {
-            Group {
-                if isZoomed, let image = currentImage {
-                    FullScreenPosterView(isZoomed: $isZoomed, image: image)
-                }
-            }
-        }
         .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
         .onAppear {
             loadData()
@@ -275,28 +306,35 @@ struct ExhibitionDetailView: View {
     }
 }
 
-// Preview 수정
-#Preview {
-    NavigationStack {
-        ExhibitionDetailView(exhibitionId: "1", isMyExhibition: true)
-    }
-}
 
 struct InfoDetailView<T: CustomStringConvertible>: View {
     var icon: String
     var text: T
+    var textColor: Color? = nil
     
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 Image(systemName: icon)
                     .symbolRenderingMode(.hierarchical)
-                if let arrayText = text as? [String] {
-                    // 배열일 경우 문자열로 조인
-                    Text(arrayText.joined(separator: ", "))
+                if let textColor {
+                    if let arrayText = text as? [String] {
+                        // 배열일 경우 문자열로 조인
+                        Text(arrayText.joined(separator: ", "))
+                            .foregroundStyle(textColor)
+                    } else {
+                        // 아닐 경우 문자열 그대로 출력
+                        Text(String(describing: text))
+                            .foregroundStyle(textColor)
+                    }
                 } else {
-                    // 아닐 경우 문자열 그대로 출력
-                    Text(String(describing: text))
+                    if let arrayText = text as? [String] {
+                        // 배열일 경우 문자열로 조인
+                        Text(arrayText.joined(separator: ", "))
+                    } else {
+                        // 아닐 경우 문자열 그대로 출력
+                        Text(String(describing: text))
+                    }
                 }
             }
             .font(.objectivityCallout)

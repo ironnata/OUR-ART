@@ -233,7 +233,7 @@ struct HomeScreen: View {
             }
             .onChange(of: exhibitionVM.exhibitions) { _, newExhibitions in
                 let shuffled = newExhibitions.shuffled()
-                    shuffledExhibitions = Array(shuffled.prefix(15))
+                    shuffledExhibitions = Array(shuffled.prefix(10))
             }
             
             if successUploadBanner {

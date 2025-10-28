@@ -10,33 +10,52 @@ import SwiftUI
 struct FullScreenPosterView: View {
     @Binding var isZoomed: Bool
     var image: Image
+    let posterNamespace: Namespace.ID
+    let geometryId: String
+    
+    @State private var showToolbar = false
+    
+    @State private var draggedOffset = CGSize.zero
+    @State private var isActive = false
+      
     
     var body: some View {
-        ZStack {
-            Color.black.opacity(0.2)
+        ZStack(alignment: .center) {
+            Color.black.opacity(0.3)
                 .ignoresSafeArea()
                 .background(.ultraThinMaterial)
-                .onTapGesture {
-                    withAnimation {
-                        isZoomed.toggle()
-                    }
-                }
             
             image
                 .resizable()
                 .scaledToFit()
-                .frame(maxWidth: 300)
-                .clipShape(.rect(cornerRadius: 8))
-                .zoomable(isZoomed: $isZoomed)
-                .onTapGesture {
-                    withAnimation {
-                        isZoomed.toggle()
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
+                .clipShape(.rect(cornerRadius: 10))
+                .matchedGeometryEffect(id: geometryId, in: posterNamespace)
+                .zoomable()
+                .swipeDownToDismiss(isActive: $isZoomed)
+            
+            if showToolbar {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Spacer()
+                        
+                        Button {
+                            isZoomed.toggle()
+                        } label: {
+                            Image(systemName: "xmark")
+                                .imageScale(.large)
+                        }
                     }
+                    .padding()
+                    
+                    Spacer()
                 }
+            }
+        }
+        .onTapGesture {
+            withAnimation(.easeOut) {
+                showToolbar.toggle()
+            }
         }
     }
-}
-
-#Preview {
-    FullScreenPosterView(isZoomed: .constant(false), image: Image(systemName: "photo.on.rectangle.angled"))
 }
