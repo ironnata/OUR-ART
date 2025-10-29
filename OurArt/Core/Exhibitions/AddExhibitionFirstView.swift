@@ -21,23 +21,37 @@ struct AddExhibitionFirstView: View {
     
     @FocusState private var isTitleFocused: Bool
     
+    let imageNames = [
+        "Family and Children _ mother, child, embrace, bond, nurturing",
+        "Nature and Ecology _ night, moon, stars, landscape",
+        "Creative Design _ woman, portrait, artistic, fashion",
+        "Creative Design _ woman, girl, jewelry, headpiece, minimalist",
+        "Home Improvement _ house, repair, handyman, construction, DIY, Vector illustration",
+        "Lifestyle and Leisure _ sleeping, rest, relaxation, man, silhouette, Vector illustration",
+        "Food and Cuisine _ chef, cooking, restaurant, culinary, kitchen",
+        "Family and Children _ silhouette, family, journey, path, line art",
+        "Creative Design _ abstract, surreal, character, face, whimsical",
+        "Nature and Ecology _ wave, ocean, nature, minimal, Vector illustration"
+    ]
+    
+    @State private var randomImageName: String?
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack {
-                    Spacer()
+//                    Spacer()
+                    if let imageName = randomImageName {
+                        Image(imageName)
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(Color.accent)
+                            .frame(maxHeight: UIScreen.main.bounds.height * 0.8)
+                            .clipShape(.rect(cornerRadius: 12, style: .continuous))
+                            .padding(.bottom, 10)
+                    }
                     
-//                    Image("DOT_AddExhibitionFirst")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(maxHeight: 200)
-//                        .clipShape(.rect(cornerRadius: 8, style: .continuous))
-//                        .padding(.bottom, 10)
-//                        .opacity(0.7)
-                    
-//                    Text("SHOW US THE LOVE YOU’VE GOT")
-//                        
-//                    
 //                    Spacer()
                     
                     VStack(alignment: .leading, spacing: 10) {
@@ -99,6 +113,8 @@ struct AddExhibitionFirstView: View {
             }
             .viewBackground()
             .onAppear {
+                randomImageName = imageNames.randomElement()
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
                     isTitleFocused = true
                 }

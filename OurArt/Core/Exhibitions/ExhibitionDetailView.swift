@@ -17,9 +17,16 @@ struct ExhibitionDetailView: View {
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     @StateObject private var mapVM = MapViewModel()
     
+    @Namespace private var fullPosterNS
+    
+    let copyrightNotice = "※ Exhibition details provided by Dot. All rights reserved by the creators"
+    
     @State private var showDeleteAlert = false
     @State private var showEditView = false
     @State private var showCopyMessage = false
+    
+    @State private var cameraTrigger = false
+    @State private var cameraPosition: MapCameraPosition = .automatic
     @State private var showMap = false
     @State private var mapHeight: CGFloat = 0
     
@@ -30,19 +37,24 @@ struct ExhibitionDetailView: View {
     @State private var showLinkAlert = false
     @State private var pendingURL: URL?
     
-    @State private var isExpanded = false
-    @State private var truncated = false
-    
     var myExhibitionId: String?
     var exhibitionId: String // exhibition 객체 대신 ID만 받음
     var isMyExhibition: Bool = false
     
-    @Namespace private var fullPosterNS
     
     func animateMapAppearance() {
-        withAnimation(.spring(response: 0.8, dampingFraction: 1.5)) {
-            mapHeight = 140 // 원하는 높이
+        withAnimation(.spring(response: 0.5, dampingFraction: 1.5)) {
+            mapHeight = 140
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.cameraTrigger.toggle()
+        }
+    }
+    
+    private func isOnlineAddress(_ addr: String?) -> Bool {
+        guard let s = addr?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() else { return false }
+        return s == "online"
     }
     
     private func loadData() {
@@ -58,7 +70,12 @@ struct ExhibitionDetailView: View {
                 isLoading = false
                 
                 if let address = exhibitionVM.exhibition?.address {
-                    mapVM.showAddress(for: address)
+                    if !isOnlineAddress(address) {
+                        mapVM.showAddress(for: address)
+                    } else {
+                        mapVM.coordinate = nil
+                        showMap = false
+                    }
                 }
             } catch {
                 print("전시회 데이터 로드 실패: \(error)")
@@ -159,18 +176,29 @@ struct ExhibitionDetailView: View {
                                 }
                             
                             if let coordinate = mapVM.coordinate {
-                                let region = MKCoordinateRegion(
-                                    center: coordinate,
-                                    span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
-                                )
+//                                let region = MKCoordinateRegion(
+//                                    center: coordinate,
+//                                    span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
+//                                )
+//                                let camera = MapCamera(centerCoordinate: coordinate, distance: 300)
                                 
                                 if showMap {
-                                    Map(position: .constant(.region(region))) {
+                                    Map(position: $cameraPosition) {
                                         Annotation("", coordinate: coordinate, anchor: .bottom) {
                                             Image(systemName: "smallcircle.filled.circle")
                                                 .font(.title3)
                                                 .foregroundStyle(Color.accent)
                                                 .symbolEffect(.pulse)
+                                        }
+                                    }
+                                    .mapCameraKeyframeAnimator(trigger: cameraTrigger) { camera in
+                                        KeyframeTrack(\.centerCoordinate) {
+                                            // move camera position
+                                            CubicKeyframe(coordinate, duration: 0.5)
+                                        }
+                                        KeyframeTrack(\.distance) {
+                                            // zoom in
+                                            CubicKeyframe(500, duration: 0.5)
                                         }
                                     }
                                     .frame(height: mapHeight)
@@ -181,6 +209,9 @@ struct ExhibitionDetailView: View {
                                     }
                                     .onAppear {
                                         animateMapAppearance()
+                                    }
+                                    .onReceive(mapVM.$coordinate.compactMap { $0 }) { coord in
+                                        cameraPosition = .camera(MapCamera(centerCoordinate: coord, distance: 500))
                                     }
                                     
                                     Divider()
@@ -216,6 +247,12 @@ struct ExhibitionDetailView: View {
                         .clipShape(.rect(cornerRadius: 8))
                         
                         SimpleExpandableTextView(text: exhibition.description ?? "")
+                            .padding(.bottom, 10)
+                        
+                        Text(copyrightNotice)
+                            .font(.objectivityFootnote)
+                            .foregroundStyle(Color.secondAccent)
+                            .lineSpacing(3)
                     }
                     .padding()
                 }

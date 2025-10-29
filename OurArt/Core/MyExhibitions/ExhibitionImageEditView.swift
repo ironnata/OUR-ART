@@ -119,7 +119,7 @@ struct ExhibitionImageEditView: View {
                             }
                             
                             if let newItem {
-                                viewModel.savePosterImage(item: newItem)
+                                try await viewModel.savePosterImage(item: newItem)
                                 wasImageUpdated = true
                                 dismiss()
                             }

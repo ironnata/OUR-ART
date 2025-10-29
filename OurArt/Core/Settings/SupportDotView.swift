@@ -118,8 +118,8 @@ struct SupportDotView: View {
                                             showLogo = false
                                         }
                                         
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                            withAnimation(.easeIn(duration: 0.5)) {
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                            withAnimation(.easeIn(duration: 0.3)) {
                                                 showLogo = true
                                             }
                                         }

@@ -40,8 +40,10 @@ struct WelcomeView: View {
                                 Spacer()
                                 
                                 Image(page.imageName)
+                                    .renderingMode(.template)
                                     .resizable()
                                     .scaledToFit()
+                                    .foregroundStyle(Color.accent)
                                     .frame(maxWidth: UIScreen.main.bounds.width * 0.7)
                                     .clipShape(.rect(cornerRadius: 12, style: .continuous))
                                     .padding(.bottom, 30)
@@ -52,8 +54,8 @@ struct WelcomeView: View {
                                 
                                 Text(page.subtitle)
                                     .lineSpacing(7)
-                                    .font(.objectivityBody)
-                                    .foregroundStyle(Color.accent)
+                                    .font(.objectivityThinBody)
+                                    .foregroundStyle(Color.accent2)
                                     .frame(height: 60)
                                     .padding(.bottom, 20)
                             }

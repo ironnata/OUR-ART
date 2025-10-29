@@ -270,6 +270,7 @@ struct ZoomableModifier: ViewModifier {
     let minZoomScale: CGFloat
     let maxZoomScale: CGFloat?
     let doubleTapZoomScale: CGFloat?
+    let resetTrigger: Int?
 
     @State private var lastTransform: CGAffineTransform = .identity
     @State private var transform: CGAffineTransform = .identity
@@ -302,6 +303,15 @@ struct ZoomableModifier: ViewModifier {
                     view.gesture(doubleTapGesture(doubleTapZoomScale))
                 } else {
                     view
+                }
+            }
+            .preference(key: IsAtMinZoomPreferenceKey.self, value: transform.isIdentity)
+            .onChange(of: resetTrigger) { _, _ in
+                // 외부에서 resetTrigger 값이 바뀌면 배율 초기화
+                let newTransform: CGAffineTransform = .identity
+                withAnimation(.snappy(duration: 0.1)) {
+                    transform = newTransform
+                    lastTransform = newTransform
                 }
             }
     }
@@ -426,4 +436,9 @@ struct ZoomableModifier: ViewModifier {
 
         return capped
     }
+}
+
+struct IsAtMinZoomPreferenceKey: PreferenceKey {
+    static var defaultValue: Bool = true
+    static func reduce(value: inout Bool, nextValue: () -> Bool) { value = nextValue() }
 }

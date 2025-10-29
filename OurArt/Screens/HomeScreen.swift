@@ -76,6 +76,7 @@ struct HomeScreen: View {
                                     .font(.objectivityBoldBody)
                                 Text(currentWelcomeComment)
                                     .font(.objectivityFootnote)
+                                    .lineSpacing(5)
                             }
                             .padding()
                             

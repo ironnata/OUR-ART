@@ -14,11 +14,9 @@ struct FullScreenPosterView: View {
     let geometryId: String
     
     @State private var showToolbar = false
-    
-    @State private var draggedOffset = CGSize.zero
-    @State private var isActive = false
-      
-    
+    @State private var isAtMinZoom = true
+    @State private var resetZoomTick = 0
+
     var body: some View {
         ZStack(alignment: .center) {
             Color.black.opacity(0.3)
@@ -31,16 +29,21 @@ struct FullScreenPosterView: View {
                 .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
                 .clipShape(.rect(cornerRadius: 10))
                 .matchedGeometryEffect(id: geometryId, in: posterNamespace)
-                .zoomable()
+                .zoomable(resetTrigger: resetZoomTick)
                 .swipeDownToDismiss(isActive: $isZoomed)
+                .onPreferenceChange(IsAtMinZoomPreferenceKey.self) { isMin in
+                    isAtMinZoom = isMin
+                }
             
-            if showToolbar {
+            if showToolbar && isAtMinZoom {
                 VStack(alignment: .leading) {
                     HStack {
                         Spacer()
                         
                         Button {
-                            isZoomed.toggle()
+                            withAnimation(.smooth(duration: 0.5)) {
+                                isZoomed.toggle()
+                            }
                         } label: {
                             Image(systemName: "xmark")
                                 .imageScale(.large)
@@ -53,8 +56,9 @@ struct FullScreenPosterView: View {
             }
         }
         .onTapGesture {
-            withAnimation(.easeOut) {
-                showToolbar.toggle()
+            withAnimation(.smooth(duration: 0.5)) {
+                showToolbar = true
+                resetZoomTick &+= 1
             }
         }
     }

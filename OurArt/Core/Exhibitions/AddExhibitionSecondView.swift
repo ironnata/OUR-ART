@@ -46,6 +46,7 @@ struct AddExhibitionSecondView: View {
     
     @State private var showDeleteAlert = false
     
+    let placeholderImage = Image("Business and Finance _ businessman, confusion, uncertainty, questioning, perplexed")
     let closingDaysOptions = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     @State private var selectedClosingDays: Set<String> = []
     
@@ -71,16 +72,20 @@ struct AddExhibitionSecondView: View {
                                                 .scaledToFit()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
-                                            Image(systemName: "photo.stack")
+                                            placeholderImage
+                                                .renderingMode(.template)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(maxWidth: 120)
+                                                .foregroundStyle(Color.accent)
+                                                .frame(maxWidth: 160)
                                         }
                                     } else {
-                                        Image(systemName: "photo.stack")
+                                        placeholderImage
+                                            .renderingMode(.template)
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 120)
+                                            .foregroundStyle(Color.accent)
+                                            .frame(maxWidth: 160)
                                     }
                                     
                                     Button {
@@ -244,7 +249,7 @@ struct AddExhibitionSecondView: View {
                                     try? await viewModel.addDate(dateFrom: selectedFromDate, dateTo: selectedToDate)
                                     try? await viewModel.addOpeningHours(openingHoursFrom: selectedFromTime, openingHoursTo: selectedToTime)
                                     if selectedAddress.isEmpty {
-                                        try? await viewModel.addAddress(text: "Not provided")
+                                        try? await viewModel.addAddress(text: "Unknown")
                                     } else {
                                         try? await viewModel.addAddress(text: selectedAddress)
                                     }

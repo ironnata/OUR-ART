@@ -311,22 +311,18 @@ final class ExhibitionViewModel: ObservableObject {
     
     // MARK: - POSTER IMAGE
     
-    func savePosterImage(item: PhotosPickerItem) {
+    func savePosterImage(item: PhotosPickerItem) async throws {
+        guard let exhibition else { return }
+        
         Task {
-            do {
-                guard let exhibition = exhibition else { return }
-                
-                guard let data = try await item.loadTransferable(type: Data.self) else { return }
-                let (path, name) = try await StorageManager.shared.savePoster(data: data, exhibitionId: exhibition.id)
-                print("SUCCESS!")
-                print(path)
-                print(name)
-                
-                let url = try await StorageManager.shared.getUrlForImage(path: path)
-                try await ExhibitionManager.shared.updateUserPosterImagePath(exhibitionId: exhibition.id, path: path, url: url.absoluteString)
-            } catch {
-                print("포스터 이미지 저장 중 오류 발생: \(error)")
-            }
+            guard let data = try await item.loadTransferable(type: Data.self) else { return }
+            let (path, name) = try await StorageManager.shared.savePoster(data: data, exhibitionId: exhibition.id)
+            print("SUCCESS!")
+            print(path)
+            print(name)
+            
+            let url = try await StorageManager.shared.getUrlForImage(path: path)
+            try await ExhibitionManager.shared.updateUserPosterImagePath(exhibitionId: exhibition.id, path: path, url: url.absoluteString)
         }
     }
     

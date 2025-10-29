@@ -15,6 +15,7 @@ struct EditMyExhibitionView: View {
     
     @Binding var showEditView: Bool
     var exhibitionId: String
+    let placeholderImage = Image("Business and Finance _ businessman, confusion, uncertainty, questioning, perplexed")
     
     @State private var title: String = ""
     @State private var artist: String = ""
@@ -36,6 +37,7 @@ struct EditMyExhibitionView: View {
     
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
+    
     private var noSelectedTime: Date {
         Calendar.current.startOfDay(for: Date())
     }
@@ -87,16 +89,20 @@ struct EditMyExhibitionView: View {
                                                 .scaledToFit()
                                                 .modifier(MidPosterSizeModifier())
                                         } placeholder: {
-                                            Image(systemName: "photo.stack")
+                                            placeholderImage
+                                                .renderingMode(.template)
                                                 .resizable()
                                                 .aspectRatio(contentMode: .fit)
-                                                .frame(maxWidth: 120)
+                                                .foregroundStyle(Color.accent)
+                                                .frame(maxWidth: 160)
                                         }
                                     } else {
-                                        Image(systemName: "photo.stack")
+                                        placeholderImage
+                                            .renderingMode(.template)
                                             .resizable()
                                             .aspectRatio(contentMode: .fit)
-                                            .frame(maxWidth: 120)
+                                            .foregroundStyle(Color.accent)
+                                            .frame(maxWidth: 160)
                                     }
                                     
                                     

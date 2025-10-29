@@ -14,6 +14,8 @@ struct ProfileEditView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @Binding var showSignInView: Bool
     
+    @Namespace private var fullPosterNS
+    
     @State private var nickname: String = ""
     @State private var showInputAlert = false
     @State private var showImageEditView = false
@@ -33,9 +35,9 @@ struct ProfileEditView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                VStack {
-                    if let user = viewModel.user {
+            if let user = viewModel.user {
+                ZStack {
+                    VStack {
                         
                         Spacer()
                         
@@ -45,10 +47,16 @@ struct ProfileEditView: View {
                             
                             VStack {
                                 if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
+                                    let gid = "profile-\(user.userId)"
+                                    
                                     AsyncImage(url: url) { image in
                                         image
                                             .resizable()
                                             .modifier(ProfileImageModifer())
+                                            .if(!isZoomed) { view in
+                                                view.matchedGeometryEffect(id: gid, in: fullPosterNS)
+                                            }
+                                            .opacity(isZoomed ? 0 : 1)
                                             .onTapGesture {
                                                 withAnimation {
                                                     currentImage = image
@@ -191,6 +199,25 @@ struct ProfileEditView: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
+                .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
+                .viewBackground()
+                .toolbar {
+                    ToolbarBackButton()
+                }
+                .overlay(
+                    Group {
+                        if isZoomed, let image = currentImage {
+                            FullScreenProfileImageView(
+                                isZoomed: $isZoomed,
+                                image: image,
+                                posterNamespace: fullPosterNS,
+                                geometryId: "profile-\(user.userId)"
+                            )
+                            .transition(.identity) // matchedGeometryEffect와 충돌 방지
+                            .zIndex(1)
+                        }
+                    }
+                )
                 
                 if showUpdateMessage {
                     VStack {
@@ -201,22 +228,10 @@ struct ProfileEditView: View {
                 }
                 
             }
-            .viewBackground()
-            .toolbar {
-                ToolbarBackButton()
-            }
         }
         .task {
             try? await viewModel.loadCurrentUser()
         }
-        .overlay(
-            Group {
-                if isZoomed, let image = currentImage {
-                    FullScreenProfileImageView(isZoomed: $isZoomed, image: image)
-                        .toolbar(isZoomed ? .hidden : .automatic, for: .navigationBar)
-                }
-            }
-        )
     }
 }
 

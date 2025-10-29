@@ -166,13 +166,15 @@ extension View {
     public func zoomable(
         minZoomScale: CGFloat = 1,
         maxZoomScale: CGFloat? = nil,
-        doubleTapZoomScale: CGFloat? = 3
+        doubleTapZoomScale: CGFloat? = 3,
+        resetTrigger: Int? = nil
     ) -> some View {
         modifier(
             ZoomableModifier(
                 minZoomScale: minZoomScale,
                 maxZoomScale: maxZoomScale,
-                doubleTapZoomScale: doubleTapZoomScale
+                doubleTapZoomScale: doubleTapZoomScale,
+                resetTrigger: resetTrigger
             )
         )
     }
@@ -182,6 +184,7 @@ extension View {
         minZoomScale: CGFloat = 1,
         maxZoomScale: CGFloat? = nil,
         doubleTapZoomScale: CGFloat? = 3,
+        resetTrigger: Int? = nil,
         outOfBoundsColor: Color = .clear
     ) -> some View {
         GeometryReader { _ in
@@ -190,7 +193,8 @@ extension View {
                 self.zoomable(
                     minZoomScale: minZoomScale,
                     maxZoomScale: maxZoomScale,
-                    doubleTapZoomScale: doubleTapZoomScale
+                    doubleTapZoomScale: doubleTapZoomScale,
+                    resetTrigger: resetTrigger
                 )
             }
         }
