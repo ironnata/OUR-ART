@@ -68,14 +68,14 @@ struct ListScreen: View {
                             
                             if !searchText.isEmpty {
                                 ForEach(filterExhibitions()) { exhibition in
-                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
                                         .environmentObject(viewModel)
                                 }
                                 .sectionBackground()
                             } else {
                                 Section {
                                     ForEach(viewModel.ongoingOrUpcoming) { exhibition in
-                                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
                                             .environmentObject(viewModel)
                                     }
                                 } header: {
@@ -92,7 +92,7 @@ struct ListScreen: View {
                                 if showPastSection {
                                     Section {
                                         ForEach(viewModel.past) { exhibition in
-                                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
+                                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
                                                 .environmentObject(viewModel)
                                         }
                                     } header: {

@@ -47,8 +47,18 @@ struct SettingsScreen: View {
                                 Spacer()
                             }
                         }
-                        // My Favorites 넣기
-                        
+                        // My Favorites
+                        ZStack {
+                            NavigationLink(destination: FavoritesView().navigationBarBackButtonHidden()) {
+                                EmptyView()
+                            }
+                            .opacity(0)
+                            
+                            HStack {
+                                SettingsRow(icon: "heart", label: "My Favorites")
+                                Spacer()
+                            }
+                        }
                     }
                 } header: {
                     Text("My Dots")
@@ -180,6 +190,7 @@ struct SettingsScreen: View {
                     
                     Button(role: .destructive) {
                         showDeleteAlert = true
+                        Haptic.notification(type: .warning)
                     } label: {
                         HStack {
                             Image(systemName: "eyes")

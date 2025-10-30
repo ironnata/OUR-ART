@@ -27,19 +27,35 @@ struct AddressSearchView: View {
     @Binding var selectedCity: String
     @Binding var isPresented: Bool
     
-    private func didTapOnCompletion(_ completion: SearchCompletions) {
+//    private func didTapOnCompletion(_ completion: SearchCompletions) {
+//        Task {
+//            if let result = try? await viewModel.search(for: "\(completion.title) \(completion.subtitle)").first {
+//                selectedLatitude = result.coordinate.latitude
+//                selectedLongitude = result.coordinate.longitude
+//                
+//                let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+//                region = MKCoordinateRegion(center: result.coordinate, span: span)
+//                
+//                let coordinate = result.coordinate
+//                try await viewModel.updateAddress(for: coordinate)
+//            }
+//        }
+//    }
+    
+    private func didTapOnCompletion(_ completion: MKLocalSearchCompletion) {
         Task {
-            if let result = try? await viewModel.search(for: "\(completion.title) \(completion.subtitle)").first {
+            if let result = try? await viewModel.search(for: completion) {
                 selectedLatitude = result.coordinate.latitude
                 selectedLongitude = result.coordinate.longitude
                 
                 let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
                 region = MKCoordinateRegion(center: result.coordinate, span: span)
                 
-                let coordinate = result.coordinate
-                try await viewModel.updateAddress(for: coordinate)
+                // AddressSearchViewModel 내부에서 이미 주소 정보를 업데이트했으므로 별도 호출 불필요
             }
         }
+        showList = false
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
     private func updateAddress() {
@@ -53,6 +69,18 @@ struct AddressSearchView: View {
             }
         }
     }
+    
+//    private func updateAddress() {
+//        guard let latitude = selectedLatitude, let longitude = selectedLongitude else { return }
+//        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+//        Task { @MainActor in
+//            do {
+//                try await viewModel.updateAddress(for: coordinate)
+//            } catch {
+//                print("Error updating address: \(error)")
+//            }
+//        }
+//    }
 
     
     var body: some View {
@@ -96,7 +124,14 @@ struct AddressSearchView: View {
                             .focused($isTextFieldFocused)
                             .onSubmit {
                                 Task {
-                                    try await viewModel.search(for: viewModel.queryFragment)
+//                                    try await viewModel.search(for: viewModel.queryFragment)
+                                    if let result = try? await viewModel.search(for: viewModel.queryFragment) {
+                                        selectedLatitude = result.coordinate.latitude
+                                        selectedLongitude = result.coordinate.longitude
+                                        
+                                        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                                        region = MKCoordinateRegion(center: result.coordinate, span: span)
+                                    }
                                 }
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
@@ -138,7 +173,7 @@ struct AddressSearchView: View {
                 
                 if showList {
                     List {
-                        ForEach(viewModel.completions) { completion in
+                        ForEach(viewModel.completions, id: \.self) { completion in
                             Button(action: {
                                 didTapOnCompletion(completion)
                                 showList = false

@@ -113,12 +113,22 @@ final class UserManager {
         userCollection.document(userId)
     }
     
+    // MY
     private func userMyExhibitionCollection(userId: String) -> CollectionReference {
         userDocument(userId: userId).collection("my_exhibitions")
     }
     
     private func userMyExhibitionDocument(userId: String, myExhibitionId: String) -> DocumentReference {
         userMyExhibitionCollection(userId: userId).document(myExhibitionId)
+    }
+    
+    // FAV
+    private func userFavoriteCollection(userId: String) -> CollectionReference {
+        userDocument(userId: userId).collection("favorite_exhibitions")
+    }
+    
+    private func userFavoriteDocument(userId: String, favExhibitionId: String) -> DocumentReference {
+        userMyExhibitionCollection(userId: userId).document(favExhibitionId)
     }
     
     private let encoder: Firestore.Encoder = {
@@ -133,7 +143,11 @@ final class UserManager {
         return decoder
     }()
     
+    // MY
     private var userMyExhibitionsListener: ListenerRegistration? = nil
+    
+    // FAV
+    private var userFavoritesListener: ListenerRegistration? = nil
     
     func creatNewUser(user: DBUser) async throws {
         try userDocument(userId: user.userId).setData(from: user, merge: false)
@@ -245,6 +259,33 @@ final class UserManager {
         try await userMyExhibitionCollection(userId: userId).getDocuments(as: UserMyExhibition.self)
     }
     
+    // MARK: - FAVORITE EXHIBITIONS
+    
+    func addFavExhibition(userId: String, exhibitionId: String) async throws {
+        let document = userFavoriteCollection(userId: userId).document()
+        let documentId = document.documentID
+        
+        let data: [String:Any] = [
+            UserFavoriteExhibition.CodingKeys.id.rawValue : documentId,
+            UserFavoriteExhibition.CodingKeys.exhibitionId.rawValue : exhibitionId,
+            UserFavoriteExhibition.CodingKeys.dateCreated.rawValue : Timestamp()
+        ]
+        
+        try await document.setData(data, merge: false)
+    }
+    
+    func getFavorite(userId: String, favExhibitionId: String) async throws -> UserFavoriteExhibition {
+        try await userFavoriteDocument(userId: userId, favExhibitionId: favExhibitionId).getDocument(as: UserFavoriteExhibition.self)
+    }
+    
+    func removeFavorite(userId: String, favExhibitionId: String) async throws {
+        try await userFavoriteDocument(userId: userId, favExhibitionId: favExhibitionId).delete()
+    }
+    
+    func getAllFavorites(userId: String) async throws -> [UserFavoriteExhibition] {
+        try await userFavoriteCollection(userId: userId).getDocuments(as: UserFavoriteExhibition.self)
+    }
+    
 //    func removeListenerForAllMyExhibitions() {
 //        self.userMyExhibitionsListener?.remove()
 //    }
@@ -278,6 +319,7 @@ final class UserManager {
 //        return publisher.eraseToAnyPublisher()
 //    }
 
+    // MARK: - MY EXHIBITIONS LISTENER
     func addListenerForAllUserMyExhibitions(userId: String) -> AnyPublisher<[UserMyExhibition], Error> {
         let (publisher, listener) = userMyExhibitionCollection(userId: userId)
             .addSnapshotListener(as: UserMyExhibition.self)
@@ -289,10 +331,49 @@ final class UserManager {
     func removeListenerForAllUserMyExhibitions() {
         self.userMyExhibitionsListener?.remove()
     }
+    
+    // MARK: - FAVORITE EXHIBITIONS LISTENER
+    func addListenerForAllUserFavorites(userId: String) -> AnyPublisher<[UserFavoriteExhibition], Error> {
+        let (publisher, listener) = userFavoriteCollection(userId: userId)
+            .addSnapshotListener(as: UserFavoriteExhibition.self)
+        
+        self.userFavoritesListener = listener
+        return publisher
+    }
+    
+    func removeListenerForAllUserFavorites() {
+        self.userMyExhibitionsListener?.remove()
+    }
 }
 
 
 struct UserMyExhibition: Codable, Identifiable {
+    var id: String
+    let exhibitionId: String
+    let dateCreated: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case exhibitionId = "exhibition_id"
+        case dateCreated = "date_created"
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.exhibitionId = try container.decode(String.self, forKey: .exhibitionId)
+        self.dateCreated = try container.decode(Date.self, forKey: .dateCreated)
+    }
+    
+    func encode(to encoder: any Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.id, forKey: .id)
+        try container.encode(self.exhibitionId, forKey: .exhibitionId)
+        try container.encode(self.dateCreated, forKey: .dateCreated)
+    }
+}
+
+struct UserFavoriteExhibition: Codable, Identifiable {
     var id: String
     let exhibitionId: String
     let dateCreated: Date

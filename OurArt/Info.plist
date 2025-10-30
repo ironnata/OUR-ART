@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>instagram-stories</string>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>UISupportedInterfaceOrientations</key>
@@ -21,6 +25,12 @@
 			</array>
 		</dict>
 	</array>
+	<key>FacebookAppID</key>
+	<string>1306963787784168</string>
+	<key>FacebookClientToken</key>
+	<string>65d2e5faff57c228f6a446944b3777ab</string>
+	<key>FacebookDisplayName</key>
+	<string>DOT.</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3940256099942544~3347511713</string>
 	<key>GADIsAdManagerApp</key>

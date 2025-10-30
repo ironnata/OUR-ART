@@ -130,7 +130,7 @@ struct MidPosterSizeModifier: ViewModifier {
 struct BigPosterSizeModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
-            .frame(maxWidth: 280)
+            .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
             .clipShape(.rect(cornerRadius: 8))
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import GoogleMobileAds
+import FacebookCore
 
 @main
 struct OurArtApp: App {
@@ -32,6 +33,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         print("Configured Firebase!")
         
         MobileAds.shared.start(completionHandler: nil)
+        
+        ApplicationDelegate.shared.application(
+            application,
+            didFinishLaunchingWithOptions: launchOptions
+        )
         
         // 다크 모드에 따라 tintColor 설정
         let appearance = UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self])

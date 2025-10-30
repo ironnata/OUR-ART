@@ -11,6 +11,7 @@ struct ExhibitionCellViewBuilder: View {
     
     let exhibitionId: String
     let myExhibitionId: String?
+    let favExhibitionId: String?
     
     @EnvironmentObject var exhibitionVM: ExhibitionViewModel
     @State private var exhibition: Exhibition?
@@ -20,9 +21,11 @@ struct ExhibitionCellViewBuilder: View {
             if let exhibition = exhibition {
                 ZStack {
                     NavigationLink(destination: ExhibitionDetailView(
-                        myExhibitionId: myExhibitionId,
                         exhibitionId: exhibitionId,
-                        isMyExhibition: myExhibitionId != nil
+                        myExhibitionId: myExhibitionId,
+                        isMyExhibition: myExhibitionId != nil,
+                        favExhibitionId: favExhibitionId,
+                        isFavExhibition: favExhibitionId != nil
                     )) {
                         EmptyView()
                     }
@@ -44,9 +47,3 @@ struct ExhibitionCellViewBuilder: View {
     }
 }
 
-#Preview {
-    // Preview에서는 mockViewModel을 생성하여 사용
-    let mockViewModel = ExhibitionViewModel()
-    return ExhibitionCellViewBuilder(exhibitionId: "3B5DEAFF-96F6-409F-A67B-1951C38E20AF", myExhibitionId: "")
-        .environmentObject(mockViewModel)
-}

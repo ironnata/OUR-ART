@@ -116,6 +116,7 @@ struct SupportDotView: View {
                                     .onTapGesture {
                                         withAnimation(.easeOut(duration: 0.3)) {
                                             showLogo = false
+                                            Haptic.impact(style: .soft)
                                         }
                                         
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {

@@ -1,17 +1,17 @@
 //
-//  MyExhibitionsView.swift
+//  FavoritesView.swift
 //  OurArt
 //
-//  Created by Jongmo You on 29.04.24.
+//  Created by Jongmo You on 30.10.25.
 //
 
 import SwiftUI
 
-struct MyExhibitionsView: View {
+struct FavoritesView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var myExhibitionVM = MyExhibitionViewModel()
+    @StateObject private var favExhibitionVM = FavoriteExhibitionViewModel()
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     
     @State private var isLoading: Bool = false
@@ -19,12 +19,12 @@ struct MyExhibitionsView: View {
     @State private var refreshCount = 0
     
     private func addListeners() {
-        myExhibitionVM.addListenerForMyExhibitions()
+        favExhibitionVM.addListenerForAllUserFavorites()
         exhibitionVM.addListenerForAllExhibitions()
     }
     
     private func removeListeners() {
-        myExhibitionVM.removeListenerForMyExhibitions()
+        favExhibitionVM.removeListenerForAllUserFavorites()
         exhibitionVM.removeListenerForAllExhibitions()
     }
     
@@ -46,12 +46,12 @@ struct MyExhibitionsView: View {
         ZStack {
             List {
                 Section {
-                    ForEach(myExhibitionVM.myOngoingOrUpcoming) { exhibition in
-                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: myExhibitionVM.userMyExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id, favExhibitionId: nil)
+                    ForEach(favExhibitionVM.favOngoingOrUpcoming) { exhibition in
+                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favExhibitionVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
                             .environmentObject(exhibitionVM)
                     }
                 } header: {
-                    if myExhibitionVM.myOngoingOrUpcoming.isEmpty {
+                    if favExhibitionVM.favOngoingOrUpcoming.isEmpty {
                         EmptyView()
                     } else {
                         Text("Ongoing / Upcoming")
@@ -61,12 +61,12 @@ struct MyExhibitionsView: View {
                 .sectionBackground()
                 
                 Section {
-                    ForEach(myExhibitionVM.myPast) { exhibition in
-                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: myExhibitionVM.userMyExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id, favExhibitionId: nil)
+                    ForEach(favExhibitionVM.favPast) { exhibition in
+                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favExhibitionVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
                             .environmentObject(exhibitionVM)
                     }
                 } header: {
-                    if myExhibitionVM.myPast.isEmpty {
+                    if favExhibitionVM.favPast.isEmpty {
                         EmptyView()
                     } else {
                         Text("Past")
@@ -95,10 +95,10 @@ struct MyExhibitionsView: View {
         .viewBackground()
         .onAppear {
             addListeners()
-            myExhibitionVM.updateSections(with: exhibitionVM.exhibitions)
+            favExhibitionVM.updateSections(with: exhibitionVM.exhibitions)
         }
         .onChange(of: exhibitionVM.exhibitions) { _, newValue in
-            myExhibitionVM.updateSections(with: newValue)
+            favExhibitionVM.updateSections(with: newValue)
         }
         .onDisappear {
             removeListeners()
@@ -106,7 +106,7 @@ struct MyExhibitionsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Text("My Exhibitions")
+                Text("My Favorites")
                     .font(.objectivityTitle3)
             }
             
@@ -114,4 +114,3 @@ struct MyExhibitionsView: View {
         }
     }
 }
-

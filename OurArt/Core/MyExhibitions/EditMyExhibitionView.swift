@@ -13,6 +13,8 @@ struct EditMyExhibitionView: View {
     
     @StateObject private var viewModel = ExhibitionViewModel()
     
+    @FocusState private var isFocused: Bool
+    
     @Binding var showEditView: Bool
     var exhibitionId: String
     let placeholderImage = Image("Business and Finance _ businessman, confusion, uncertainty, questioning, perplexed")
@@ -264,6 +266,17 @@ struct EditMyExhibitionView: View {
                                     TextField(exhibition.onlineLink ?? "online link", text: $onlineLink)
                                         .modifier(TextFieldDescriptionModifier())
                                         .keyboardType(.URL)
+                                        .autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .focused($isFocused)
+                                        .onChange(of: isFocused) { _, newValue in
+                                            if newValue {
+                                                // onlineLink가 비어있거나, 접두사로 시작하지 않을 경우에만 추가
+                                                if onlineLink.isEmpty || !onlineLink.hasPrefix("https://") {
+                                                    onlineLink = "https://" + onlineLink
+                                                }
+                                            }
+                                        }
                                         .showClearButton($onlineLink)
                                 }
                             }

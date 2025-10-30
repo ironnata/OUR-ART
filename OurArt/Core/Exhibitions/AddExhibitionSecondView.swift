@@ -15,6 +15,8 @@ struct AddExhibitionSecondView: View {
     @StateObject private var viewModel = ExhibitionViewModel()
     @StateObject private var adModel = InterstitialViewModel()
     
+    @FocusState private var isFocused: Bool
+    
     @Binding var showAddingView: Bool
     
     @Binding var title: String
@@ -218,6 +220,14 @@ struct AddExhibitionSecondView: View {
                                     TextField("online link", text: $onlineLink)
                                         .modifier(TextFieldDescriptionModifier())
                                         .keyboardType(.URL)
+                                        .autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .focused($isFocused)
+                                        .onChange(of: isFocused) { _, newValue in
+                                            if newValue && onlineLink.isEmpty {
+                                                onlineLink = "https://"
+                                            }
+                                        }
                                         .showClearButton($onlineLink)
                                 }
                             }

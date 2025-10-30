@@ -7,6 +7,7 @@
 
 import SwiftUI
 import MapKit
+import UIKit
 
 struct ExhibitionDetailView: View {
     
@@ -20,10 +21,12 @@ struct ExhibitionDetailView: View {
     @Namespace private var fullPosterNS
     
     let copyrightNotice = "※ Exhibition details provided by Dot. All rights reserved by the creators"
+    let placeholderImage = Image("Cultural and Social Issues _ peace, protest, hand, political, activism")
     
     @State private var showDeleteAlert = false
     @State private var showEditView = false
     @State private var showCopyMessage = false
+    @State private var showShareAlert = false
     
     @State private var cameraTrigger = false
     @State private var cameraPosition: MapCameraPosition = .automatic
@@ -37,10 +40,18 @@ struct ExhibitionDetailView: View {
     @State private var showLinkAlert = false
     @State private var pendingURL: URL?
     
+    @State private var isRefreshing = false
+    
+    var exhibitionId: String
+    
     var myExhibitionId: String?
-    var exhibitionId: String // exhibition 객체 대신 ID만 받음
     var isMyExhibition: Bool = false
     
+    var favExhibitionId: String?
+    var isFavExhibition: Bool = false
+    
+    @State private var localImageFileURL: URL? = nil
+    @State private var isLoadingLocalFile = false
     
     func animateMapAppearance() {
         withAnimation(.spring(response: 0.5, dampingFraction: 1.5)) {
@@ -55,6 +66,13 @@ struct ExhibitionDetailView: View {
     private func isOnlineAddress(_ addr: String?) -> Bool {
         guard let s = addr?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() else { return false }
         return s == "online"
+    }
+    
+    private func refreshData() async {
+        isRefreshing = true
+        try? await Task.sleep(for: .seconds(0.8))
+        loadData()
+        isRefreshing = false
     }
     
     private func loadData() {
@@ -91,6 +109,111 @@ struct ExhibitionDetailView: View {
         }
     }
     
+    func downloadImageFile() async {
+        guard let urlString = exhibitionVM.exhibition?.posterImagePathUrl,
+              let url = URL(string: urlString) else {
+            print("Invalid or missing image URL")
+            return
+        }
+        
+        isLoadingLocalFile = true
+        defer { isLoadingLocalFile = false }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            guard let image = UIImage(data: data) else {
+                print("Failed to create UIImage")
+                return
+            }
+            
+            // 임시 디렉토리에 파일로 저장
+            let tempDir = FileManager.default.temporaryDirectory
+            let fileURL = tempDir.appendingPathComponent("exhibition_poster.jpg")
+            
+            if let jpegData = image.jpegData(compressionQuality: 1.0) {
+                try jpegData.write(to: fileURL, options: .atomic)
+                DispatchQueue.main.async {
+                    localImageFileURL = fileURL
+                }
+            }
+        } catch {
+            print("Image download or save error: \(error)")
+        }
+    }
+    
+    func shareExhibitionToInstagram() {
+        guard let exhibition = exhibitionVM.exhibition,
+              let imageUrlString = exhibition.posterImagePathUrl,
+              let imageURL = URL(string: imageUrlString) else {
+            print("이미지 URL 없음")
+            return
+        }
+        
+        Task {
+            do {
+                let (data, _) = try await URLSession.shared.data(from: imageURL)
+                guard let stickerImage = UIImage(data: data) else {
+                    print("스티커 이미지 변환 실패")
+                    return
+                }
+                
+                // 배경 이미지 (검정색 Rectangle)
+                let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1080, height: 1920))
+                let backgroundImage = renderer.image { context in
+                    UIColor.black.setFill()
+                    context.fill(CGRect(x: 0, y: 0, width: 1080, height: 1920))
+                }
+                
+                shareToInstagram(background: backgroundImage, sticker: stickerImage, link: "https://google.com")
+            } catch {
+                print("이미지 로드 실패:", error)
+            }
+        }
+    }
+    
+    private func shareToInstagram(background: UIImage?, sticker: UIImage?, link: String) {
+        guard let background,
+              let sticker,
+              let bgData = background.pngData(),
+              let stickerData = sticker.pngData() else {
+            print("이미지 PNG 변환 실패")
+            return
+        }
+        
+        let appID = "1306963787784168"
+        let urlString = "instagram-stories://share?source_application=\(appID)"
+        guard let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) else {
+            print("인스타그램 앱이 설치되어 있지 않거나 URL 스킴 실패")
+            withAnimation(.spring(response: 0.3)) {
+                showShareAlert = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                withAnimation(.spring(response: 0.3)) {
+                    showShareAlert = false
+                }
+            }
+            return
+        }
+        
+        var pasteboardItems: [[String: Any]] = [[
+            "com.instagram.sharedSticker.backgroundImage": bgData,
+            "com.instagram.sharedSticker.stickerImage": stickerData,
+            "com.instagram.sharedSticker.contentURL": link
+        ]]
+        
+        // 링크가 있을 경우 content URL 추가 가능
+        if !link.isEmpty {
+            pasteboardItems[0]["com.instagram.sharedSticker.contentURL"] = link
+        }
+        
+        let pasteboardOptions: [UIPasteboard.OptionsKey: Any] = [
+            .expirationDate: Date().addingTimeInterval(300)
+        ]
+        
+        UIPasteboard.general.setItems(pasteboardItems, options: pasteboardOptions)
+        UIApplication.shared.open(url, options: [:])
+    }
+    
     var body: some View {
         ZStack {
             if isLoading {
@@ -118,11 +241,60 @@ struct ExhibitionDetailView: View {
                                 }
                             }
                     } placeholder: {
-                        Text("No Poster") // 뭔가 플레이스홀더를 만들어볼까? 흠........ //
-                            .frame(width: 240, height: 240, alignment: .center)
-                            .font(.objectivityTitle3)
+                        VStack {
+                            placeholderImage
+                                .renderingMode(.template)
+                                
+                            Text("No Poster but Peace")
+                                .font(.objectivityFootnote)
+                                .offset(y: -25)
+                        }
+                        .foregroundStyle(Color.secondAccent)
+                        .frame(maxWidth: UIScreen.main.bounds.width * 0.6)
                     }
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 10)
+                    
+                    ZStack(alignment: .center) {
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundStyle(Color.redacted)
+                        
+                        HStack(spacing: 10) {
+                            Spacer()
+                            
+                            Button {
+                                
+                            } label: {
+                                Image(systemName: "heart")
+                                    .imageScale(.large)
+                            }
+                            
+                            Spacer()
+                            
+                            Button {
+                                shareExhibitionToInstagram()
+                            } label: {
+                                Image("instagram-logo")
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(Color.accent)
+                                    .frame(width: 22, height: 22)
+                            }
+                            
+                            Spacer()
+                            
+                            if let fileURL = localImageFileURL {
+                                ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .imageScale(.large)
+                                }
+                            }
+                            
+                            Spacer()
+                        }
+                    }
+                    .frame(height: 50)
+                    .padding()
                     
                     VStack(alignment: .leading, spacing: 10) {
                         Text(exhibition.title ?? "")
@@ -183,35 +355,41 @@ struct ExhibitionDetailView: View {
 //                                let camera = MapCamera(centerCoordinate: coordinate, distance: 300)
                                 
                                 if showMap {
-                                    Map(position: $cameraPosition) {
-                                        Annotation("", coordinate: coordinate, anchor: .bottom) {
-                                            Image(systemName: "smallcircle.filled.circle")
-                                                .font(.title3)
-                                                .foregroundStyle(Color.accent)
-                                                .symbolEffect(.pulse)
+                                    ZStack {
+                                        Map(position: $cameraPosition) {
+                                            Annotation("", coordinate: coordinate, anchor: .bottom) {
+                                                Image(systemName: "smallcircle.filled.circle")
+                                                    .font(.title3)
+                                                    .foregroundStyle(Color.accent)
+                                                    .symbolEffect(.pulse)
+                                            }
                                         }
-                                    }
-                                    .mapCameraKeyframeAnimator(trigger: cameraTrigger) { camera in
-                                        KeyframeTrack(\.centerCoordinate) {
-                                            // move camera position
-                                            CubicKeyframe(coordinate, duration: 0.5)
+                                        .mapCameraKeyframeAnimator(trigger: cameraTrigger) { camera in
+                                            KeyframeTrack(\.centerCoordinate) {
+                                                // move camera position
+                                                CubicKeyframe(coordinate, duration: 0.5)
+                                            }
+                                            KeyframeTrack(\.distance) {
+                                                // zoom in
+                                                CubicKeyframe(500, duration: 0.5)
+                                            }
                                         }
-                                        KeyframeTrack(\.distance) {
-                                            // zoom in
-                                            CubicKeyframe(500, duration: 0.5)
+                                        .frame(height: mapHeight)
+                                        .clipShape(RoundedRectangle(cornerRadius: 5))
+                                        .disabled(true)
+                                        .onAppear {
+                                            animateMapAppearance()
                                         }
-                                    }
-                                    .frame(height: mapHeight)
-                                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                                    .disabled(true)
-                                    .onTapGesture {
-                                        mapVM.openMapAtCoordinate(coordinate)
-                                    }
-                                    .onAppear {
-                                        animateMapAppearance()
-                                    }
-                                    .onReceive(mapVM.$coordinate.compactMap { $0 }) { coord in
-                                        cameraPosition = .camera(MapCamera(centerCoordinate: coord, distance: 500))
+                                        .onReceive(mapVM.$coordinate.compactMap { $0 }) { coord in
+                                            cameraPosition = .camera(MapCamera(centerCoordinate: coord, distance: 500))
+                                        }
+                                        
+                                        Color.clear
+                                            .contentShape(Rectangle())
+                                            .onTapGesture {
+//                                                mapVM.openMapAtCoordinate(coordinate, name: exhibition.title)
+                                                mapVM.openMap(coordinate, name: exhibition.title)
+                                            }
                                     }
                                     
                                     Divider()
@@ -228,7 +406,7 @@ struct ExhibitionDetailView: View {
                                         pendingURL = url
                                         showLinkAlert = true
                                     } label: {
-                                        InfoDetailView(icon: "link.circle", text: "Visit Site", textColor: .accent2)
+                                        InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .accent2)
                                     }
                                     .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
                                         Button("Cancel", role: .cancel) {
@@ -262,9 +440,36 @@ struct ExhibitionDetailView: View {
                 .toolbar {
                     ToolbarBackButton()
                     
-                    if isMyExhibition {
-                        CompatibleToolbarItem(placement: .topBarTrailing) {
-                            Menu {
+                    CompatibleToolbarItem(placement: .topBarTrailing) {
+                        if let fileURL = localImageFileURL {
+                            ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
+                                Label("Share Poster", systemImage: "square.and.arrow.up")
+                            }
+                        }
+                        
+                        Menu {
+                            Button(action: {
+                                shareExhibitionToInstagram()
+                            }) {
+                                HStack {
+                                    Text("Share Story")
+                                    
+                                    Image("instagram-logo")
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .foregroundStyle(Color.accent)
+                                        .frame(width: 10, height: 10)
+                                }
+                            }
+                            
+                            if let fileURL = localImageFileURL {
+                                ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
+                                    Label("Share Poster", systemImage: "square.and.arrow.up")
+                                }
+                            }
+                            
+                            if isMyExhibition {
                                 Button(action: {
                                     showEditView = true
                                 }) {
@@ -276,15 +481,23 @@ struct ExhibitionDetailView: View {
                                 }) {
                                     Label("Delete", systemImage: "trash")
                                 }
-                            } label: {
-                                Image(systemName: "ellipsis")
-                                    .imageScale(.large)
                             }
+                        } label: {
+                            Image(systemName: "ellipsis")
+                                .imageScale(.large)
                         }
                     }
                 }
+                .refreshable(action: {
+                    await refreshData()
+                })
                 .onAppear {
                     UINavigationController.swizzleIfNeeded()
+                    if localImageFileURL == nil {
+                        Task {
+                            await downloadImageFile()
+                        }
+                    }
                 }
                 .alert("", isPresented: $showDeleteAlert) {
                     Button("Delete", role: .destructive) {
@@ -325,6 +538,13 @@ struct ExhibitionDetailView: View {
                 }
             } else {
                 Text("Unable to load exhibition information")
+            }
+            if showShareAlert {
+                VStack {
+                    BannerMessage(text: "Instagram app not found")
+                    Spacer()
+                }
+                .padding(.top, 200)
             }
             
             if showCopyMessage {
