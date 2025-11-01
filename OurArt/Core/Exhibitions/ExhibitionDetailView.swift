@@ -180,8 +180,11 @@ struct ExhibitionDetailView: View {
             return
         }
         
-        let appID = "1306963787784168"
-        let urlString = "instagram-stories://share?source_application=\(appID)"
+        guard let facebookAppID = Bundle.main.infoDictionary?["FacebookAppID"] as? String else {
+            print("FacebookAppID not found in Info.plist")
+            return
+        }
+        let urlString = "instagram-stories://share?source_application=\(facebookAppID)"
         guard let url = URL(string: urlString), UIApplication.shared.canOpenURL(url) else {
             print("인스타그램 앱이 설치되어 있지 않거나 URL 스킴 실패")
             withAnimation(.spring(response: 0.3)) {
