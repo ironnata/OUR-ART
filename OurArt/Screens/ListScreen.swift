@@ -10,12 +10,21 @@ import SwiftUI
 struct ListScreen: View {
     
     @StateObject private var viewModel = ExhibitionViewModel()
+    @StateObject private var favoriteVM = FavoriteExhibitionViewModel()
     
     @State var searchText = ""
     @State var isLoading: Bool = false
     @State private var isRefreshing = false
     
     @State private var showPastSection = false
+    
+    private var favIdMap: [String: String] {
+        favoriteVM.favExhibitions.reduce(into: [:]) { $0[$1.exhibitionId] = $1.id }
+    }
+
+    private var favoriteIds: Set<String> {
+        Set(favoriteVM.favExhibitions.map { $0.exhibitionId })
+    }
     
     @Binding var shouldScrollToTop: Bool
     
@@ -52,31 +61,31 @@ struct ListScreen: View {
                 ScrollViewReader { proxy in
                     ZStack {
                         List {
-//                            ForEach(filterExhibitions()) { exhibition in
-//                                ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil)
-//                                    .environmentObject(viewModel)
-//                            }
-//                            .sectionBackground()
-//                            .redacted(reason: isLoading ? .placeholder : [])
-//                            .onFirstAppear {
-//                                isLoading = true
-//                                
-//                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                    isLoading = false
-//                                }
-//                            }
-                            
                             if !searchText.isEmpty {
                                 ForEach(filterExhibitions()) { exhibition in
-                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
+                                    let favId = favIdMap[exhibition.id]
+                                    
+                                    ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favId)
                                         .environmentObject(viewModel)
                                 }
                                 .sectionBackground()
                             } else {
                                 Section {
                                     ForEach(viewModel.ongoingOrUpcoming) { exhibition in
-                                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
+                                        let favId = favIdMap[exhibition.id]
+                                        let isFavorited = favoriteIds.contains(exhibition.id)
+                                        
+                                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favId)
                                             .environmentObject(viewModel)
+                                            .overlay {
+                                                HStack {
+                                                    Spacer()
+                                                    if isFavorited {
+                                                        Image(systemName: "heart.fill")                                                        
+                                                    }
+                                                }
+                                                .padding()
+                                            }
                                     }
                                 } header: {
                                     if viewModel.ongoingOrUpcoming.isEmpty {
@@ -92,8 +101,20 @@ struct ListScreen: View {
                                 if showPastSection {
                                     Section {
                                         ForEach(viewModel.past) { exhibition in
-                                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: nil)
+                                            let favId = favIdMap[exhibition.id]
+                                            let isFavorited = favoriteIds.contains(exhibition.id)
+                                            
+                                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favId)
                                                 .environmentObject(viewModel)
+                                                .overlay {
+                                                    HStack {
+                                                        Spacer()
+                                                        
+                                                        Image(systemName: isFavorited ? "heart.fill" : "")
+                                                            .foregroundStyle(.secondAccent)
+                                                    }
+                                                    .padding()
+                                                }
                                         }
                                     } header: {
                                         Text("Past")
@@ -124,9 +145,11 @@ struct ListScreen: View {
         }
         .task {
             viewModel.addListenerForAllExhibitions()
+            favoriteVM.addListenerForAllUserFavorites()
         }
         .onDisappear {
             viewModel.removeListenerForAllExhibitions()
+            favoriteVM.removeListenerForAllUserFavorites()
         }
         .viewBackground()
         .toolbar(content: {

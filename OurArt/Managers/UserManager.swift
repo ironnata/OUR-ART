@@ -128,7 +128,7 @@ final class UserManager {
     }
     
     private func userFavoriteDocument(userId: String, favExhibitionId: String) -> DocumentReference {
-        userMyExhibitionCollection(userId: userId).document(favExhibitionId)
+        userFavoriteCollection(userId: userId).document(favExhibitionId)
     }
     
     private let encoder: Firestore.Encoder = {

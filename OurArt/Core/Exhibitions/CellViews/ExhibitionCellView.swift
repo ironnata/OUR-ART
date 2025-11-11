@@ -42,6 +42,7 @@ struct ExhibitionCellView: View {
                     Text(exhibition.title ?? "")
                         .lineLimit(1)
                         .padding(.bottom, 8)
+                        .padding(.trailing, 25)
                         .font(.objectivityBoldBody)
                         .foregroundStyle(isExpired ? Color.secondAccent : Color.accent)
                     

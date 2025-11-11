@@ -11,7 +11,7 @@ struct FavoritesView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @StateObject private var favExhibitionVM = FavoriteExhibitionViewModel()
+    @StateObject private var favoriteVM = FavoriteExhibitionViewModel()
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     
     @State private var isLoading: Bool = false
@@ -19,12 +19,12 @@ struct FavoritesView: View {
     @State private var refreshCount = 0
     
     private func addListeners() {
-        favExhibitionVM.addListenerForAllUserFavorites()
+        favoriteVM.addListenerForAllUserFavorites()
         exhibitionVM.addListenerForAllExhibitions()
     }
     
     private func removeListeners() {
-        favExhibitionVM.removeListenerForAllUserFavorites()
+        favoriteVM.removeListenerForAllUserFavorites()
         exhibitionVM.removeListenerForAllExhibitions()
     }
     
@@ -44,61 +44,79 @@ struct FavoritesView: View {
     
     var body: some View {
         ZStack {
-            List {
-                Section {
-                    ForEach(favExhibitionVM.favOngoingOrUpcoming) { exhibition in
-                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favExhibitionVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
-                            .environmentObject(exhibitionVM)
-                    }
-                } header: {
-                    if favExhibitionVM.favOngoingOrUpcoming.isEmpty {
-                        EmptyView()
-                    } else {
-                        Text("Ongoing / Upcoming")
-                            .sectionHeaderBackground()
-                    }
+            if favoriteVM.favOngoingOrUpcoming.isEmpty && favoriteVM.favPast.isEmpty {
+                VStack(alignment: .center, spacing: 10) {
+                    Image("Avatars and Characters _ celebrity, pop art, actress, faces, icons")
+                        .renderingMode(.template)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: UIScreen.main.bounds.height * 0.3)
+                        .padding(.top, 20)
+                    
+                    Text("Collect your favorites here")
+                    
+                    Spacer()
                 }
+                .foregroundStyle(Color.secondAccent)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .sectionBackground()
                 
-                Section {
-                    ForEach(favExhibitionVM.favPast) { exhibition in
-                        ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favExhibitionVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
-                            .environmentObject(exhibitionVM)
+            } else {
+                List {
+                    Section {
+                        ForEach(favoriteVM.favOngoingOrUpcoming) { exhibition in
+                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favoriteVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
+                                .environmentObject(exhibitionVM)
+                        }
+                    } header: {
+                        if favoriteVM.favOngoingOrUpcoming.isEmpty {
+                            EmptyView()
+                        } else {
+                            Text("Ongoing / Upcoming")
+                                .sectionHeaderBackground()
+                        }
                     }
-                } header: {
-                    if favExhibitionVM.favPast.isEmpty {
-                        EmptyView()
-                    } else {
-                        Text("Past")
-                            .sectionHeaderBackground()
+                    .sectionBackground()
+                    
+                    Section {
+                        ForEach(favoriteVM.favPast) { exhibition in
+                            ExhibitionCellViewBuilder(exhibitionId: exhibition.id, myExhibitionId: nil, favExhibitionId: favoriteVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id)
+                                .environmentObject(exhibitionVM)
+                        }
+                    } header: {
+                        if favoriteVM.favPast.isEmpty {
+                            EmptyView()
+                        } else {
+                            Text("Past")
+                                .sectionHeaderBackground()
+                        }
+                    }
+                    .sectionBackground()
+                    
+                }
+                .id("exhibitions-\(refreshCount)")
+                .redacted(reason: isLoading ? .placeholder : [])
+                .onFirstAppear {
+                    isLoading = true
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        isLoading = false
                     }
                 }
-                .sectionBackground()
-                
-            }
-            .id("exhibitions-\(refreshCount)")
-            .redacted(reason: isLoading ? .placeholder : [])
-            .onFirstAppear {
-                isLoading = true
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    isLoading = false
+                .refreshable {
+                    await refreshData()
                 }
+                .toolbarBackground()
+                .listStyle(.plain)
             }
-            .refreshable {
-                await refreshData()
-                print("\(refreshCount) refreshed")
-            }
-            .toolbarBackground()
-            .listStyle(.plain)
         }
         .viewBackground()
         .onAppear {
             addListeners()
-            favExhibitionVM.updateSections(with: exhibitionVM.exhibitions)
+            favoriteVM.updateSections(with: exhibitionVM.exhibitions)
         }
         .onChange(of: exhibitionVM.exhibitions) { _, newValue in
-            favExhibitionVM.updateSections(with: newValue)
+            favoriteVM.updateSections(with: newValue)
         }
         .onDisappear {
             removeListeners()

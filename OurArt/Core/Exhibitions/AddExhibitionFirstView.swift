@@ -31,7 +31,7 @@ struct AddExhibitionFirstView: View {
         "Food and Cuisine _ chef, cooking, restaurant, culinary, kitchen",
         "Family and Children _ silhouette, family, journey, path, line art",
         "Creative Design _ abstract, surreal, character, face, whimsical",
-        "Nature and Ecology _ wave, ocean, nature, minimal, Vector illustration"
+        "Nature and Ecology _ wave, ocean, nature, minimal, Vector illustration",
     ]
     
     @State private var randomImageName: String?

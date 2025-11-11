@@ -15,6 +15,7 @@ struct ExhibitionDetailView: View {
     @Environment(\.openURL) private var openURL
     
     @StateObject private var myExhibitionVM = MyExhibitionViewModel()
+    @StateObject private var favoriteVM = FavoriteExhibitionViewModel()
     @StateObject private var exhibitionVM = ExhibitionViewModel()
     @StateObject private var mapVM = MapViewModel()
     
@@ -50,10 +51,12 @@ struct ExhibitionDetailView: View {
     var favExhibitionId: String?
     var isFavExhibition: Bool = false
     
+    @State private var heartScale = 1.0
+    
     @State private var localImageFileURL: URL? = nil
     @State private var isLoadingLocalFile = false
     
-    func animateMapAppearance() {
+    private func animateMapAppearance() {
         withAnimation(.spring(response: 0.5, dampingFraction: 1.5)) {
             mapHeight = 140
         }
@@ -100,6 +103,8 @@ struct ExhibitionDetailView: View {
                 isLoading = false
             }
         }
+        
+        favoriteVM.addListenerForAllUserFavorites()
     }
     
     private func handleDelete() async throws {
@@ -107,6 +112,14 @@ struct ExhibitionDetailView: View {
             try await myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
             dismiss()
         }
+    }
+    
+    private var favIdMap: [String: String] {
+        favoriteVM.favExhibitions.reduce(into: [:]) { $0[$1.exhibitionId] = $1.id }
+    }
+
+    private var favoriteIds: Set<String> {
+        Set(favoriteVM.favExhibitions.map { $0.exhibitionId })
     }
     
     func downloadImageFile() async {
@@ -128,7 +141,7 @@ struct ExhibitionDetailView: View {
             
             // 임시 디렉토리에 파일로 저장
             let tempDir = FileManager.default.temporaryDirectory
-            let fileURL = tempDir.appendingPathComponent("exhibition_poster.jpg")
+            let fileURL = tempDir.appendingPathComponent("Exhibition Poster.jpg")
             
             if let jpegData = image.jpegData(compressionQuality: 1.0) {
                 try jpegData.write(to: fileURL, options: .atomic)
@@ -138,6 +151,14 @@ struct ExhibitionDetailView: View {
             }
         } catch {
             print("Image download or save error: \(error)")
+        }
+    }
+    
+    func removeTempImageFile(at url: URL) {
+        do {
+            try FileManager.default.removeItem(at: url)
+        } catch {
+            print("임시 파일 삭제 실패:", error)
         }
     }
     
@@ -262,13 +283,53 @@ struct ExhibitionDetailView: View {
                             .foregroundStyle(Color.redacted)
                         
                         HStack(spacing: 10) {
+                            let isFavorited = favoriteIds.contains(exhibition.id)
+                            
                             Spacer()
                             
-                            Button {
-                                
-                            } label: {
-                                Image(systemName: "heart")
-                                    .imageScale(.large)
+                            if isFavorited {
+                                Button {
+                                    Task {
+                                        if let favId = favoriteVM.favExhibitions.first(where: { $0.exhibitionId == exhibition.id })?.id {
+                                            try await favoriteVM.deleteFavorite(favExhibitionId: favId)
+                                            withAnimation(.interpolatingSpring(stiffness: 500, damping: 10)) {
+                                                self.heartScale = 1.2
+                                                
+                                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                    withAnimation(.easeIn(duration: 0.2)) {
+                                                        self.heartScale = 1.0
+                                                    }
+                                                }
+                                            }
+                                            Haptic.impact(style: .soft)
+                                        }
+                                    }
+                                } label: {
+                                    Image(systemName: "heart.fill")
+                                        .imageScale(.large)
+                                        .scaleEffect(heartScale)
+                                }
+
+                            } else {
+                                Button {
+                                    Task {
+                                        try await favoriteVM.addFavorite(exhibitionId: exhibition.id)
+                                        withAnimation(.interpolatingSpring(stiffness: 500, damping: 10)) {
+                                            self.heartScale = 1.2
+                                            
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                                withAnimation(.easeIn(duration: 0.2)) {
+                                                    self.heartScale = 1.0
+                                                }
+                                            }
+                                        }
+                                        Haptic.impact(style: .soft)
+                                    }
+                                } label: {
+                                    Image(systemName: "heart")
+                                        .imageScale(.large)
+                                        .scaleEffect(heartScale)
+                                }
                             }
                             
                             Spacer()
@@ -444,35 +505,8 @@ struct ExhibitionDetailView: View {
                     ToolbarBackButton()
                     
                     CompatibleToolbarItem(placement: .topBarTrailing) {
-                        if let fileURL = localImageFileURL {
-                            ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
-                                Label("Share Poster", systemImage: "square.and.arrow.up")
-                            }
-                        }
-                        
-                        Menu {
-                            Button(action: {
-                                shareExhibitionToInstagram()
-                            }) {
-                                HStack {
-                                    Text("Share Story")
-                                    
-                                    Image("instagram-logo")
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .foregroundStyle(Color.accent)
-                                        .frame(width: 10, height: 10)
-                                }
-                            }
-                            
-                            if let fileURL = localImageFileURL {
-                                ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
-                                    Label("Share Poster", systemImage: "square.and.arrow.up")
-                                }
-                            }
-                            
-                            if isMyExhibition {
+                        if isMyExhibition {
+                            Menu {
                                 Button(action: {
                                     showEditView = true
                                 }) {
@@ -484,10 +518,10 @@ struct ExhibitionDetailView: View {
                                 }) {
                                     Label("Delete", systemImage: "trash")
                                 }
+                            } label: {
+                                Image(systemName: "ellipsis")
+                                    .imageScale(.large)
                             }
-                        } label: {
-                            Image(systemName: "ellipsis")
-                                .imageScale(.large)
                         }
                     }
                 }
@@ -500,6 +534,12 @@ struct ExhibitionDetailView: View {
                         Task {
                             await downloadImageFile()
                         }
+                    }
+                }
+                .onDisappear {
+                    favoriteVM.removeListenerForAllUserFavorites()
+                    if let fileURL = localImageFileURL {
+                        removeTempImageFile(at: fileURL)
                     }
                 }
                 .alert("", isPresented: $showDeleteAlert) {

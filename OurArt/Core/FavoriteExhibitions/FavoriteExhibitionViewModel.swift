@@ -51,6 +51,14 @@ final class FavoriteExhibitionViewModel: ObservableObject {
         self.favPast = pastSorted
     }
     
+    func isFavorited(exhibitionId: String) -> Bool {
+        return favExhibitions.contains(where: { $0.exhibitionId == exhibitionId })
+    }
+    
+    func getFavId(exhibitionId: String) -> UserFavoriteExhibition.ID? {
+        return favExhibitions.first(where: { $0.exhibitionId == exhibitionId })?.id
+    }
+    
     func addListenerForAllUserFavorites() {
         guard let authDataResult = try? AuthenticationManager.shared.getAuthenticatedUser() else { return }
         
@@ -77,6 +85,12 @@ final class FavoriteExhibitionViewModel: ObservableObject {
         UserManager.shared.removeListenerForAllUserFavorites()
     }
     
+    func addFavorite(exhibitionId: String) async throws {
+        let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
+        
+        try? await UserManager.shared.addFavExhibition(userId: authDataResult.uid, exhibitionId: exhibitionId)
+    }
+    
     func loadFavorite(favExhibitionId: String) {
         Task {
             guard let authDataResult = try? AuthenticationManager.shared.getAuthenticatedUser() else { return }
@@ -89,17 +103,12 @@ final class FavoriteExhibitionViewModel: ObservableObject {
     }
     
     func deleteFavorite(favExhibitionId: String) async throws {
-        guard let favExhibition else { return }
+//        guard let favExhibition else { return }
         
         Task {
             let authDataResult = try AuthenticationManager.shared.getAuthenticatedUser()
             
             try await UserManager.shared.removeFavorite(userId: authDataResult.uid, favExhibitionId: favExhibitionId)
-            try await ExhibitionManager.shared.deleteExhibition(exhibitionId: favExhibition.exhibitionId)
-            try? await StorageManager.shared.deleteExhibitionImageFolder(exhibitionId: favExhibition.exhibitionId)
-//            if let path = myExhibition.posterImagePath {
-//                try await StorageManager.shared.deleteImage(path: path)
-//            }
         }
     }
 }
