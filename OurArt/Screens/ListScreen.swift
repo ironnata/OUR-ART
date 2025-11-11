@@ -110,15 +110,21 @@ struct ListScreen: View {
                                                     HStack {
                                                         Spacer()
                                                         
-                                                        Image(systemName: isFavorited ? "heart.fill" : "")
-                                                            .foregroundStyle(.secondAccent)
+                                                        if isFavorited {
+                                                            Image(systemName: "heart.fill")
+                                                                .foregroundStyle(.secondAccent)
+                                                        }
                                                     }
                                                     .padding()
                                                 }
                                         }
                                     } header: {
-                                        Text("Past")
-                                            .sectionHeaderBackground()
+                                        if viewModel.ongoingOrUpcoming.isEmpty {
+                                            EmptyView()
+                                        } else {
+                                            Text("Past")
+                                                .sectionHeaderBackground()
+                                        }
                                     }
                                     .sectionBackground()
                                 }

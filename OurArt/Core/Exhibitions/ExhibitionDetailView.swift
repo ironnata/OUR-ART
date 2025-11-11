@@ -108,10 +108,14 @@ struct ExhibitionDetailView: View {
     }
     
     private func handleDelete() async throws {
+        if let favId = favoriteVM.favExhibitions.first(where: { $0.exhibitionId == exhibitionId })?.id {
+            try await favoriteVM.deleteFavorite(favExhibitionId: favId)
+        }
+        
         if let myExhibitionId = myExhibitionId {
             try await myExhibitionVM.deleteMyExhibition(myExhibitionId: myExhibitionId)
-            dismiss()
         }
+        dismiss()
     }
     
     private var favIdMap: [String: String] {
@@ -132,25 +136,41 @@ struct ExhibitionDetailView: View {
         isLoadingLocalFile = true
         defer { isLoadingLocalFile = false }
         
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            guard let image = UIImage(data: data) else {
-                print("Failed to create UIImage")
+        // 캐시에서 먼저 시도
+        let request = URLRequest(url: url)
+        if let cached = URLCache.shared.cachedResponse(for: request) {
+            print("✅ Loaded from cache")
+            if let image = UIImage(data: cached.data) {
+                await saveTempFile(image: image)
                 return
             }
-            
-            // 임시 디렉토리에 파일로 저장
-            let tempDir = FileManager.default.temporaryDirectory
-            let fileURL = tempDir.appendingPathComponent("Exhibition Poster.jpg")
-            
-            if let jpegData = image.jpegData(compressionQuality: 1.0) {
-                try jpegData.write(to: fileURL, options: .atomic)
-                DispatchQueue.main.async {
-                    localImageFileURL = fileURL
-                }
+        }
+        
+        // 캐시가 없을 경우에만 새로 다운로드
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            if let image = UIImage(data: data) {
+                let cachedResponse = CachedURLResponse(response: response, data: data)
+                URLCache.shared.storeCachedResponse(cachedResponse, for: request)
+                await saveTempFile(image: image)
             }
         } catch {
             print("Image download or save error: \(error)")
+        }
+    }
+    
+    @MainActor
+    private func saveTempFile(image: UIImage) async {
+        let tempDir = FileManager.default.temporaryDirectory
+        let fileURL = tempDir.appendingPathComponent("Exhibition Poster.jpg")
+
+        if let jpegData = image.jpegData(compressionQuality: 0.8) {
+            do {
+                try jpegData.write(to: fileURL, options: .atomic)
+                localImageFileURL = fileURL
+            } catch {
+                print("❌ Failed to write file: \(error)")
+            }
         }
     }
     
@@ -348,7 +368,7 @@ struct ExhibitionDetailView: View {
                             Spacer()
                             
                             if let fileURL = localImageFileURL {
-                                ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("its time to share the inspiration")) {
+                                ShareLink(item: fileURL, subject: Text("Share the Dot"), message: Text("Discover this exhibition")) {
                                     Image(systemName: "square.and.arrow.up")
                                         .imageScale(.large)
                                 }
@@ -451,7 +471,6 @@ struct ExhibitionDetailView: View {
                                         Color.clear
                                             .contentShape(Rectangle())
                                             .onTapGesture {
-//                                                mapVM.openMapAtCoordinate(coordinate, name: exhibition.title)
                                                 mapVM.openMap(coordinate, name: exhibition.title)
                                             }
                                     }

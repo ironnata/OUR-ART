@@ -18,6 +18,8 @@ struct FavoritesView: View {
     @State private var isRefreshing = false
     @State private var refreshCount = 0
     
+    let placeholderImage = Image("Creative Design _ umbrella, parasol, woman, man, walking, outdoors")
+    
     private func addListeners() {
         favoriteVM.addListenerForAllUserFavorites()
         exhibitionVM.addListenerForAllExhibitions()
@@ -46,7 +48,7 @@ struct FavoritesView: View {
         ZStack {
             if favoriteVM.favOngoingOrUpcoming.isEmpty && favoriteVM.favPast.isEmpty {
                 VStack(alignment: .center, spacing: 10) {
-                    Image("Avatars and Characters _ celebrity, pop art, actress, faces, icons")
+                    placeholderImage
                         .renderingMode(.template)
                         .resizable()
                         .scaledToFit()

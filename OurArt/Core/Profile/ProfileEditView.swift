@@ -43,8 +43,6 @@ struct ProfileEditView: View {
                         
                         VStack(spacing: 10) {
                             
-                            Spacer()
-                            
                             VStack {
                                 if let urlString = user.profileImagePathUrl, let url = URL(string: urlString) {
                                     let gid = "profile-\(user.userId)"
@@ -132,7 +130,6 @@ struct ProfileEditView: View {
                                     .presentationBackground(.thinMaterial)
                             }
                             
-                            Spacer()
                             
                             VStack {
                                 ProfileRow(title: "Profilename", value: user.nickname ?? "")
