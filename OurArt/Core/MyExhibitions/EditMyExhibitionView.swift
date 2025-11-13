@@ -56,7 +56,7 @@ struct EditMyExhibitionView: View {
         let finalDescription = description
         let finalAddress = selectedAddress.isEmpty ? (viewModel.exhibition?.address ?? "") : selectedAddress
         let finalCity = selectedCity.isEmpty ? (viewModel.exhibition?.city ?? "") : selectedCity
-        let finalOnlineLink = onlineLink.isEmpty ? (viewModel.exhibition?.onlineLink ?? "") : onlineLink
+        let finalOnlineLink = onlineLink
         
         Task {
             try? await viewModel.addTitle(text: finalTitle)
@@ -248,12 +248,15 @@ struct EditMyExhibitionView: View {
                             }
                             
                             SectionCard(title: "Online Link", icon: "link") {
-                                TextField(exhibition.onlineLink ?? "online link", text: $onlineLink)
+                                TextField("online link", text: $onlineLink)
                                     .modifier(TextFieldDescriptionModifier())
                                     .keyboardType(.URL)
                                     .autocorrectionDisabled(true)
                                     .textInputAutocapitalization(.never)
                                     .focused($isFocused)
+                                    .onAppear {
+                                        self.onlineLink = exhibition.onlineLink ?? ""
+                                    }
                                     .onChange(of: isFocused) { _, newValue in
                                         if newValue {
                                             // onlineLink가 비어있거나, 접두사로 시작하지 않을 경우에만 추가

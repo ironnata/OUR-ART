@@ -411,6 +411,23 @@ struct ExhibitionDetailView: View {
                             
                             InfoDetailView(icon: "xmark.circle", text: exhibition.closingDays ?? ["Always open"], textColor: .accent2)
                             
+                            if let urlString = exhibition.onlineLink, urlString.contains("https://"), let url = URL(string: urlString) {
+                                Button {
+                                    pendingURL = url
+                                    showLinkAlert = true
+                                } label: {
+                                    InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .accent2)
+                                }
+                                .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
+                                    Button("Cancel", role: .cancel) {
+                                        pendingURL = nil
+                                    }
+                                    Button("Open") {
+                                        openURL(url)
+                                    }
+                                }
+                            }
+                            
                             InfoDetailView(icon: "location.circle", text: exhibition.address ?? "Unknown", textColor: .accent2)
                                 .lineSpacing(9)
                                 .onLongPressGesture {
@@ -482,24 +499,24 @@ struct ExhibitionDetailView: View {
                                             showMap = true
                                         }
                                 }
-                            } else {
-                                if let urlString = exhibition.onlineLink, urlString.contains("https://"), let url = URL(string: urlString) {
-                                    Button {
-                                        pendingURL = url
-                                        showLinkAlert = true
-                                    } label: {
-                                        InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .accent2)
-                                    }
-                                    .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
-                                        Button("Cancel", role: .cancel) {
-                                            pendingURL = nil
-                                        }
-                                        Button("Open") {
-                                            openURL(url)
-                                        }
-                                    }
-                                }
                             }
+                            
+//                            if let urlString = exhibition.onlineLink, urlString.contains("https://"), let url = URL(string: urlString) {
+//                                Button {
+//                                    pendingURL = url
+//                                    showLinkAlert = true
+//                                } label: {
+//                                    InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .accent2)
+//                                }
+//                                .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
+//                                    Button("Cancel", role: .cancel) {
+//                                        pendingURL = nil
+//                                    }
+//                                    Button("Open") {
+//                                        openURL(url)
+//                                    }
+//                                }
+//                            }
                         }
                         .frame(maxWidth: .infinity)
                         .padding()
