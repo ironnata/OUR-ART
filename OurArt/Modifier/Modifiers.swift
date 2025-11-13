@@ -140,6 +140,7 @@ struct BigPosterSizeModifier: ViewModifier {
 struct ProfileImageModifer: ViewModifier {
     func body(content: Content) -> some View {
         content
+            .aspectRatio(contentMode: .fill)
             .frame(width: 150, height: 150)
             .clipShape(Circle())
     }
@@ -148,6 +149,7 @@ struct ProfileImageModifer: ViewModifier {
 struct SmallProfileImageModifer: ViewModifier {
     func body(content: Content) -> some View {
         content
+            .aspectRatio(contentMode: .fill)
             .frame(width: 45, height: 45)
             .clipShape(Circle())
     }

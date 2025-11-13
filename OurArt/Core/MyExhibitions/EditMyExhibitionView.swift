@@ -32,7 +32,6 @@ struct EditMyExhibitionView: View {
     @State private var showUpdateMessage = false
     
     @State private var onlineLink = ""
-    @State private var showOnlineLinkSection = false
     
     @State private var selectedFromDate: Date = Date()
     @State private var selectedToDate: Date = Date()
@@ -134,7 +133,7 @@ struct EditMyExhibitionView: View {
                                                 }
                                             }
                                             
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                                                 Task {
                                                     try? await viewModel.loadCurrentExhibition(id: exhibitionId)
                                                 }
@@ -237,9 +236,6 @@ struct EditMyExhibitionView: View {
                                 Button {
                                     selectedCity = "Online"
                                     selectedAddress = "Online"
-                                    withAnimation(.smooth(duration: 0.7)) {
-                                        showOnlineLinkSection = true
-                                    }
                                 } label: {
                                     Text("Online")
                                         .modifier(SmallButtonModifier())
@@ -250,36 +246,25 @@ struct EditMyExhibitionView: View {
                                     .presentationDetents([.large])
                                     .interactiveDismissDisabled(true)
                             }
-                            .onAppear {
-                                if exhibition.address == "Online" {
-                                    showOnlineLinkSection = true
-                                }
-                            }
-                            .onChange(of: selectedAddress) { oldValue, newValue in
-                                if selectedAddress != "Online" {
-                                    showOnlineLinkSection = false
-                                }
-                            }
                             
-                            if showOnlineLinkSection {
-                                SectionCard(title: "Online Link", icon: "link") {
-                                    TextField(exhibition.onlineLink ?? "online link", text: $onlineLink)
-                                        .modifier(TextFieldDescriptionModifier())
-                                        .keyboardType(.URL)
-                                        .autocorrectionDisabled(true)
-                                        .textInputAutocapitalization(.never)
-                                        .focused($isFocused)
-                                        .onChange(of: isFocused) { _, newValue in
-                                            if newValue {
-                                                // onlineLink가 비어있거나, 접두사로 시작하지 않을 경우에만 추가
-                                                if onlineLink.isEmpty || !onlineLink.hasPrefix("https://") {
-                                                    onlineLink = "https://" + onlineLink
-                                                }
+                            SectionCard(title: "Online Link", icon: "link") {
+                                TextField(exhibition.onlineLink ?? "online link", text: $onlineLink)
+                                    .modifier(TextFieldDescriptionModifier())
+                                    .keyboardType(.URL)
+                                    .autocorrectionDisabled(true)
+                                    .textInputAutocapitalization(.never)
+                                    .focused($isFocused)
+                                    .onChange(of: isFocused) { _, newValue in
+                                        if newValue {
+                                            // onlineLink가 비어있거나, 접두사로 시작하지 않을 경우에만 추가
+                                            if onlineLink.isEmpty || !onlineLink.hasPrefix("https://") {
+                                                onlineLink = "https://" + onlineLink
                                             }
                                         }
-                                        .showClearButton($onlineLink)
-                                }
-                            }
+                                    }
+                                    .showClearButton($onlineLink)
+                            } // ONLINE LINK
+                            
                             
                             SectionCard(title: "Description", icon: "text.justify.leading") {
                                 TextField("description", text: $description, axis: .vertical)

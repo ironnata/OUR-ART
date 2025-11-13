@@ -483,8 +483,7 @@ struct ExhibitionDetailView: View {
                                         }
                                 }
                             } else {
-                                if let address = exhibition.address, address == "Online",
-                                   let urlString = exhibition.onlineLink, let url = URL(string: urlString) {
+                                if let urlString = exhibition.onlineLink, urlString.contains("https://"), let url = URL(string: urlString) {
                                     Button {
                                         pendingURL = url
                                         showLinkAlert = true

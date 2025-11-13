@@ -99,7 +99,7 @@ struct ProfileEditView: View {
                                     }
                                 }
                                 .modifier(SmallButtonModifier())
-                                .padding(.top, 10)
+                                .padding(.top, 5)
                             }
                             .padding(.bottom, 20)
                             .sheet(isPresented: $showImageEditView, onDismiss: {
@@ -193,6 +193,14 @@ struct ProfileEditView: View {
                             Spacer()
                         }
                     }
+                    
+                    if showUpdateMessage {
+                        VStack {
+                            BannerMessage(text: "Profile image has successfully updated!")
+                            Spacer()
+                        }
+                        .padding(.top, 100)
+                    }
                 }
                 .padding(.horizontal, 10)
                 .padding(.bottom, 50)
@@ -215,15 +223,6 @@ struct ProfileEditView: View {
                         }
                     }
                 )
-                
-                if showUpdateMessage {
-                    VStack {
-                        BannerMessage(text: "Profile image has successfully updated!")
-                        Spacer()
-                    }
-                    .padding(.top, 100)
-                }
-                
             }
         }
         .task {

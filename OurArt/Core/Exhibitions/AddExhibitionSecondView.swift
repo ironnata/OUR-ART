@@ -38,7 +38,6 @@ struct AddExhibitionSecondView: View {
     @State private var selectedCity = "Unknown"
     
     @State private var onlineLink = ""
-    @State private var showOnlineLinkSection = false
     
     @State private var selectedFromTime: Date = Date()
     @State private var selectedToTime: Date = Date()
@@ -201,9 +200,6 @@ struct AddExhibitionSecondView: View {
                                 Button {
                                     selectedCity = "Online"
                                     selectedAddress = "Online"
-                                    withAnimation(.smooth(duration: 0.7)) {
-                                        showOnlineLinkSection = true
-                                    }
                                 } label: {
                                     Text("Online")
                                         .modifier(SmallButtonModifier())
@@ -215,22 +211,20 @@ struct AddExhibitionSecondView: View {
                                     .interactiveDismissDisabled(true)
                             }
                             
-                            if showOnlineLinkSection {
-                                SectionCard(title: "Online Link", icon: "link") {
-                                    TextField("online link", text: $onlineLink)
-                                        .modifier(TextFieldDescriptionModifier())
-                                        .keyboardType(.URL)
-                                        .autocorrectionDisabled(true)
-                                        .textInputAutocapitalization(.never)
-                                        .focused($isFocused)
-                                        .onChange(of: isFocused) { _, newValue in
-                                            if newValue && onlineLink.isEmpty {
-                                                onlineLink = "https://"
-                                            }
+                            SectionCard(title: "Online Link", icon: "link") {
+                                TextField("online link", text: $onlineLink)
+                                    .modifier(TextFieldDescriptionModifier())
+                                    .keyboardType(.URL)
+                                    .autocorrectionDisabled(true)
+                                    .textInputAutocapitalization(.never)
+                                    .focused($isFocused)
+                                    .onChange(of: isFocused) { _, newValue in
+                                        if newValue && onlineLink.isEmpty {
+                                            onlineLink = "https://"
                                         }
-                                        .showClearButton($onlineLink)
-                                }
-                            }
+                                    }
+                                    .showClearButton($onlineLink)
+                            } // ONLINE LINK
                             
                             SectionCard(title: "Description", icon: "text.justify.leading") {
                                 TextField("description", text: $description, axis: .vertical)
