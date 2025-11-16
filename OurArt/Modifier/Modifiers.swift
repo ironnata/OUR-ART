@@ -20,6 +20,7 @@ struct AuthButtonModifier: ViewModifier {
             .frame(maxWidth: .infinity)
             .background(Color.accent)
             .clipShape(.rect(cornerRadius: 5))
+            .contentShape(Rectangle())
     }
 }
 
@@ -32,6 +33,7 @@ struct CommonButtonModifier: ViewModifier {
             .frame(maxWidth: .infinity)
             .background(Color.accent)
             .clipShape(.rect(cornerRadius: 7))
+            .contentShape(Rectangle())
     }
 }
 
@@ -43,6 +45,7 @@ struct MediumSmallButtonModifier: ViewModifier {
             .frame(width: 72, height: 30)
             .background(Color.redacted)
             .clipShape(.rect(cornerRadius: 5))
+            .contentShape(Rectangle())
     }
 }
 
@@ -55,6 +58,7 @@ struct SmallButtonModifier: ViewModifier {
             .padding(.horizontal, 5)
             .background(Color.secondAccent)
             .clipShape(.rect(cornerRadius: 3))
+            .contentShape(Rectangle())
     }
 }
 
@@ -73,7 +77,8 @@ struct TextFieldClearButton: ViewModifier {
                             Image(systemName: "multiply.circle.fill")
                         }
                         .foregroundColor(.secondAccent)
-                        .padding(.trailing, 10)
+                        .contentShape(Rectangle())
+                        .padding()
                     }
                 }
             }

@@ -44,8 +44,8 @@ struct AuthenticationView: View {
                         Image(systemName: "apple.logo")
                         Text("Sign in with Apple")
                     }
+                    .modifier(AuthButtonModifier())
                 })
-                .modifier(AuthButtonModifier())
                 
                 // MARK: - GOOGLE
                 Button{
@@ -65,8 +65,8 @@ struct AuthenticationView: View {
                             .frame(width: 20, height: 20)
                         Text("Sign in with Google")
                     }
+                    .modifier(AuthButtonModifier())
                 }
-                .modifier(AuthButtonModifier())
                 
                 // MARK: - E-MAIL ///// 아마도 나중에 다시... /////
 //                NavigationLink {

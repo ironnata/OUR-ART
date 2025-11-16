@@ -16,6 +16,15 @@ struct OurArtApp: App {
 //    init() {
 //        UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor = .black
 //    }
+    init() {
+        // 디스크 캐시 용량을 500MB로 제한
+        let diskCapacity = 500 * 1024 * 1024 // 500 MB
+        let memoryCapacity = 50 * 1024 * 1024 // 메모리 캐시는 필요시 조정
+        
+        URLCache.shared = URLCache(memoryCapacity: memoryCapacity,
+                                   diskCapacity: diskCapacity,
+                                   diskPath: nil)
+    }
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     

@@ -116,7 +116,7 @@ struct SupportDotView: View {
                                     .onTapGesture {
                                         withAnimation(.easeOut(duration: 0.3)) {
                                             showLogo = false
-                                            Haptic.impact(style: .soft)
+                                            Haptic.selectionChanged()
                                         }
                                         
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
@@ -193,7 +193,7 @@ struct SupportDotView: View {
                         .disabled(adCount >= 5)
                         
                         Text(adCount >= 5 ? "" : "Watch Ad to support Dot")
-                            .font(.objectivityCallout)
+                            .font(.objectivityFootnote)
                             .foregroundStyle(Color.accent2)
                             .padding(.bottom, 20)
                         

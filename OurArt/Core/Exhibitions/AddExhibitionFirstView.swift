@@ -19,6 +19,8 @@ struct AddExhibitionFirstView: View {
     @State private var title: String = ""
     @State private var currentId: String = UUID().uuidString
     
+    @State private var isLoading = true
+    
     @FocusState private var isTitleFocused: Bool
     
     let imageNames = [
@@ -40,7 +42,6 @@ struct AddExhibitionFirstView: View {
         NavigationStack {
             ZStack {
                 VStack {
-//                    Spacer()
                     if let imageName = randomImageName {
                         Image(imageName)
                             .renderingMode(.template)
@@ -51,8 +52,6 @@ struct AddExhibitionFirstView: View {
                             .clipShape(.rect(cornerRadius: 12, style: .continuous))
                             .padding(.bottom, 10)
                     }
-                    
-//                    Spacer()
                     
                     VStack(alignment: .leading, spacing: 10) {
                         TextField("Title", text: $title)
@@ -86,8 +85,8 @@ struct AddExhibitionFirstView: View {
                         
                     } label: {
                         Text("Next".uppercased())
+                            .modifier(CommonButtonModifier())
                     }
-                    .modifier(CommonButtonModifier())
                     .navigationDestination(isPresented: $showSecondView) {
                         AddExhibitionSecondView(showAddingView: $showAddingView, title: $title, currentId: $currentId, isUploaded: $isUploaded)
                             .navigationBarBackButtonHidden(true)
@@ -97,7 +96,7 @@ struct AddExhibitionFirstView: View {
                 .toolbar {
                     CompatibleToolbarItem(placement: .topBarTrailing) {
                         Button {
-                            dismiss()   
+                            dismiss()
                         } label: {
                             Image(systemName: "xmark")
                                 .imageScale(.large)
@@ -119,11 +118,13 @@ struct AddExhibitionFirstView: View {
                     isTitleFocused = true
                 }
             }
-        }
-        .onTapGesture {
-            if isTitleFocused {
-                isTitleFocused = false
-            }
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    if isTitleFocused {
+                        isTitleFocused = false
+                    }
+                }
+            )
         }
     }
 }

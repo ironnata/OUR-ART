@@ -281,6 +281,7 @@ struct EditNicknameView : View {
                     
                     TextField(user.nickname ?? "Nickname...", text: $nickname)
                         .modifier(TextFieldModifier())
+                        .showClearButton($nickname)
                     
                     Divider()
                         .padding(.vertical, 10)
@@ -295,8 +296,8 @@ struct EditNicknameView : View {
                         
                     } label: {
                         Text("Save".uppercased())
+                            .modifier(CommonButtonModifier())
                     }
-                    .modifier(CommonButtonModifier())
                 }
             }
             .padding()
@@ -360,11 +361,13 @@ struct EditPreferencesView: View {
                                 }
                             } label: {
                                 Text(option)
+                                    .font(.objectivityCallout)
+                                    .buttonStyle(.borderless)
                                     .frame(maxWidth: .infinity, minHeight: 30)
+                                    .foregroundStyle(Color.accentButtonText)
+                                    .background(preferenceIsSelected(text: option) ? Color.accentColor : Color.secondary)
+                                    .cornerRadius(8)
                             }
-                            .buttonStyle(.borderedProminent)
-                            .tint(preferenceIsSelected(text: option) ? Color.accentColor : Color.secondary)
-                            .foregroundStyle(Color.accentButtonText)
                         }
                     }
                 }

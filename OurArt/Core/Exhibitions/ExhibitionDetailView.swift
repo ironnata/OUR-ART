@@ -273,6 +273,7 @@ struct ExhibitionDetailView: View {
                             .scaledToFit()
                             .frame(maxWidth: 240, alignment: .center)
                             .clipShape(.rect(cornerRadius: 8))
+                            .shadow(radius: 5)
                             .if(!isZoomed) { view in
                                 view.matchedGeometryEffect(id: gid, in: fullPosterNS)
                             }
@@ -416,7 +417,8 @@ struct ExhibitionDetailView: View {
                                     pendingURL = url
                                     showLinkAlert = true
                                 } label: {
-                                    InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .accent2)
+                                    InfoDetailView(icon: "link.circle", text: "\(url)", textColor: .secondAccent)
+                                        .lineLimit(1)
                                 }
                                 .alert("Open this link in your browser?", isPresented: $showLinkAlert, presenting: pendingURL) { url in
                                     Button("Cancel", role: .cancel) {
@@ -494,7 +496,7 @@ struct ExhibitionDetailView: View {
                                     
                                     Divider()
                                 } else {
-                                    InfoDetailView(icon: "map.circle", text: "View Map", textColor: .accent2)
+                                    InfoDetailView(icon: "map.circle", text: "View Map", textColor: .secondAccent)
                                         .onTapGesture {
                                             showMap = true
                                         }
@@ -673,8 +675,10 @@ struct InfoDetailView<T: CustomStringConvertible>: View {
                 }
             }
             .font(.objectivityCallout)
+            .padding(.trailing, 20)
             
             Divider()
+                .frame(maxWidth: .infinity)
         }
     }
 }

@@ -207,21 +207,34 @@ struct EditMyExhibitionView: View {
                             } // OPENING HOURS
                             
                             SectionCard(title: "Closed on", icon: "xmark.circle") {
-                                HStack {
-                                    ForEach(closingDaysOptions, id: \.self) { day in
-                                        Button(day) {
-                                            if selectedClosingDays(text: day) {
-                                                viewModel.removeClosingDays(text: day)
-                                            } else {
-                                                viewModel.addClosingDays(text: day)
+                                GeometryReader { geo in
+                                    let horizontalPadding: CGFloat = 16   // SectionCard 내부 padding
+                                    let spacing: CGFloat = 6              // 버튼 간 간격
+                                    let usableWidth = geo.size.width - (horizontalPadding * 2)
+                                    let itemWidth = (usableWidth - spacing * 6) / 7
+                                    
+                                    HStack(alignment: .center, spacing: spacing) {
+                                        ForEach(closingDaysOptions, id: \.self) { day in
+                                            Button(day) {
+                                                if selectedClosingDays(text: day) {
+                                                    viewModel.removeClosingDays(text: day)
+                                                } else {
+                                                    viewModel.addClosingDays(text: day)
+                                                }
                                             }
+                                            .font(.objectivityCaption)
+                                            .buttonStyle(.borderless)
+                                            .frame(width: itemWidth, height: 20)
+//                                            .padding(8)
+                                            .foregroundStyle(Color.accentButtonText)
+                                            .background(selectedClosingDays(text: day) ? Color.accentColor : .secondary)
+                                            .cornerRadius(5)
                                         }
-                                        .font(.objectivityCaption)
-                                        .buttonStyle(.borderedProminent)
-                                        .foregroundStyle(Color.accentButtonText)
-                                        .tint(selectedClosingDays(text: day) ? .accentColor : .secondary)
                                     }
+                                    .frame(width: usableWidth)
+                                    .padding(.horizontal, horizontalPadding)
                                 }
+                                .frame(height: 40)
                             } // CLOSED ON
                             
                             SectionCard(title: "Address", icon: "location") {

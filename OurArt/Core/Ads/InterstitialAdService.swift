@@ -56,6 +56,15 @@ final class InterstitialAdService: NSObject, ObservableObject, FullScreenContent
 
 
 class InterstitialViewModel: ObservableObject {
+    func preloadAd() async {
+        await InterstitialAdService.shared.preloadAd()
+    }
+    
+    func presentAd() async {
+        let success = await InterstitialAdService.shared.presentAd()
+    }
+    
+    
     func presentAndWait() async {
         await InterstitialAdService.shared.preloadAd()
         let success = await InterstitialAdService.shared.presentAd()

@@ -47,17 +47,17 @@ struct SettingsScreen: View {
                                 Spacer()
                             }
                         }
-                        // My Favorites
-                        ZStack {
-                            NavigationLink(destination: FavoritesView().navigationBarBackButtonHidden()) {
-                                EmptyView()
-                            }
-                            .opacity(0)
-                            
-                            HStack {
-                                SettingsRow(icon: "heart", label: "My Favorites")
-                                Spacer()
-                            }
+                    }
+                    // My Favorites
+                    ZStack {
+                        NavigationLink(destination: FavoritesView().navigationBarBackButtonHidden()) {
+                            EmptyView()
+                        }
+                        .opacity(0)
+                        
+                        HStack {
+                            SettingsRow(icon: "heart", label: "My Favorites")
+                            Spacer()
                         }
                     }
                 } header: {

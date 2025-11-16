@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PrivacyPolicyView: View {
     @State private var text = """
-             Effective Date: [Insert Date]
+             Effective Date: 13.Nov.2025
              Contact: dotbymo@gmail.com
 
              ⸻
