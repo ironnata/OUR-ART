@@ -274,6 +274,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CD64F0592ECBD0BF00586918 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 		CD6954C12AF3CD7E00312907 /* Exhibitions */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +344,7 @@
 				CD93167E2AD8118F004F2868 /* Screens */,
 				CDDED79E2AE1B86700150F87 /* Core */,
 				CD9316A02AD989C0004F2868 /* Utilities */,
+				CD64F0592ECBD0BF00586918 /* Image */,
 				CD36549D2BBEC0FD001A01FC /* Extensions */,
 				CD9316982AD974D2004F2868 /* Modifier */,
 				CD9316A32AD99324004F2868 /* Managers */,

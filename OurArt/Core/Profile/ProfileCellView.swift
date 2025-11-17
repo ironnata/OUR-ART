@@ -35,6 +35,7 @@ struct ProfileCellView: View {
                                 .modifier(SmallProfileImageModifer())
                                 .foregroundStyle(Color.secondAccent)
                         }
+                        .id(urlString)
                         .padding(.trailing, 30)
                     } else {
                         placeholderImage

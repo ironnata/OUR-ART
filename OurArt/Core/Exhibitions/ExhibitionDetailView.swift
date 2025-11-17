@@ -139,7 +139,6 @@ struct ExhibitionDetailView: View {
         // 캐시에서 먼저 시도
         let request = URLRequest(url: url)
         if let cached = URLCache.shared.cachedResponse(for: request) {
-            print("✅ Loaded from cache")
             if let image = UIImage(data: cached.data) {
                 await saveTempFile(image: image)
                 return

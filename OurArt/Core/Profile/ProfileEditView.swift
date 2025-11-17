@@ -73,6 +73,7 @@ struct ProfileEditView: View {
                                                 }
                                             }
                                     }
+                                    .id(urlString)
                                 } else {
                                     placeholderImage
                                         .resizable()

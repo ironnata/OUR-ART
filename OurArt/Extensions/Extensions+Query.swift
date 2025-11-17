@@ -251,6 +251,36 @@ extension View {
     }
 }
 
+// StorageManager - Image 업로드 용량/품질관리
+extension UIImage {
+    // targetWidth에 맞춰 비율 고정 리사이즈
+    func resized(to targetWidth: CGFloat) -> UIImage {
+        let scale = targetWidth / self.size.width
+        let newHeight = self.size.height * scale
+        let newSize = CGSize(width: targetWidth, height: newHeight)
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        return renderer.image { _ in
+            self.draw(in: CGRect(origin: .zero, size: newSize))
+        }
+    }
+    
+    // 압축 + 용량 제한 저장
+    func compressedForUpload(maxFileSizeKB: Int = 700, targetWidth: CGFloat = 1200.0) -> Data? {
+        // 1차 리사이즈: 1200px 이상이면 리사이즈
+        let resizedImage = (self.size.width > targetWidth) ? self.resized(to: targetWidth) : self
+        var compression: CGFloat = 0.7
+        var imageData = resizedImage.jpegData(compressionQuality: compression)
+        let maxBytes = maxFileSizeKB * 1024
+        
+        // 반복적으로 퀄리티 조정하며 맞추기
+        while let data = imageData, data.count > maxBytes, compression > 0.2 {
+            compression -= 0.1
+            imageData = resizedImage.jpegData(compressionQuality: compression)
+        }
+        return imageData
+    }
+}
+
 // 네비게이션스택 드래그하여 뒤로가기
 extension UINavigationController: @retroactive UIGestureRecognizerDelegate {
     override open func viewDidLoad() {

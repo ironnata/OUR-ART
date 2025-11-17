@@ -82,9 +82,7 @@ struct SimpleExpandableTextView: View {
 
             if text.count > threshold && !isExpanded {
                 Button("... more") {
-                    withAnimation {
-                        isExpanded = true
-                    }
+                    isExpanded = true
                 }
                 .font(.objectivityCallout.weight(.semibold))
                 .foregroundStyle(Color.secondAccent)

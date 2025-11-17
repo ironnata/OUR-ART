@@ -97,6 +97,7 @@ struct EditMyExhibitionView: View {
                                                 .foregroundStyle(Color.accent)
                                                 .frame(maxWidth: 160)
                                         }
+                                        .id(urlString)
                                     } else {
                                         placeholderImage
                                             .renderingMode(.template)

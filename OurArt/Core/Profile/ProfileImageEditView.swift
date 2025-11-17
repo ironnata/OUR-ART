@@ -47,6 +47,7 @@ struct ProfileImageEditView: View {
                                         .clipShape(Circle())
                                         .foregroundStyle(Color.secondAccent)
                                 }
+                                .id(urlString)
                             } else {
                                 Image(systemName: "person.circle.fill")
                                     .resizable()

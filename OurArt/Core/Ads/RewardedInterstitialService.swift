@@ -41,10 +41,8 @@ final class RewardedInterstitialService: NSObject, FullScreenContentDelegate {
         
         do {
             try await loadIfNeeded()
-            print("보상형 전면광고 미리 로드 완료")
         } catch {
             ad = nil
-            print("보상형 전면광고 로드 실패: \(error)")
         }
     }
     

@@ -58,7 +58,7 @@ final class StorageManager {
     
     func saveImage(data: Data, userId: String) async throws -> (path: String, name: String) {
         guard let image = UIImage(data: data),
-              let processedData = image.jpegData(compressionQuality: 0.7) else {
+              let processedData = image.compressedForUpload(maxFileSizeKB: 700, targetWidth: 1200.0) else {
             throw URLError(.badServerResponse)
         }
         
@@ -112,7 +112,7 @@ final class StorageManager {
     
     func savePoster(data: Data, exhibitionId: String) async throws -> (path: String, name: String) {
         guard let image = UIImage(data: data),
-              let processedData = image.jpegData(compressionQuality: 0.7) else {
+              let processedData = image.compressedForUpload(maxFileSizeKB: 700, targetWidth: 1200.0) else {
             throw URLError(.badServerResponse)
         }
         

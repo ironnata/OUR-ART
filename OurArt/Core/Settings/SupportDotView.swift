@@ -99,7 +99,7 @@ struct SupportDotView: View {
                                     .onTapGesture {
                                         withAnimation {
                                             self.animationAmount += 360
-                                            Haptic.impact(style: .rigid)
+                                            Haptic.selectionChanged()
                                         }
                                     }
                                     .rotation3DEffect(
