@@ -32,7 +32,7 @@ struct HomeScreen: View {
     @State private var dragOffset: CGSize = .zero
     @State private var topPosterIndex: Int = 0
     
-    var width: CGFloat = 280
+    var width: CGFloat = UIScreen.main.bounds.width * 0.6
     
     private func handleDragEnded(_ value: DragGesture.Value) {
         let threshold: CGFloat = 50
@@ -274,7 +274,7 @@ struct CardView: View {
         
         NavigationLink(destination: ExhibitionDetailView(exhibitionId: exhibition.id)) {
             ExhibitionPosterView(exhibition: exhibition)
-                .frame(width: width, height: 420)
+                .frame(width: width, height: width * 1.5)
                 .offset(x: visualIndex == 0 ? dragOffset.width : Double(visualIndex) * 10,
                         y: visualIndex == 0 ? 0 : Double(visualIndex) * -4)
             

@@ -28,7 +28,7 @@ struct ExhibitionPosterView: View {
                         Text(exhibition.title ?? "")
                             .foregroundStyle(.accent)
                     }
-                    .frame(width: 280, height: 420)
+                    .frame(maxWidth: 280, maxHeight: 420)
                 }
             }
         }
